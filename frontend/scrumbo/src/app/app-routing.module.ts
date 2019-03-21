@@ -1,10 +1,30 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { ShowDataComponent } from './show-data/show-data.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+
+const appRoutes: Routes = [
+    {
+        path:"",
+        component: ShowDataComponent,
+    },
+    {
+        path:"**",
+        component: PagenotfoundComponent,
+    }
+]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(
+            appRoutes
+        )
+    ],
+    exports: [
+        RouterModule
+    ]
 })
-export class AppRoutingModule { }
+
+export class AppRoutingModule{}
