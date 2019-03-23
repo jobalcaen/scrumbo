@@ -5,13 +5,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { NewBoardComponent } from './new-board/new-board.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ShowDataComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    NewBoardComponent
   ],
   imports: [
     BrowserModule,

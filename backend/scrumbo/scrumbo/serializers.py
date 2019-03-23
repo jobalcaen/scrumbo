@@ -1,8 +1,7 @@
-
 from rest_framework import serializers
 from scrumbo.models import Board
 
-class ExampleModelSerializer(serializers.ModelSerializer):
+class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Board
-        fields = ('id','name')
+        fields = ('name', )

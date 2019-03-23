@@ -1,14 +1,15 @@
 from django.test import TestCase
-from scrumbo.models import Board, Note
+from scrumbo.models import Board
 from scrumbo.constants import TEST_BOARD_NAME
 
 # Create your tests here.
 
 class BoardTestCase(TestCase):
+    """ unit tests for Board model """
 
     def setUp(self):
         return
-        
+
     def test_create_a_board(self):
         Board.objects.create(name=TEST_BOARD_NAME)
         self.assertTrue(Board.objects.all().count(), 1)
@@ -25,3 +26,4 @@ class BoardTestCase(TestCase):
 
         after_board_count = Board.objects.all().count()
         self.assertTrue(after_board_count == before_board_count)
+        

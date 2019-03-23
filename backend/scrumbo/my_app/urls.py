@@ -14,13 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+from django.urls import path, re_path, include
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-from scrumbo.views import *
+from scrumbo import views
+from rest_framework import routers
+
+
+router = routers.DefaultRouter()
+router.register(r'boards', views.BoardViewSet)
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^get_boards/', get_boards),
-    url(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    re_path(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
 ]
