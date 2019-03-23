@@ -21,6 +21,6 @@ from scrumbo.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^getData/', get_data),
+    url(r'^get_boards/', get_boards),
     url(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
 ]

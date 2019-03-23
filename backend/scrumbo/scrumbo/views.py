@@ -7,7 +7,7 @@ from scrumbo.serializers import ExampleModelSerializer
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def get_data(request):
+def get_boards(request):
 	data = Board.objects.all()
 	if request.method == 'GET':
 		serializer = ExampleModelSerializer(data, many=True)

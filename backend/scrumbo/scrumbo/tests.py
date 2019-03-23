@@ -7,8 +7,12 @@ from scrumbo.constants import TEST_BOARD_NAME
 class BoardTestCase(TestCase):
 
     def setUp(self):
-        test_board = Board.objects.create(name=TEST_BOARD_NAME)
+        return
         
+    def test_create_a_board(self):
+        Board.objects.create(name=TEST_BOARD_NAME)
+        self.assertTrue(Board.objects.all().count(), 1)
+
 
     def test_board_cannot_have_duplicate_name(self):
         before_board_count = Board.objects.all().count()
@@ -20,5 +24,4 @@ class BoardTestCase(TestCase):
             pass
 
         after_board_count = Board.objects.all().count()
-
         self.assertTrue(after_board_count == before_board_count)

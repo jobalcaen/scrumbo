@@ -5,5 +5,5 @@ class Board(models.Model):
 
 class Note:
 	body = models.CharField(max_length=200)
-	board= manufacturer = models.ForeignKey(Board, on_delete=models.CASCADE)
+	board = manufacturer = models.ForeignKey(Board, on_delete=models.CASCADE)
 

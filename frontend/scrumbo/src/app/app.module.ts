@@ -15,7 +15,7 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RouterModule,
     HttpClientModule
   ],
   providers: [],
