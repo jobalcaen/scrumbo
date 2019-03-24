@@ -1,10 +1,15 @@
 from django.test import TestCase
 from scrumbo.models import Board
+from rest_framework.test import APIRequestFactory
+from rest_framework.reverse import reverse
 from scrumbo.constants import TEST_BOARD_NAME
+import io
+from rest_framework.parsers import JSONParser
+from scrumbo.serializers import BoardModelSerializer
 
 # Create your tests here.
 
-class BoardTestCase(TestCase):
+class BoardTest(TestCase):
     """ unit tests for Board model """
 
     def setUp(self):
@@ -26,4 +31,17 @@ class BoardTestCase(TestCase):
 
         after_board_count = Board.objects.all().count()
         self.assertTrue(after_board_count == before_board_count)
-        
+
+
+class BoardAPITest(TestCase):
+    def test_can_get_boards_using_rest(self):
+
+        Board.objects.create(name=TEST_BOARD_NAME)
+        Board.objects.create(name=TEST_BOARD_NAME+"a")
+
+        response = self.client.get(reverse('boards-list'))
+
+        serializer = BoardModelSerializer(data=response)
+
+        print(serializer.is_valid())
+
