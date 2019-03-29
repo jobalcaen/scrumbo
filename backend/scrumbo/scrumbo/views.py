@@ -12,15 +12,5 @@ from rest_framework.test import APIRequestFactory
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
-    serializer_class = BoardModelSerializer
-
-
-# @csrf_exempt
-# def get_board(request):
-#     data = Board.objects.all()
-#     if request.method == 'GET':
-#         serializer = BoardModelSerializer(data, many=True)
-#         return JsonResponse(serializer.data, safe=False)
-
-    # elif request.method == 'POST':
+    serializer_class = BoardModelSerializer    
 

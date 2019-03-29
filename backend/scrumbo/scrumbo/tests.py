@@ -48,4 +48,13 @@ class BoardAPITest(TestCase):
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, 200)
 
+    def test_can_post_board_using_rest(self):
+        c = Client()
+        boards_count = Board.objects.count()
+        self.assertEqual(boards_count, 0)
 
+        response = c.post(reverse('boards-list'), {"name": TEST_BOARD_NAME})
+        self.assertEqual(response.status_code, 201)
+        
+        boards_count = Board.objects.count()
+        self.assertEqual(boards_count, 1)

@@ -4,4 +4,4 @@ from scrumbo.models import Board
 class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Board
-        fields = ('name', )
+        fields = ('id', 'name',)
