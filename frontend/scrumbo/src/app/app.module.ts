@@ -6,6 +6,9 @@ import { ShowDataComponent } from './show-data/show-data.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { NewBoardComponent } from './new-board/new-board.component';
 import { AppRoutingModule } from './app-routing.module'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { MatButtonModule } from '@angular/material';
+
 
 
 @NgModule({
@@ -18,7 +21,9 @@ import { AppRoutingModule } from './app-routing.module'
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
