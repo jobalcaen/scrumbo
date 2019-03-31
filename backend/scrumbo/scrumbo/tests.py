@@ -44,7 +44,7 @@ class BoardAPITest(TestCase):
         Board.objects.create(name=TEST_BOARD_NAME+"a")
         boards = Board.objects.all()
         serializer = BoardModelSerializer(boards, many=True)
-        response = c.get(reverse('boards-list'))
+        response = c.get(reverse('board-list'))
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, 200)
 
@@ -53,7 +53,7 @@ class BoardAPITest(TestCase):
         boards_count = Board.objects.count()
         self.assertEqual(boards_count, 0)
 
-        response = c.post(reverse('boards-list'), {"name": TEST_BOARD_NAME})
+        response = c.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
         self.assertEqual(response.status_code, 201)
         
         boards_count = Board.objects.count()
