@@ -7,3 +7,4 @@ backend/db.sqlite3
 backend/my_app/__pycache__/
 backend/scrumbo/__pycache__/
 backend/scrumbo/migrations/__pycache__/
+backend/scrumbo/static/scrumbo/
