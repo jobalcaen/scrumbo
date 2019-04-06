@@ -1,0 +1,9 @@
+.DS_Store
+backend/.DS_Store
+frontend/node_modules/
+
+backend/.env
+backend/db.sqlite3
+backend/my_app/__pycache__/
+backend/scrumbo/__pycache__/
+backend/scrumbo/migrations/__pycache__/
