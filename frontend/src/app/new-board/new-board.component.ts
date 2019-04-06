@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BoardService } from '../board.service';
+import { BoardService } from '../service/board.service';
+import { NewBoard } from '../models/new-board.model';
 
 @Component({
   selector: 'app-new-board',
@@ -14,9 +15,13 @@ export class NewBoardComponent {
   boards: string[] =[]
   constructor(private boardService: BoardService) {}
 
+   
   createBoard(): void {
-    console.log("board name: "+this.boardName)
-    this.boardService.addBoard(this.boardName)
+
+    let newBoard: NewBoard = { name: this.boardName  }
+
+    console.log("board name: "+newBoard.name)
+    this.boardService.addBoard(newBoard)
       .subscribe(board => console.log(board), error => console.log(error) )
     this.boardName = ''
   }

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
@@ -20,12 +21,14 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     AppRoutingModule,
-    BrowserModule,
-    HttpClientModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
     MatButtonModule,
-    MaterialModule,
-    FormsModule
+    MaterialModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
