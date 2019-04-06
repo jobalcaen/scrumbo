@@ -14,15 +14,11 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ShowDataComponent,
-    PagenotfoundComponent,
-    NewBoardComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MaterialModule,

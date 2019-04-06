@@ -23,56 +23,6 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
-/***/ "./src/app/app-routing.module.ts":
-/*!***************************************!*\
-  !*** ./src/app/app-routing.module.ts ***!
-  \***************************************/
-/*! exports provided: AppRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _new_board_new_board_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./new-board/new-board.component */ "./src/app/new-board/new-board.component.ts");
-/* harmony import */ var _pagenotfound_pagenotfound_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pagenotfound/pagenotfound.component */ "./src/app/pagenotfound/pagenotfound.component.ts");
-
-
-
-
-
-var appRoutes = [
-    {
-        path: "",
-        component: _new_board_new_board_component__WEBPACK_IMPORTED_MODULE_3__["NewBoardComponent"],
-    },
-    {
-        path: "**",
-        component: _pagenotfound_pagenotfound_component__WEBPACK_IMPORTED_MODULE_4__["PagenotfoundComponent"],
-    }
-];
-var AppRoutingModule = /** @class */ (function () {
-    function AppRoutingModule() {
-    }
-    AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            imports: [
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(appRoutes)
-            ],
-            exports: [
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]
-            ]
-        })
-    ], AppRoutingModule);
-    return AppRoutingModule;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/app.component.html":
 /*!************************************!*\
   !*** ./src/app/app.component.html ***!
@@ -80,7 +30,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div>\n  <h1>\n    Welcome to {{ title }}\n  </h1>\n\n  <mat-form-field class=\"example-form-field\">\n    <input matInput type=\"text\" placeholder=\"Scrumbo board name\" [(ngModel)]=\"boardName\">\n    <button mat-button *ngIf=\"boardName\" matSuffix mat-icon-button aria-label=\"Clear\" (click)=\"boardName=''\">\n      <mat-icon>close</mat-icon>\n    </button>\n  </mat-form-field>\n\n  <button mat-raised-button *ngIf=\"boardName\" (click)=\"createBoard()\">Submit</button>\n\n\n</div>\n\n\n<router-outlet></router-outlet>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div>\n  <h1>\n    Welcome to {{ title }}\n  </h1>\n\n  <mat-form-field class=\"example-form-field\">\n    <input matInput type=\"text\" placeholder=\"Scrumbo board name\" [(ngModel)]=\"boardName\">\n    <button mat-button *ngIf=\"boardName\" matSuffix mat-icon-button aria-label=\"Clear\" (click)=\"boardName=''\">\n      <mat-icon>close</mat-icon>\n    </button>\n  </mat-form-field>\n\n  <button mat-raised-button *ngIf=\"boardName\" (click)=\"createBoard()\">Submit</button>\n\n\n</div>\n\n\n"
 
 /***/ }),
 
@@ -154,18 +104,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _show_data_show_data_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./show-data/show-data.component */ "./src/app/show-data/show-data.component.ts");
-/* harmony import */ var _pagenotfound_pagenotfound_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pagenotfound/pagenotfound.component */ "./src/app/pagenotfound/pagenotfound.component.ts");
-/* harmony import */ var _new_board_new_board_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./new-board/new-board.component */ "./src/app/new-board/new-board.component.ts");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _material_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./material.module */ "./src/app/material.module.ts");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-
-
-
-
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _material_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./material.module */ "./src/app/material.module.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 
 
 
@@ -181,19 +123,15 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
-                _show_data_show_data_component__WEBPACK_IMPORTED_MODULE_5__["ShowDataComponent"],
-                _pagenotfound_pagenotfound_component__WEBPACK_IMPORTED_MODULE_6__["PagenotfoundComponent"],
-                _new_board_new_board_component__WEBPACK_IMPORTED_MODULE_7__["NewBoardComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"],
-                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_9__["BrowserAnimationsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatButtonModule"],
-                _material_module__WEBPACK_IMPORTED_MODULE_11__["MaterialModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormsModule"]
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__["BrowserAnimationsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatButtonModule"],
+                _material_module__WEBPACK_IMPORTED_MODULE_7__["MaterialModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_8__["FormsModule"]
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -313,174 +251,6 @@ var MaterialModule = /** @class */ (function () {
         })
     ], MaterialModule);
     return MaterialModule;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/new-board/new-board.component.html":
-/*!****************************************************!*\
-  !*** ./src/app/new-board/new-board.component.html ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n\nNEW BOARD!!!!! WEF\n</p>\n"
-
-/***/ }),
-
-/***/ "./src/app/new-board/new-board.component.scss":
-/*!****************************************************!*\
-  !*** ./src/app/new-board/new-board.component.scss ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL25ldy1ib2FyZC9uZXctYm9hcmQuY29tcG9uZW50LnNjc3MifQ== */"
-
-/***/ }),
-
-/***/ "./src/app/new-board/new-board.component.ts":
-/*!**************************************************!*\
-  !*** ./src/app/new-board/new-board.component.ts ***!
-  \**************************************************/
-/*! exports provided: NewBoardComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewBoardComponent", function() { return NewBoardComponent; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-
-
-var NewBoardComponent = /** @class */ (function () {
-    function NewBoardComponent() {
-    }
-    NewBoardComponent.prototype.ngOnInit = function () {
-    };
-    NewBoardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'app-new-board',
-            template: __webpack_require__(/*! ./new-board.component.html */ "./src/app/new-board/new-board.component.html"),
-            styles: [__webpack_require__(/*! ./new-board.component.scss */ "./src/app/new-board/new-board.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-    ], NewBoardComponent);
-    return NewBoardComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/pagenotfound/pagenotfound.component.html":
-/*!**********************************************************!*\
-  !*** ./src/app/pagenotfound/pagenotfound.component.html ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n  pagenotfound works!\n</p>\n"
-
-/***/ }),
-
-/***/ "./src/app/pagenotfound/pagenotfound.component.sass":
-/*!**********************************************************!*\
-  !*** ./src/app/pagenotfound/pagenotfound.component.sass ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3BhZ2Vub3Rmb3VuZC9wYWdlbm90Zm91bmQuY29tcG9uZW50LnNhc3MifQ== */"
-
-/***/ }),
-
-/***/ "./src/app/pagenotfound/pagenotfound.component.ts":
-/*!********************************************************!*\
-  !*** ./src/app/pagenotfound/pagenotfound.component.ts ***!
-  \********************************************************/
-/*! exports provided: PagenotfoundComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagenotfoundComponent", function() { return PagenotfoundComponent; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-
-
-var PagenotfoundComponent = /** @class */ (function () {
-    function PagenotfoundComponent() {
-    }
-    PagenotfoundComponent.prototype.ngOnInit = function () {
-    };
-    PagenotfoundComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'app-pagenotfound',
-            template: __webpack_require__(/*! ./pagenotfound.component.html */ "./src/app/pagenotfound/pagenotfound.component.html"),
-            styles: [__webpack_require__(/*! ./pagenotfound.component.sass */ "./src/app/pagenotfound/pagenotfound.component.sass")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-    ], PagenotfoundComponent);
-    return PagenotfoundComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/show-data/show-data.component.html":
-/*!****************************************************!*\
-  !*** ./src/app/show-data/show-data.component.html ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n  show-data works!\n</p>\n"
-
-/***/ }),
-
-/***/ "./src/app/show-data/show-data.component.sass":
-/*!****************************************************!*\
-  !*** ./src/app/show-data/show-data.component.sass ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3Nob3ctZGF0YS9zaG93LWRhdGEuY29tcG9uZW50LnNhc3MifQ== */"
-
-/***/ }),
-
-/***/ "./src/app/show-data/show-data.component.ts":
-/*!**************************************************!*\
-  !*** ./src/app/show-data/show-data.component.ts ***!
-  \**************************************************/
-/*! exports provided: ShowDataComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShowDataComponent", function() { return ShowDataComponent; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-
-
-var ShowDataComponent = /** @class */ (function () {
-    function ShowDataComponent() {
-    }
-    ShowDataComponent.prototype.ngOnInit = function () {
-    };
-    ShowDataComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'app-show-data',
-            template: __webpack_require__(/*! ./show-data.component.html */ "./src/app/show-data/show-data.component.html"),
-            styles: [__webpack_require__(/*! ./show-data.component.sass */ "./src/app/show-data/show-data.component.sass")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-    ], ShowDataComponent);
-    return ShowDataComponent;
 }());
 
 

@@ -12,8 +12,16 @@
 <link rel="stylesheet" href="{% static 'scrumbo/styles.css' %}"></head>
 <body>
   <app-root><img src="/static/assets/images/loading/load.gif" alt="Loading..." style="position:fixed; top:50%; left:50%; transform: translate(-50%, -50%);"></app-root>
-	<script type="text/javascript" src="{% static 'scrumbo/runtime.js' %}"></script>
-	<script type="text/javascript" src="{% static 'scrumbo/polyfills.js' %}"></script>
-	<script type="text/javascript" src="{% static 'scrumbo/main.js' %}"></script>
+  <script src="{% static 'scrumbo/runtime.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scrumbo/es2015-polyfills.js' %}" nomodule></script>
+  <script type="text/javascript" src="{% static 'scrumbo/polyfills.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scrumbo/styles.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scrumbo/vendor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scrumbo/main.js' %}"></script>
+
+	
+  
+
+
 </body>
 </html>
