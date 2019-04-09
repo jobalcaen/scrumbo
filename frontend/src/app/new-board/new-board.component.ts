@@ -11,16 +11,12 @@ export class NewBoardComponent {
 
   title = 'Scrumbo';
   boardName = '';
+  newBoard: NewBoard;
 
-  boards: string[] =[]
-  constructor(private boardService: BoardService) {}
+  constructor(private boardService: BoardService) {}  
+  createBoard(newBoard): void {
 
-   
-  createBoard(): void {
-
-    let newBoard: NewBoard = { name: this.boardName  }
-
-    console.log("board name: "+newBoard.name)
+    newBoard = { name: this.boardName  }
     this.boardService.addBoard(newBoard)
       .subscribe(board => console.log(board), error => console.log(error) )
     this.boardName = ''
