@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
 import { NewBoard } from '../models/new-board.model';
 
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-  })
-};
+
 
 @Injectable({
   providedIn: 'root'
@@ -39,12 +35,14 @@ export class BoardService {
       'Something bad happened; please try again later.');
   };
 
-  addBoard(board: NewBoard): Observable<NewBoard> {
-
-    let boardJson = JSON.stringify(board)
-    console.log('board json' + boardJson)
-    console.log("board service triggered with: "+board)
-    return this.http.post<NewBoard>(this.boardApiUrl, boardJson , httpOptions)
+  addBoard(board: NewBoard): Observable<HttpResponse<NewBoard>> {
+    const boardJson = JSON.stringify(board)
+    return this.http.post<NewBoard>(this.boardApiUrl, boardJson, {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+      }),
+      observe: 'response'
+    })
       .pipe(
         catchError(this.handleError)
       )

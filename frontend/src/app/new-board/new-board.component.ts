@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from '../service/board.service';
 import { NewBoard } from '../models/new-board.model';
+import { Observable} from 'rxjs'; 
+import { HttpResponse } from '@angular/common/http';
 
+enum httpStatuses {
+  OK = 201,
+  BAD_REQUEST = 400
+}
 @Component({
   selector: 'app-new-board',
   templateUrl: './new-board.component.html',
@@ -14,12 +20,25 @@ export class NewBoardComponent {
   newBoard: NewBoard;
 
   constructor(private boardService: BoardService) {}  
-  createBoard(newBoard): void {
+  createBoard(newBoard) {
 
     newBoard = { name: this.boardName  }
     this.boardService.addBoard(newBoard)
-      .subscribe(board => console.log(board), error => console.log(error) )
-    this.boardName = ''
+      .subscribe(resp => this.evaluateCreateBoardResponse(resp), error => console.log(error) )
+  }
+
+  evaluateCreateBoardResponse(response: HttpResponse<NewBoard>) {
+    console.log("Evaluating board")
+
+    switch(response.status) {
+      case httpStatuses.OK:
+        console.log("OK!")
+        break
+      case httpStatuses.BAD_REQUEST:
+        console.log("BAD REQUEST")
+        break
+    }
+
   }
 
 }
