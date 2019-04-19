@@ -7,6 +7,9 @@ import io
 from rest_framework.parsers import JSONParser
 from scrumbo.serializers import BoardModelSerializer
 from scrumbo.views import BoardViewSet
+from rest_framework.test import APIRequestFactory
+from rest_framework.request import Request
+
 
 # Create your tests here.
 
@@ -35,26 +38,36 @@ class BoardTest(TestCase):
 
 
 class BoardAPITest(TestCase):
+    factory = APIRequestFactory()
+    request = factory.get('/')
+    serializer_context = {
+        'request': Request(request),
+    }
+
     def setUp(self):
         pass
 
     def test_can_get_boards_using_rest(self):
-        c = Client()
+        
         Board.objects.create(name=TEST_BOARD_NAME)
         Board.objects.create(name=TEST_BOARD_NAME+"a")
         boards = Board.objects.all()
-        serializer = BoardModelSerializer(boards, many=True)
-        response = c.get(reverse('board-list'))
+        serializer = BoardModelSerializer(boards, many=True, context={'request': self.request})
+        response = self.client.get(reverse('board-list'), format='json')
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, 200)
 
     def test_can_post_board_using_rest(self):
-        c = Client()
         boards_count = Board.objects.count()
         self.assertEqual(boards_count, 0)
-
-        response = c.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
+        response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
         self.assertEqual(response.status_code, 201)
-        
+
         boards_count = Board.objects.count()
         self.assertEqual(boards_count, 1)
+
+
+    def test_url_friendly_name_gets_generated(self):
+        sample_url_friendly_name = BoardModelSerializer.make_url_friendly_name(self, TEST_BOARD_NAME)
+        response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
+        self.assertEqual(sample_url_friendly_name, response.data['url_friendly_name'])

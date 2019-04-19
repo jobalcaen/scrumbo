@@ -1,1 +1,1 @@
-TEST_BOARD_NAME = " beanerino"
+TEST_BOARD_NAME = "le chat noir"
