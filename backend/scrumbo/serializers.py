@@ -10,14 +10,13 @@ class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
     """
     Overide the default 'url_friendly_name' validation
     """
-    def validate_url_friendly_name(self, value):
-        if re.match(r"[^a-zA-Z0-9\s]", value):
+    def validate_name(self, value):
+        if re.search(r"[^\w\s]", value):
             raise serializers.ValidationError("Only alpha numberic characters and white spaces alowed in board name")
         return value
 
     def make_url_friendly_name(self, name):
-        print(re.sub(r'\s','-',name.lower()))
-        return re.sub(r'\s','-',name.lower()) 
+        return re.sub(r'\s', '-', name.lower())
 
     def create(self, validated_data):
         print(validated_data)
@@ -28,4 +27,3 @@ class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
         )
         board.save()
         return board
-

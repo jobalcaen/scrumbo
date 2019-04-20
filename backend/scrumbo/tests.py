@@ -34,8 +34,7 @@ class BoardTest(TestCase):
             pass
 
         after_board_count = Board.objects.all().count()
-        self.assertTrue(after_board_count == before_board_count)
-
+        self.assertTrue(after_board_count == before_board_count)       
 
 class BoardAPITest(TestCase):
     factory = APIRequestFactory()
@@ -47,8 +46,7 @@ class BoardAPITest(TestCase):
     def setUp(self):
         pass
 
-    def test_can_get_boards_using_rest(self):
-        
+    def test_can_get_boards_using_rest(self):      
         Board.objects.create(name=TEST_BOARD_NAME)
         Board.objects.create(name=TEST_BOARD_NAME+"a")
         boards = Board.objects.all()
@@ -71,3 +69,12 @@ class BoardAPITest(TestCase):
         sample_url_friendly_name = BoardModelSerializer.make_url_friendly_name(self, TEST_BOARD_NAME)
         response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
         self.assertEqual(sample_url_friendly_name, response.data['url_friendly_name'])
+
+    def test_board_name_alphanumeric_characters_only(self):
+        response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME+'$'})
+        self.assertEqual(response.status_code, 400)
+
+    def test_unique_board_name(self):
+        self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
+        response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
+        self.assertEqual(response.status_code, 400)
