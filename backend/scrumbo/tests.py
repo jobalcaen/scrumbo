@@ -5,8 +5,8 @@ from rest_framework.reverse import reverse
 from scrumbo.constants import TEST_BOARD_NAME
 import io
 from rest_framework.parsers import JSONParser
-from scrumbo.serializers import BoardModelSerializer
-from scrumbo.views import BoardViewSet
+from scrumbo.serializers import BoardSerializer
+from scrumbo.views import BoardListViewSet
 from rest_framework.test import APIRequestFactory
 from rest_framework.request import Request
 
@@ -50,7 +50,7 @@ class BoardAPITest(TestCase):
         Board.objects.create(name=TEST_BOARD_NAME)
         Board.objects.create(name=TEST_BOARD_NAME+"a")
         boards = Board.objects.all()
-        serializer = BoardModelSerializer(boards, many=True, context={'request': self.request})
+        serializer = BoardSerializer(boards, many=True, context={'request': self.request})
         response = self.client.get(reverse('board-list'), format='json')
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, 200)
@@ -66,7 +66,7 @@ class BoardAPITest(TestCase):
 
 
     def test_url_friendly_name_gets_generated(self):
-        sample_url_friendly_name = BoardModelSerializer.make_url_friendly_name(self, TEST_BOARD_NAME)
+        sample_url_friendly_name = BoardSerializer.make_url_friendly_name(self, TEST_BOARD_NAME)
         response = self.client.post(reverse('board-list'), {"name": TEST_BOARD_NAME})
         self.assertEqual(sample_url_friendly_name, response.data['url_friendly_name'])
 

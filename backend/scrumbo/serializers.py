@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from scrumbo.models import Board
+from scrumbo.models import Board, Note
 import re
 
-class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
+class BoardSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Board
         fields = ('id', 'name', 'url', 'url_friendly_name')
@@ -27,3 +27,18 @@ class BoardModelSerializer(serializers.HyperlinkedModelSerializer):
         )
         board.save()
         return board
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = ('id', 'body')
+
+class BoardRetreiveSerializer(serializers.HyperlinkedModelSerializer):
+    notes = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Board
+        fields = ('id', 'name', 'url', 'url_friendly_name', 'notes')
+
+
+

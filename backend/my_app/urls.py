@@ -22,7 +22,7 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'boards', views.BoardViewSet)
+router.register(r'boards', views.BoardListViewSet)
 
 
 urlpatterns = [

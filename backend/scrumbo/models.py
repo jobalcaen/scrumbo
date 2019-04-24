@@ -12,4 +12,4 @@ class Board(models.Model):
 class Note(models.Model):
     """Model for a single note that goes in a board"""
     body = models.CharField(max_length=200)
-    board_id = models.ForeignKey(Board, on_delete=models.CASCADE)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='notes', default=1)
