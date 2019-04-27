@@ -18,15 +18,14 @@ from django.urls import path, re_path, include
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 from scrumbo import views
-from rest_framework import routers
-
-
-router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'boards', views.BoardListViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/boards/', views.BoardListView.as_view()),
+    path('api/boards/<int:board_id>/', views.BoardView.as_view()),
+    path('api/boards/<int:board_id>/notes/', views.NoteListView.as_view()),
+    path('api/boards/<int:board_id>/notes/<int:note_id>', views.NoteView.as_view()),
+
     re_path(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
 ]

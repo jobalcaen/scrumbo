@@ -6,7 +6,7 @@ from scrumbo.constants import TEST_BOARD_NAME
 import io
 from rest_framework.parsers import JSONParser
 from scrumbo.serializers import BoardSerializer
-from scrumbo.views import BoardListViewSet
+from scrumbo.views import BoardView
 from rest_framework.test import APIRequestFactory
 from rest_framework.request import Request
 

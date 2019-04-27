@@ -2,10 +2,10 @@ from rest_framework import serializers
 from scrumbo.models import Board, Note
 import re
 
-class BoardSerializer(serializers.HyperlinkedModelSerializer):
+class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ('id', 'name', 'url', 'url_friendly_name')
+        fields = ('id', 'name', 'url_friendly_name')
 
     """
     Overide the default 'url_friendly_name' validation
@@ -31,14 +31,15 @@ class BoardSerializer(serializers.HyperlinkedModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ('id', 'body')
+        fields = ('id', 'body', 'board')
 
-class BoardRetreiveSerializer(serializers.HyperlinkedModelSerializer):
-    notes = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        model = Board
-        fields = ('id', 'name', 'url', 'url_friendly_name', 'notes')
+    def create(self, validated_data):
+        note = Note(
+            body=validated_data['body'],
+            board=self.context['board']
+        )
+        note.save()
+        return note
 
 
 
