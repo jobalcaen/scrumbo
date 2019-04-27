@@ -50,7 +50,6 @@ class BoardListView(generics.ListCreateAPIView):
     serializer_class = BoardSerializer
 
     def create(self, request, *args, **kwargs):
-        request._request.POST = request._request.POST.copy()
         serializer = BoardSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
