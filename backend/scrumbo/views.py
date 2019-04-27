@@ -44,16 +44,13 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
-
-  
-        
+       
 class BoardListView(generics.ListCreateAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
 
     def create(self, request, *args, **kwargs):
         request._request.POST = request._request.POST.copy()
-        request.data['url_friendly_name'] = 'PLACEHOLDER'
         serializer = BoardSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

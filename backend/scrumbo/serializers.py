@@ -20,10 +20,9 @@ class BoardSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print(validated_data)
-        url_friendly_name = self.make_url_friendly_name(validated_data.get('name'))
         board = Board(
             name=validated_data['name'],
-            url_friendly_name=url_friendly_name
+            url_friendly_name=self.make_url_friendly_name(validated_data['name'])
         )
         board.save()
         return board
