@@ -59,6 +59,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'scrumbo.utils.exception_handler.custom_exception_handler'
+}
+
 ROOT_URLCONF = 'my_app.urls'
 
 TEMPLATES = [

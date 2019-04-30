@@ -1,2 +1,3 @@
-TEST_BOARD_NAME_1 = "le chat noir"
-TEST_BOARD_NAME_2 = "bla noir"
+TEST_BOARD_NAME_1 = 'le chat noir'
+TEST_BOARD_NAME_2 = 'bla noir'
+BOARDS_LIST_URL = '/api/boards/'

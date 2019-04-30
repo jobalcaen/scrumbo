@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework import generics
 from django.http import Http404
 
+
 from scrumbo.models import Board, Note
 from scrumbo.serializers import BoardSerializer, NoteSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -55,6 +56,7 @@ class BoardListView(generics.ListCreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            
   
     def perform_create(self, serializer):
         serializer.save()
