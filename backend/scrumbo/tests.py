@@ -117,15 +117,18 @@ class NoteAPITest(TestCase):
         response = self.client.post(url, {"body": NOTE_BODY_1})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_board_deletion_also_deletes_notes:
-         board = Board.objects.create(
+    def test_board_deletion_also_deletes_notes(self):
+        board = Board.objects.create(
             name=TEST_BOARD_NAME_1,
             url_friendly_name=BoardSerializer.make_url_friendly_name(self, TEST_BOARD_NAME_1)
         )
         self.assertTrue(Board.objects.all().count(), 1)
+        
         url = url_builder(board)
         response = self.client.post(url, {"body": NOTE_BODY_1})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        note = Board.objects.note_set()
-
-        response = self.client.post(url+getattr(board, 'id'), )
+        
+        self.assertEqual(board.note_set.count(), 1)
+        url = BOARDS_LIST_URL+str(getattr(board, 'id'))+'/'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
