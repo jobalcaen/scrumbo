@@ -20,9 +20,6 @@ class BoardSerializer(serializers.ModelSerializer):
         name = CharField(max_length=30, validators=[queryset_count_is_zero])
         fields = ('id', 'name', 'url_friendly_name')
 
-    """
-    Overide the default 'url_friendly_name' validation
-    """
     def validate_name(self, value):
         if re.search(r"[^\w\s]", value):
             raise InvalidBoardNameException

@@ -1,3 +1,6 @@
 TEST_BOARD_NAME_1 = 'le chat noir'
 TEST_BOARD_NAME_2 = 'bla noir'
 BOARDS_LIST_URL = '/api/boards/'
+NOTES_LIST_URL='/notes/'
+NOTE_BODY_1 = 'This is a shitty note!'
+NOTE_BODY_2 = 'wow another shitty note!@D!@D!@~~~~'
