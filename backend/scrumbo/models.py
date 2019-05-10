@@ -2,7 +2,7 @@ from django.db import models
 
 class Board(models.Model):
     """Model for a board"""
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
     url_friendly_name = models.CharField(max_length=30, default=None)
 
     def __str__(self):

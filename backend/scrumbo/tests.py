@@ -95,8 +95,7 @@ class BoardAPITest(TestCase):
     def test_unique_board_name(self):
         self.client.post(BOARDS_LIST_URL, {"name": TEST_BOARD_NAME_1})
         response = self.client.post(BOARDS_LIST_URL, {"name": TEST_BOARD_NAME_1})
-        # Idealy I want to return a 409 status code
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
 class NoteAPITest(TestCase):
     factory = APIRequestFactory()
@@ -104,7 +103,6 @@ class NoteAPITest(TestCase):
     serializer_context = {
         'request': Request(request),
     }
-    
 
     def test_can_create_a_note(self):
         board = Board.objects.create(

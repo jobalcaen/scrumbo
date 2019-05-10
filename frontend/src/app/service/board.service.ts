@@ -14,7 +14,7 @@ import { NewBoard } from '../models/new-board.model';
 })
 export class BoardService {
 
-  private boardApiUrl = 'http://127.0.0.1:8000/api/boards'
+  private boardApiUrl = 'http://127.0.0.1:8000/api/boards/'
 
   constructor(private http: HttpClient) { }
 
@@ -27,8 +27,9 @@ export class BoardService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+
+        `Backend returned code ${error.error['status_code']}, ` +
+        `body was: ${error.error['detail']}`);
     }
     // return an observable with a user-facing error message
     return throwError(

@@ -23,6 +23,9 @@ class BoardSerializer(serializers.ModelSerializer):
     def validate_name(self, value):
         if re.search(r"[^\w\s]", value):
             raise InvalidBoardNameException
+
+        if Board.objects.filter(name=value).exists():
+            raise UniqueBoardException
         
         return value
 

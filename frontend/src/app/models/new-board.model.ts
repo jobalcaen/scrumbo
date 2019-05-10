@@ -1,3 +1,6 @@
-export interface NewBoard {
-    name: string
+export class Board {
+
+    constructor(
+        public name: string
+    ) {}
 }

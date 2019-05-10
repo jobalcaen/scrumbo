@@ -6,7 +6,8 @@ import { HttpResponse } from '@angular/common/http';
 
 enum httpStatuses {
   OK = 201,
-  BAD_REQUEST = 400
+  BAD_REQUEST = 400,
+  BOARD_NAME_EXISTS = 409,
 }
 @Component({
   selector: 'app-new-board',
@@ -29,7 +30,7 @@ export class NewBoardComponent {
 
   evaluateCreateBoardResponse(response: HttpResponse<NewBoard>) {
     console.log("Evaluating board")
-
+    console.log(response.body)
     switch(response.status) {
       case httpStatuses.OK:
         console.log("OK!")
@@ -37,6 +38,8 @@ export class NewBoardComponent {
       case httpStatuses.BAD_REQUEST:
         console.log("BAD REQUEST")
         break
+      case httpStatuses.BOARD_NAME_EXISTS:
+        console.log("board name exists!")
     }
 
   }
