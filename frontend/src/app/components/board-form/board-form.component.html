@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit()">
+
+  <label>
+    Name:
+    <input type="text" [formControl]="name" required maxlength="30" >
+  </label>
+
+  <span *ngIf="name.invalid && name.errors.pattern">
+    Alpha numberic values only
+  </span>
+
+<button type="submit" [disabled]="!name.valid">Submit</button>
+
+
+</form>
