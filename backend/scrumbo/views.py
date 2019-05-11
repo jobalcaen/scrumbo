@@ -50,6 +50,17 @@ class BoardListView(generics.ListCreateAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
 
+    def get_queryset(self):
+        """
+        optionally allow to search for boards by board name
+        """
+        queryset = Board.objects.all()
+        board_name = self.request.query_params.get('name', None)
+        if board_name is not None:
+            print('HEWRE')
+            queryset = queryset.filter(name=board_name)
+        return queryset
+
     def create(self, request, *args, **kwargs):
         serializer = BoardSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
