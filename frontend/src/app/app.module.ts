@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { ShowDataComponent } from './show-data/show-data.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import { NewBoardComponent } from './new-board/new-board.component';
 import { AppRoutingModule } from './app-routing.module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatButtonModule } from '@angular/material';
@@ -13,13 +12,18 @@ import {MaterialModule} from './material.module';
 import { FormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { BoardFormComponent } from './components/board-form/board-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HomePageComponent } from './components/home-page/home-page.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewBoardComponent,
-    PagenotfoundComponent
+    BoardFormComponent,
+    PagenotfoundComponent,
+    HomePageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -31,7 +35,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonModule,
     MaterialModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
