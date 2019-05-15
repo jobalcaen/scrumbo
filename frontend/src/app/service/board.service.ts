@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
 import { NewBoard } from '../models/new-board.model';
 
@@ -47,6 +47,23 @@ export class BoardService {
       .pipe(
         catchError(this.handleError)
       )
+  }
+
+  // checkBoardNameNotTaken(boardName) {
+
+  //   return this.http.get(this.boardApiUrl+'?name='+boardName)
+  //       .pipe(
+  //         .map(
+  //           res => console.log(res)
+  //         )
+  //       )
+      
+  // }
+
+  checkEmailNotTaken(boardName: string) {
+    console.log('checkEmailNotTaken: ',boardName)
+    return this.http
+      .get(this.boardApiUrl+'?name='+boardName)
   }
 
 }
