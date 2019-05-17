@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
+import { catchError, retry, map, toArray } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
 import { NewBoard } from '../models/new-board.model';
 
@@ -19,7 +19,6 @@ export class BoardService {
   constructor(private http: HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
-    console.log("ERROR")
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
@@ -49,21 +48,13 @@ export class BoardService {
       )
   }
 
-  // checkBoardNameNotTaken(boardName) {
-
-  //   return this.http.get(this.boardApiUrl+'?name='+boardName)
-  //       .pipe(
-  //         .map(
-  //           res => console.log(res)
-  //         )
-  //       )
-      
-  // }
-
   checkEmailNotTaken(boardName: string) {
     console.log('checkEmailNotTaken: ',boardName)
     return this.http
-      .get(this.boardApiUrl+'?name='+boardName)
+      .get<[]>(this.boardApiUrl+'?name='+boardName).pipe(
+        map(boardAray => !!boardAray.length),
+        catchError(this.handleError)
+      )
   }
 
 }

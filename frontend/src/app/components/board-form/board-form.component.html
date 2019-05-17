@@ -9,6 +9,8 @@
     Alpha numberic values only
   </span>
 
+  <span *ngIf="name.invalid && name.errors.boardNameTaken">This board name has already been taken</span>
+
 <button type="submit" [disabled]="!name.valid">Submit</button>
 
 
