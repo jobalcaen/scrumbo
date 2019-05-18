@@ -32,6 +32,4 @@ urlpatterns = [
 
     path('api/boards/<int:board_id>/notes/<int:note_id>', views.NoteView.as_view()),
     path('api/boards/<slug:board_url>/notes/<int:note_id>', views.NoteListView.as_view()),
-
-    re_path(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
 ]

@@ -4,7 +4,7 @@ import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/ht
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map, toArray } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
-import { NewBoard } from '../models/models';
+import { NewBoard, Board, BoardName } from '../models/models';
 
 
 
@@ -35,20 +35,25 @@ export class BoardService {
       'Something bad happened; please try again later.');
   };
 
-  addBoard(board: NewBoard): Observable<HttpResponse<NewBoard>> {
+  addBoard(board: BoardName): Observable<Board> {
     const boardJson = JSON.stringify(board)
-    return this.http.post<NewBoard>(this.boardApiUrl, boardJson, {
+    return this.http.post<Board>(this.boardApiUrl, boardJson, {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-      }),
-      observe: 'response'
+      })
     })
       .pipe(
         catchError(this.handleError)
       )
   }
 
-  checkEmailNotTaken(boardName: string) {
+  getBoard(boardUrl: string): Observable<Board> {
+      return this.http.get<Board>(this.boardApiUrl+boardUrl+'/').pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  checkNameNotTaken(boardName: string) {
     console.log('checkEmailNotTaken: ',boardName)
     return this.http
       .get<[]>(this.boardApiUrl+'?name='+boardName).pipe(

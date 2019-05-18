@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { BoardService } from '../../services/board.service';
-import { NewBoard } from '../../models/models'
 import { map, catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 
@@ -16,25 +16,26 @@ export class BoardFormComponent implements OnInit {
   name = new FormControl('', [
     Validators.required,
     Validators.maxLength(30),
-    Validators.pattern('^[a-zA-Z\s]+$'),
+    Validators.pattern('^[a-zA-Z0-9\s]+$'),
   ],[(value) => this.checkBoardNameTaken(value) ])
 
   isValidBoardName = false
-  constructor( private bs: BoardService) { 
+  constructor( private bs: BoardService, private router: Router) { 
   }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    this.bs.addBoard(new NewBoard(this.name.value)).subscribe(
-      board => {console.log(board)}
-      )
+    this.bs.addBoard({'name': this.name.value}).subscribe(
+      board => {console.log(board),
+        this.router.navigate([board.url_friendly_name])
+      })
     this.name.setValue('')
   }
 
   checkBoardNameTaken(control: AbstractControl) {
-    return this.bs.checkEmailNotTaken(control.value).pipe(
+    return this.bs.checkNameNotTaken(control.value).pipe(
       tap((val) => console.log(val)),
       map(boardTaken => boardTaken ? { boardNameTaken: true } : null),
       catchError(() => null)

@@ -1,8 +1,6 @@
-export class NewBoard {
+export interface BoardName {
 
-    constructor(
-        public name: string
-    ) {}
+    name: string
 }
 
 export interface Board {

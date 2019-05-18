@@ -15,7 +15,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { BoardFormComponent } from './components/board-form/board-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
-
+import { BoardComponent } from './components/board/board.component';
 
 
 @NgModule({
@@ -23,7 +23,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
     AppComponent,
     BoardFormComponent,
     PagenotfoundComponent,
-    HomePageComponent
+    HomePageComponent,
+    BoardComponent
   ],
   imports: [
     AppRoutingModule,
