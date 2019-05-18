@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { BoardService } from '../../service/board.service';
-import { NewBoard } from '../../models/new-board.model'
+import { BoardService } from '../../services/board.service';
+import { NewBoard } from '../../models/models'
 import { map, catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class BoardFormComponent implements OnInit {
   name = new FormControl('', [
     Validators.required,
     Validators.maxLength(30),
-    Validators.pattern('^[a-z\sA-Z\s]+$'),
+    Validators.pattern('^[a-zA-Z\s]+$'),
   ],[(value) => this.checkBoardNameTaken(value) ])
 
   isValidBoardName = false

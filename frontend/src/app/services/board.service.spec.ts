@@ -3,7 +3,7 @@ import { BoardService } from './board.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { NewBoard } from '../models/new-board.model';
+import { NewBoard } from '../models/models';
 const testUrl = '/api/boards';
 
 const httpOptions = {

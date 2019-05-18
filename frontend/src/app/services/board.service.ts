@@ -4,7 +4,7 @@ import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/ht
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map, toArray } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
-import { NewBoard } from '../models/new-board.model';
+import { NewBoard } from '../models/models';
 
 
 

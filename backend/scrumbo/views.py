@@ -21,12 +21,18 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 class NoteListView(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
 
+    def board_getter(self):
+        if 'board_url' in self.kwargs:
+            return Board.objects.get(url_friendly_name=self.kwargs['board_url'])
+
+        elif 'board_id' in self.kwargs:
+            return Board.objects.get(pk=self.kwargs['board_id'])
+
     def get_queryset(self):
-        board = Board.objects.get(pk=self.kwargs['board_id'])
-        return Note.objects.filter(board=board)
+        return Note.objects.filter(board=self.board_getter())
 
     def create(self, request, *args, **kwargs):
-        serializer = NoteSerializer(data=request.data, context={'board': Board.objects.get(pk=self.kwargs['board_id'])})
+        serializer = NoteSerializer(data=request.data, context={'board': self.board_getter()})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -41,9 +47,20 @@ class NoteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = NoteSerializer
 
 class BoardView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_url_kwarg = 'board_id'
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
+    lookup_url_kwarg = 'board_id'
+
+    def get_object(self):
+        queryset = Board.objects.all()
+        if 'board_url' in self.kwargs:
+            obj = get_object_or_404(queryset, url_friendly_name=self.kwargs['board_url'])
+            return obj
+
+        elif 'board_id' in self.kwargs:
+            obj = get_object_or_404(queryset, pk=self.kwargs['board_id'])
+            return obj    
+
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
        
 class BoardListView(generics.ListCreateAPIView):
@@ -56,9 +73,15 @@ class BoardListView(generics.ListCreateAPIView):
         """
         queryset = Board.objects.all()
         board_name = self.request.query_params.get('name', None)
+        board_url_friendly_name = self.request.query_params.get('url_name', None)
+
         if board_name is not None:
-            print('HEWRE')
             queryset = queryset.filter(name=board_name)
+
+        elif board_url_friendly_name is not None:
+            queryset = queryset.filter(name=board_name)
+
+
         return queryset
 
     def create(self, request, *args, **kwargs):

@@ -23,9 +23,15 @@ from scrumbo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/boards/', views.BoardListView.as_view()),
+
     path('api/boards/<int:board_id>/', views.BoardView.as_view()),
+    path('api/boards/<slug:board_url>/', views.BoardView.as_view()),
+
     path('api/boards/<int:board_id>/notes/', views.NoteListView.as_view()),
+    path('api/boards/<slug:board_url>/notes/', views.NoteListView.as_view()),
+
     path('api/boards/<int:board_id>/notes/<int:note_id>', views.NoteView.as_view()),
+    path('api/boards/<slug:board_url>/notes/<int:note_id>', views.NoteListView.as_view()),
 
     re_path(r'^.*', TemplateView.as_view(template_name="scrumbo/home.html"), name="home")
 ]
