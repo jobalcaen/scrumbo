@@ -1,13 +1,11 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardResolverService } from './services/board-resolver.service';
 import { BoardComponent } from './components/board/board.component';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 
 const appRoutes: Routes = [
     {
@@ -21,9 +19,13 @@ const appRoutes: Routes = [
             board: BoardResolverService
         }
     },
+    { 
+        path: '**',
+        component: PageNotFoundComponent
+    },
     {
         path:"board-not-found",
-        component: PagenotfoundComponent,
+        component: PageNotFoundComponent,
     }
 ]
 
@@ -38,3 +40,4 @@ const appRoutes: Routes = [
     ]
 })
 export class AppRoutingModule{}
+ 

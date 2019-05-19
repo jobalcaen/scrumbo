@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, map, toArray } from 'rxjs/operators';
-import { JsonPipe } from '@angular/common';
-import { NewBoard, Board, BoardName } from '../models/models';
+import { catchError, map } from 'rxjs/operators';
+import { Board, BoardName, Note } from '../models/models';
 
 
 
@@ -62,4 +61,10 @@ export class BoardService {
       )
   }
 
+  getNotes(boardUrl: string): Observable<Note[]> {
+    return this.http.get<Note[]>(this.boardApiUrl+boardUrl+'/notes/').pipe(
+    catchError(this.handleError) 
+  
+    )
+  } 
 }

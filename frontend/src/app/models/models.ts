@@ -8,3 +8,9 @@ export interface Board {
     name: string,
     url_friendly_name: string
 }
+
+export interface Note {
+    id: number,
+    body: string,
+    board: number
+}

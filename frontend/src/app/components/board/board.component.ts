@@ -13,8 +13,7 @@ export class BoardComponent implements OnInit {
   constructor(private ar: ActivatedRoute) { }
 
   ngOnInit() {
-    this.board = this.ar.data.value
-    console.log(this.board)
+
   }
 
 }
