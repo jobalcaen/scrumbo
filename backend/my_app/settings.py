@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'scrumbo',
-    'rest_framework'
+    'rest_framework',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'my_app.wsgi.application'
+ASGI_APPLICATION = 'my_app.routing.application'
+
 
 
 # Database

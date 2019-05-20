@@ -66,5 +66,17 @@ export class BoardService {
     catchError(this.handleError) 
   
     )
-  } 
+  }
+  
+  createNote(boardUrl: string, body: string): Observable<Note> {
+    const boardJson = JSON.stringify(body)
+    return this.http.post<Note>(this.boardApiUrl+boardUrl+'/notes/', {"body" : body}, {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+      })
+    })
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
 }

@@ -16,7 +16,7 @@ export class BoardFormComponent implements OnInit {
   name = new FormControl('', [
     Validators.required,
     Validators.maxLength(30),
-    Validators.pattern('^[a-zA-Z0-9\s]+$'),
+    Validators.pattern('[a-zA-Z0-9 ]+'),
   ],[(value) => this.checkBoardNameTaken(value) ])
 
   isValidBoardName = false
@@ -28,7 +28,7 @@ export class BoardFormComponent implements OnInit {
 
   onSubmit() {
     this.bs.addBoard({'name': this.name.value}).subscribe(
-      board => {console.log(board),
+      board => {
         this.router.navigate([board.url_friendly_name])
       })
     this.name.setValue('')
@@ -36,7 +36,6 @@ export class BoardFormComponent implements OnInit {
 
   checkBoardNameTaken(control: AbstractControl) {
     return this.bs.checkNameNotTaken(control.value).pipe(
-      tap((val) => console.log(val)),
       map(boardTaken => boardTaken ? { boardNameTaken: true } : null),
       catchError(() => null)
     )}
