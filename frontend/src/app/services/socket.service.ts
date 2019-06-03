@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observer, Observable } from 'rxjs';
 
 
-const SERVER_URL = 'http://127.0.0.1:8000/api/boards/'
-
+ 
 @Injectable({
   providedIn: 'root'
 })

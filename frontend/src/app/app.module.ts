@@ -7,11 +7,9 @@ import { ShowDataComponent } from './show-data/show-data.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { AppRoutingModule } from './app-routing.module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { MatButtonModule } from '@angular/material';
-import {MaterialModule} from './material.module';
+import {MaterialModule} from './common/material.module';
 import { FormsModule } from '@angular/forms';
-import {MatIconModule} from '@angular/material/icon';
-import {MatFormFieldModule} from '@angular/material/form-field';
+
 import { BoardFormComponent } from './components/board-form/board-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
@@ -41,10 +39,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragDropModule,
     FormsModule,
     HttpClientModule,
-    MatButtonModule,
     MaterialModule,
-    MatIconModule,
-    MatFormFieldModule,
     ReactiveFormsModule
   ],
   providers: [],

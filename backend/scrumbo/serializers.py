@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 import re
 
 def queryset_count_is_zero(queryset):
-    print('fuck!!!!!!')
     if queryset.count() == 0:
         raise UniqueBoardException
 

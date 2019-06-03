@@ -14,3 +14,7 @@ export interface Note {
     body: string,
     board: number
 }
+
+export interface webSocketNotes {
+    notes: Note[]
+}

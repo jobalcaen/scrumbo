@@ -1,17 +1,18 @@
-<form (ngSubmit)="onSubmit()">
+<mat-form-field>
+  <form [formGroup]="boardForm" (ngSubmit)="onSubmit()" id="boardForm">
+    <input formControlName="name" matInput type="text" required maxlength="30" placeholder="Board name">
+      
+     <mat-error *ngIf="boardForm.controls.name.errors?.pattern">
+        Alpha numberic values only
+      </mat-error>
+    
+      <mat-error *ngIf="boardForm.controls.name.errors?.boardNameTaken">
+        This board name has already been taken
+      </mat-error>
 
-  <label>
-    Name:
-    <input type="text" [formControl]="name" required maxlength="30" >
-  </label>
+  </form>
 
-  <span *ngIf="name.invalid && name.errors.pattern">
-    Alpha numberic values only
-  </span>
+</mat-form-field>
 
-  <span *ngIf="name.invalid && name.errors.boardNameTaken">This board name has already been taken</span>
+<button type="submit" mat-raised-button color="primary" form="boardForm"  [disabled]="!boardForm.valid">Submit</button>
 
-<button type="submit" [disabled]="!name.valid">Submit</button>
-
-
-</form>

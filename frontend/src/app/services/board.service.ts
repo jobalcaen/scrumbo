@@ -15,7 +15,9 @@ export class BoardService {
 
   private boardApiUrl = 'http://127.0.0.1:8000/api/boards/'
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+    ) { }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -67,7 +69,6 @@ export class BoardService {
   
     )
   }
-  
   createNote(boardUrl: string, body: string): Observable<Note> {
     const boardJson = JSON.stringify(body)
     return this.http.post<Note>(this.boardApiUrl+boardUrl+'/notes/', {"body" : body}, {
