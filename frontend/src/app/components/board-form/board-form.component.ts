@@ -44,14 +44,6 @@ export class BoardFormComponent implements OnInit, OnChanges {
       catchError(() => null)
     )}
 
-  checkBoardNamePattern(control: AbstractControl): ValidationErrors {
-    if (!control.value) {
-      return null
-    }
-    console.log('checking: ', control.value)
-    return Validators.pattern('[a-zA-Z0-9 ]+')
-  }
-
     ngOnChanges() {
       console.log(    this.boardForm.errors)
         
