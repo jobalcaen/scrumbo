@@ -5,13 +5,15 @@ from rest_framework.response import Response
 import re, string
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import generics
 from django.http import Http404
 
 
 from scrumbo.models import Board, Note
-from scrumbo.serializers import BoardSerializer, NoteSerializer
+from scrumbo.serializers.board import BoardSerializer
+from scrumbo.serializers.note import NoteSerializer
+
 from django.views.decorators.csrf import csrf_exempt
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):

@@ -19,7 +19,9 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should contain head with the name of the application', () => {
     expect(component).toBeTruthy();
+
+    
   });
 });

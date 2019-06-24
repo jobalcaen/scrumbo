@@ -3,6 +3,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BoardService } from 'src/app/services/board.service';
 import { switchMap } from 'rxjs/operators';
+import { NotesService } from 'src/app/services/notes.service';
 
 
 @Component({
@@ -12,19 +13,24 @@ import { switchMap } from 'rxjs/operators';
 })
 export class NewNoteComponent implements OnInit {
 
+  ns = this.notesService.connect(window.location.pathname)
   constructor(
     private route: ActivatedRoute,
-    private bs: BoardService) { }
+    private bs: BoardService,
+    private notesService: NotesService
+    ) { 
+      
+    }
 
   ngOnInit() {
+    this.ns.subscribe()
   }
 
   createNote() {
-    console.log('note created')
-    this.route.paramMap.pipe(
-          switchMap((params: ParamMap) => 
-            this.bs.createNote(params.get('boardUrl'),'bullshiittt'))
-          ).subscribe()
+    console.log(
+      'msg'
+    )
+    this.ns.next(JSON.stringify({message: 'some bullshit'}))
   }
 
   // ngOnInit() {

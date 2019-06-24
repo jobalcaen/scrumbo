@@ -19,6 +19,8 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
   // sock = new WebSocket('ws://127.0.0.1:8000'+window.location.pathname)
   notes: Note[]
   serverMessages
+  ns = this.notesService.connect(window.location.pathname)
+
   constructor(
     private route: ActivatedRoute,
     private bs: BoardService,
@@ -27,14 +29,14 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.notesService.connect(window.location.pathname).subscribe(
+   this.ns.subscribe(
       (message: webSocketNotes) => {
         this.notes = message.notes
         console.log(this.notes)
       },
       err => console.log(err), 
       () => console.log('complete')
-      );
+    );
 
 
       console.log(this.serverMessages)
@@ -43,5 +45,15 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // this.ns.unsubscribe()
   }
+
+  // sendMsg() {
+  //   // this.ns.error({code: 4000, reason: 'I think our app just broke!'})
+  //   this.ns.next({
+  //     'message': 'hell'
+  // })
+  // }
+
+
 }

@@ -5,7 +5,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 from channels.db import database_sync_to_async
 from asgiref.sync import async_to_sync
-from scrumbo.serializers import NoteSerializer
+from scrumbo.serializers.note import NoteSerializer
 from rest_framework.renderers import JSONRenderer
 
 from .models import Board, Note
@@ -43,10 +43,12 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        
-        message = text_data_json[0]
+        print('I got dis: ', text_data)
 
+        text_data_json = json.loads(text_data)
+        print('text_data_json: ', text_data_json)
+        message = text_data_json
+        print('I got dis: ', message)
         # Send message to room group
         await self.channel_layer.group_send(
             self.board_name,
@@ -71,3 +73,4 @@ class BoardConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': note
         }))
+
