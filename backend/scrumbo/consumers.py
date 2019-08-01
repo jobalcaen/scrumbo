@@ -29,10 +29,9 @@ class BoardConsumer(AsyncWebsocketConsumer):
         # notesJson = JSONRenderer().render(notes)
         # print('notesJson: ', notesJson)
 
-        await self.send(text_data=json.dumps({
+        await self.send(json.dumps({
             'notes': notes
         }))
-
 
     @database_sync_to_async
     def get_notes(self):
@@ -41,36 +40,47 @@ class BoardConsumer(AsyncWebsocketConsumer):
         serializer = NoteSerializer(notes, many=True)
         return serializer.data
 
+    @database_sync_to_async
+    def create_note(self):
+        print('create note triggered')
+        serializer = NoteSerializer(context={'board': self.board_name})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
 
     async def receive(self, text_data):
-        print('I got dis: ', text_data)
+        print(text_data)
+        event = json.loads(text_data)
+        
+        event_type = event['type']
+        print(event_type, 'event_type')
 
-        text_data_json = json.loads(text_data)
-        print('text_data_json: ', text_data_json)
-        message = text_data_json
-        print('I got dis: ', message)
+        if event_type == 'note_add':
+            await self.create_note()
+            print('note will be added')
         # Send message to room group
-        await self.channel_layer.group_send(
-            self.board_name,
-            {
-                'type': 'note_message',
-                'message': message
-            }
-        )
+
+
+
+        # await self.channel_layer.group_send(
+        #     self.board_name,
+        #     {
+        #         'type': 'note_message',
+        #         'message': message
+        #     }
+        # )
+
+        # add note
+
+        # move note
+
+        # edit note
+
+        # delete note
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.board_name,
             self.channel_name
         )
-        print ('disconnected', close_code)
-
-
-
-    async def note_message(self, event):
-        note = event['message']
-
-        await self.send(text_data=json.dumps({
-            'message': note
-        }))
-
+        print('disconnected', close_code)
