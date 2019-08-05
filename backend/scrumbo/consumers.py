@@ -43,9 +43,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def create_note(self):
         print('create note triggered')
-        serializer = NoteSerializer(context={'board': self.board_name})
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        serializer = NoteSerializer(data={'body': ''}, context={'board': board})
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        return serializer.data
 
 
     async def receive(self, text_data):
@@ -56,19 +58,18 @@ class BoardConsumer(AsyncWebsocketConsumer):
         print(event_type, 'event_type')
 
         if event_type == 'note_add':
-            await self.create_note()
-            print('note will be added')
-        # Send message to room group
-
-
-
-        # await self.channel_layer.group_send(
-        #     self.board_name,
-        #     {
-        #         'type': 'note_message',
-        #         'message': message
-        #     }
-        # )
+            new_note = await self.create_note()
+            print(new_note, 'note will be added')
+        
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    json.dumps({
+                        'type': event_type,
+                        'message': new_note
+                    })
+                }
+            )
 
         # add note
 

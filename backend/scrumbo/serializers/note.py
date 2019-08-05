@@ -2,7 +2,7 @@ from rest_framework import serializers
 from scrumbo.models import Note, Board
 
 class NoteSerializer(serializers.Serializer):
-    body = serializers.CharField(max_length=200)
+    body = serializers.CharField(max_length=200, allow_blank=True)
     board = serializers.IntegerField
 
     def create(self, validated_data):

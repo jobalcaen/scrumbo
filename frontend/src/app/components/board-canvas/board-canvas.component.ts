@@ -52,7 +52,6 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
     // this.ns.error({code: 4000, reason: 'I think our app just broke!'})
     this.ns.next({
       'type': 'note_add',
-      'message': 'hell'
     })
   }
 
