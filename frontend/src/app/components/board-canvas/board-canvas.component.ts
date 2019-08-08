@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, pluck, map, tap } from 'rxjs/operators';
 import { BoardService } from 'src/app/services/board.service';
 import { Observable } from 'rxjs';
 import { Note, webSocketNotes } from 'src/app/models/models';
@@ -13,30 +13,32 @@ import { debug } from 'util';
 @Component({
   selector: 'app-board-canvas',
   templateUrl: './board-canvas.component.html',
-  styleUrls: ['./board-canvas.component.scss']
+  styleUrls: ['./board-canvas.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
+
 })
 export class BoardCanvasComponent implements OnInit, OnDestroy {
   // sock = new WebSocket('ws://127.0.0.1:8000'+window.location.pathname)
-  notes: Note[]
+  notes$ = this.notesService.connect(window.location.pathname).pipe(
+    tap((notes) => console.log('notes', notes)),
+    pluck('notes')
+    )
+
+  notesService$ = this.notesService.connect(window.location.pathname)
   serverMessages
-  ns = this.notesService.connect(window.location.pathname)
+  notes: Note[] = []
 
   constructor(
     private route: ActivatedRoute,
     private bs: BoardService,
-    private notesService: NotesService
+    private notesService: NotesService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
 
-   this.ns.subscribe(
-      (message: webSocketNotes) => {
-        this.notes = message.notes
-        console.log(this.notes)
-      },
-      err => console.log(err), 
-      () => console.log('complete')
-    );
+   this.notesService$.subscribe()
 
 
       console.log(this.serverMessages)
@@ -50,8 +52,9 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
 
   sendMsg() {
     // this.ns.error({code: 4000, reason: 'I think our app just broke!'})
-    this.ns.next({
-      'type': 'note_add',
+
+    this.notesService$.next({
+      'type': 'note.add',
     })
   }
 

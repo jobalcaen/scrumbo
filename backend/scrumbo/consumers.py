@@ -30,6 +30,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
         # print('notesJson: ', notesJson)
 
         await self.send(json.dumps({
+            'type': 'connect',
             'notes': notes
         }))
 
@@ -49,27 +50,45 @@ class BoardConsumer(AsyncWebsocketConsumer):
         serializer.save()
         return serializer.data
 
+    @database_sync_to_async
+    def update_note(self):
+        print('edit note triggered')
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        serializer = NoteSerializer(data={'body': ''}, context={'board': board})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer.data
+
 
     async def receive(self, text_data):
-        print(text_data)
+        print('text: ', text_data)
         event = json.loads(text_data)
         
         event_type = event['type']
         print(event_type, 'event_type')
 
-        if event_type == 'note_add':
+        # Send message to room group
+        if event_type == 'note.add':
             new_note = await self.create_note()
-            print(new_note, 'note will be added')
-        
             await self.channel_layer.group_send(
                 self.board_name,
                 {
-                    json.dumps({
-                        'type': event_type,
-                        'message': new_note
-                    })
-                }
+                    'type': 'note_add',
+                    'note': new_note
+                }                
             )
+
+        # if event_type == 'note.update':
+        #     updated_note = await self.update_note()
+
+        #     await self.channel_layer.group_send(
+        #         self.board_name,
+        #         {
+        #             'type': 'note_edit',
+        #             'note': new_note
+        #         }                
+        #     )
+        
 
         # add note
 
@@ -85,3 +104,14 @@ class BoardConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         print('disconnected', close_code)
+
+
+    async def note_add(self, event):
+        note = event['note']
+        print(note, 'note will be added')
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'note_add',
+            'note': note
+        }))
