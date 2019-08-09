@@ -18,6 +18,7 @@ import { BoardCanvasComponent } from './components/board-canvas/board-canvas.com
 import { BoardPaletteComponent } from './components/board-palette/board-palette.component';
 import { NewNoteComponent } from './components/board-palette/new-note/new-note.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NoteComponent } from './components/board-canvas/note/note.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     BoardComponent,
     BoardCanvasComponent,
     BoardPaletteComponent,
-    NewNoteComponent
+    NewNoteComponent,
+    NoteComponent
   ],
   imports: [
     AppRoutingModule,

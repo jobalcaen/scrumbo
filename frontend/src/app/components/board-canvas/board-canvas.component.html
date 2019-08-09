@@ -1,9 +1,6 @@
 
-  <ul>
-    <li *ngFor="let note of notes$ | async">
-      <span>{{ note.body }}</span>
-    </li>
-  </ul>
+  <app-note cdkDrag *ngFor="let note of notes$ | async" [note]="note"></app-note>
+    
 
   <button (click)="sendMsg()">
     blan
