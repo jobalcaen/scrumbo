@@ -59,6 +59,12 @@ class BoardConsumer(AsyncWebsocketConsumer):
         serializer.save()
         return serializer.data
 
+    @database_sync_to_async
+    def delete_note(self, note):
+        print('delete note triggered')
+        Note.objects.get(pk)
+        return serializer.data
+
 
     async def receive(self, text_data):
         print('text: ', text_data)
@@ -75,6 +81,16 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 {
                     'type': 'note_add',
                     'note': new_note
+                }                
+            )
+        
+        if event_type == 'note.delete':
+            await self.delete_note(event.note)
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'note_delete',
+                    'note': event.note
                 }                
             )
 
@@ -108,10 +124,20 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     async def note_add(self, event):
         note = event['note']
-        print(note, 'note will be added')
+        print(note, 'added')
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'note_add',
+            'note': note
+        }))
+
+    async def note_delete(self, event):
+        note = event['note']
+        print(note, 'deleted')
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'note_delete',
             'note': note
         }))

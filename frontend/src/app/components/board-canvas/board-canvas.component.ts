@@ -19,15 +19,16 @@ import { debug } from 'util';
 
 })
 export class BoardCanvasComponent implements OnInit, OnDestroy {
-  // sock = new WebSocket('ws://127.0.0.1:8000'+window.location.pathname)
-  notes$ = this.notesService.connect(window.location.pathname).pipe(
+  boardName = window.location.pathname
+  notes$ = this.notesService.connect(this.boardName).pipe(
     tap((notes) => console.log('notes', notes)),
     pluck('notes')
     )
 
-  notesService$ = this.notesService.connect(window.location.pathname)
+  notesService$ = this.notesService.connect(this.boardName)
   serverMessages
   notes: Note[] = []
+
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +56,13 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
 
     this.notesService$.next({
       'type': 'note.add',
+    })
+  }
+
+  deleteNote(note) {
+    this.notesService$.next({
+      'type': 'note.delete',
+      
     })
   }
 

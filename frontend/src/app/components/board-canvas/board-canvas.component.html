@@ -1,5 +1,5 @@
 
-  <app-note cdkDrag *ngFor="let note of notes$ | async" [note]="note"></app-note>
+  <app-note cdkDrag *ngFor="let note of notes$ | async" [note]="note" (deleteNote)="deleteNote($event)"></app-note>
     
 
   <button (click)="sendMsg()">
