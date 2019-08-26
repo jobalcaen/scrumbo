@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, pluck, map, tap } from 'rxjs/operators';
+import { switchMap, pluck, map, tap, filter } from 'rxjs/operators';
 import { BoardService } from 'src/app/services/board.service';
 import { Observable } from 'rxjs';
 import { Note, webSocketNotes } from 'src/app/models/models';
@@ -16,14 +16,23 @@ import { debug } from 'util';
   styleUrls: ['./board-canvas.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 
-
 })
 export class BoardCanvasComponent implements OnInit, OnDestroy {
   boardName = window.location.pathname
   notes$ = this.notesService.connect(this.boardName).pipe(
-    tap((notes) => console.log('notes', notes)),
-    pluck('notes')
-    )
+    tap((event) => console.log('event', event)),
+   ).subscribe(event => {
+     if (event.type === 'connect') {
+      this.notes = event.notes
+     } else if (event.type === 'note_delete') {
+       console.log('DELETING NOTE')
+       this.notes = this.notes.filter( note => note.id !== event.note.id
+
+       )
+     }
+
+     this.cd.detectChanges()
+   })
 
   notesService$ = this.notesService.connect(this.boardName)
   serverMessages
@@ -62,6 +71,7 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
   deleteNote(note) {
     this.notesService$.next({
       'type': 'note.delete',
+      'note': note
       
     })
   }

@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, HostBinding, Output } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { NotesService } from 'src/app/services/notes.service';
-import { EventEmitter } from 'events';
 import { Note } from 'src/app/models/models';
 
 @Component({
@@ -11,7 +10,7 @@ import { Note } from 'src/app/models/models';
 })
 export class NoteComponent implements OnInit {
 
-  @Output() deleteNote: EventEmitter = new EventEmitter();
+  @Output() deleteNote: EventEmitter<Note> = new EventEmitter();
   @Input() note?
   constructor(
     ) {     

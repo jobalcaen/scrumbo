@@ -14,7 +14,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def connect(self):
 
         self.board_name = self.scope['url_route']['kwargs']['board_url']
-        print('board name ', self.board_name)
 
         await self.channel_layer.group_add(
             self.board_name,
@@ -24,10 +23,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         notes = await self.get_notes()
-        print('notes ', notes)
-
-        # notesJson = JSONRenderer().render(notes)
-        # print('notesJson: ', notesJson)
 
         await self.send(json.dumps({
             'type': 'connect',
@@ -62,9 +57,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def delete_note(self, note):
         print('delete note triggered')
-        Note.objects.get(pk)
-        return serializer.data
-
+        note = Note.objects.get(pk=note['id'])
+        return note.delete() 
 
     async def receive(self, text_data):
         print('text: ', text_data)
@@ -85,12 +79,13 @@ class BoardConsumer(AsyncWebsocketConsumer):
             )
         
         if event_type == 'note.delete':
-            await self.delete_note(event.note)
+            print('event', event)
+            await self.delete_note(event['note'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
                     'type': 'note_delete',
-                    'note': event.note
+                    'note': event['note']
                 }                
             )
 
@@ -134,7 +129,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     async def note_delete(self, event):
         note = event['note']
-        print(note, 'deleted')
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
