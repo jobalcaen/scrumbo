@@ -12,9 +12,15 @@ export interface Board {
 export interface Note {
     id: number,
     body: string,
-    board: number
 }
 
 export interface webSocketNotes {
     notes: Note[]
+}
+
+export interface websocketEvent {
+    type: string,
+    notes?: Note[],
+    note?: Note
+
 }
