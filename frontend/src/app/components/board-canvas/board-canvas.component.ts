@@ -1,13 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, pluck, map, tap, filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { BoardService } from 'src/app/services/board.service';
-import { Observable } from 'rxjs';
-import { Note, webSocketNotes, websocketEvent } from 'src/app/models/models';
-import { SocketService } from 'src/app/services/socket.service';
+import { Note, websocketEvent } from 'src/app/models/models';
 import { NotesService } from 'src/app/services/notes.service';
-import { debug } from 'util';
-
 
 enum event_type {
   connect = 'connect',
@@ -27,28 +22,24 @@ enum event_type {
 })
 export class BoardCanvasComponent implements OnInit, OnDestroy {
   boardName = window.location.pathname
-  notes$ = this.notesService.connect(this.boardName).pipe(
-    tap((event) => console.log('event', event)),
-   ).subscribe((event: websocketEvent) => {
+  notes$ = this.notesService.connect(this.boardName).subscribe((event: websocketEvent) => {
+    console.log('event', event)
     switch (event.type) {
       case event_type.connect:
         this.notes = event.notes
         break;
       case event_type.delete:
-        console.log('DELETING NOTE')
-        this.notes = this.notes.filter( note => note.id !== event.note.id)
+        this.notes = this.notes.filter(note => note.id !== event.note.id)
         break;
       case event_type.add:
         this.notes.push(event.note)
       }
-     
-     this.cd.detectChanges()
+          this.cd.detectChanges()
    })
 
   notesService$ = this.notesService.connect(this.boardName)
   serverMessages
   notes: Note[] = []
-
 
   constructor(
     private route: ActivatedRoute,
@@ -64,14 +55,17 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.ns.unsubscribe()
+    this.notes$.unsubscribe()
   }
 
   sendMsg() {
-    // this.ns.error({code: 4000, reason: 'I think our app just broke!'})
-
     this.notesService$.next({
       'type': 'note.add',
+      'payload': {
+        'x_position': 10,
+        'y_position': 10,
+        'body': ''
+      }
     })
   }
 
@@ -79,7 +73,6 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
     this.notesService$.next({
       'type': 'note.delete',
       'note': note
-      
     })
   }
 
