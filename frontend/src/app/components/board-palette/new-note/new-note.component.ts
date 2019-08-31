@@ -13,33 +13,18 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class NewNoteComponent implements OnInit {
 
-  ns = this.notesService.connect(window.location.pathname)
   constructor(
-    private route: ActivatedRoute,
-    private bs: BoardService,
     private notesService: NotesService
     ) { 
       
     }
 
   ngOnInit() {
-    this.ns.subscribe()
   }
 
   createNote() {
-    console.log(
-      'msg'
-    )
-    this.ns.next(JSON.stringify({message: 'some bullshit'}))
+
   }
 
-  // ngOnInit() {
-  //   this.notes$ = this.route.paramMap.pipe(
-  //     switchMap((params: ParamMap) => 
-  //       this.bs.getNotes(params.get('boardUrl'))
-    
-  //     )
-  //   )
-  // }
 
 }

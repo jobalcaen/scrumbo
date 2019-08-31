@@ -10,7 +10,7 @@ export interface Board {
 }
 
 export interface Note {
-    id: number,
+    id?: number,
     body: string,
     x_position: number,
     y_position: number
@@ -20,5 +20,5 @@ export interface websocketEvent {
     type: string,
     notes?: Note[],
     note?: Note
-
+    
 }

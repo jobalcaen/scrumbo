@@ -69,7 +69,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         # Send message to room group
         if event_type == 'note.add':
-            new_note = await self.create_note(event['payload'])
+            new_note = await self.create_note(event['note'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
