@@ -2,6 +2,6 @@
   <app-note cdkDrag *ngFor="let note of notes" [note]="note" (deleteNote)="deleteNote($event)"></app-note>
     
 
-  <button (click)="sendMsg()">
-    blan
+  <button (click)="createNote()">
+    Create note
   </button>

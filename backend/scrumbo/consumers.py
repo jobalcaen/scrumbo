@@ -123,7 +123,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'type': 'note_add',
+            'type': 'note.add',
             'note': note
         }))
 
@@ -132,6 +132,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'type': 'note_delete',
+            'type': 'note.delete',
             'note': note
         }))

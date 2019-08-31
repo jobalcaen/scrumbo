@@ -5,10 +5,10 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 
 enum event_type {
   connect = 'connect',
-  delete = 'note_delete',
-  add = 'note_add',
-  move = 'note_move',
-  edit = 'note_edit'
+  delete = 'note.delete',
+  add = 'note.add',
+  move = 'note.move',
+  edit = 'note.edit'
 }
 
 @Component({
@@ -53,9 +53,9 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
     this.notesService$.unsubscribe()
   }
 
-  sendMsg() {
+  createNote() {
     this.notesService$.next({
-      'type': 'note.add',
+      'type': event_type.add,
       'note': {
         'x_position': 10,
         'y_position': 10,
@@ -66,7 +66,7 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
 
   deleteNote(note) {
     this.notesService$.next({
-      'type': 'note.delete',
+      'type': event_type.delete,
       'note': note
     })
   }
