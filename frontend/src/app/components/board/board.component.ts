@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Board } from 'src/app/models/models';
+import { Board, coordinates } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 
+const coordinates = [
+  {
+    top: 50,
+    left: 50
+  },
+  {
+    top: 200,
+    left: 200
+  }
+]
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -9,11 +19,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BoardComponent implements OnInit {
 
+  noteCoordinates: coordinates[] = []
   board: Board
-  constructor(private ar: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit() {
-
+    this.noteCoordinates = coordinates
   }
 
 }

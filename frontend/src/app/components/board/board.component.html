@@ -1,4 +1,6 @@
 
-  <app-board-palette></app-board-palette>
+  <div>
+    <app-new-note  *ngFor="let coords of noteCoordinates" [startCoordinates]="coords" ></app-new-note>
+  </div>
   <app-board-canvas></app-board-canvas>
 

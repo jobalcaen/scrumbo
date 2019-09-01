@@ -63,6 +63,15 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
 
   dragEnd(note) {
     console.log('drag end note: ', note)
+    const updatedNote = {...note,
+      top: 300,
+      left: 300
+    }
+
+    this.notesService$.next({
+      'type': event_type.EDIT,
+      'note': updatedNote
+    })
   }
 
 

@@ -29,8 +29,8 @@ export class NewNoteComponent implements OnInit {
     this.notesService$.next({
       'type': 'note.add',
       'note': {
-        'top': this.startPosition.top,
-        'left': this.startPosition.left,
+        'top': this.startCoordinates.top,
+        'left': this.startCoordinates.left,
         'body': ''
       }
     })

@@ -15,7 +15,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardComponent } from './components/board/board.component';
 import { BoardCanvasComponent } from './components/board-canvas/board-canvas.component';
-import { BoardPaletteComponent } from './components/board-palette/board-palette.component';
 import { NewNoteComponent } from './components/board-palette/new-note/new-note.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoteComponent } from './components/board-canvas/note/note.component';
@@ -29,7 +28,6 @@ import { NoteComponent } from './components/board-canvas/note/note.component';
     HomePageComponent,
     BoardComponent,
     BoardCanvasComponent,
-    BoardPaletteComponent,
     NewNoteComponent,
     NoteComponent
   ],
