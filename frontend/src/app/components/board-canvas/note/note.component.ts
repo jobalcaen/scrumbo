@@ -9,9 +9,12 @@ import { Note } from 'src/app/models/models';
   styleUrls: ['./note.component.scss']
 })
 export class NoteComponent implements OnInit {
-
-  @Output() deleteNote: EventEmitter<Note> = new EventEmitter();
-  @Input() note?
+  @Input() coordinates: Note
+  @Input() note: Note
+  @HostBinding('style.top.px') top: number = this.coordinates.top
+  @HostBinding('style.left.px') left: number = this.coordinates.left
+  @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
+ 
   constructor(
     ) {     
   }

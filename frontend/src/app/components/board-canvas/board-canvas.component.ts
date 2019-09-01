@@ -4,11 +4,11 @@ import { NotesService } from 'src/app/services/notes.service';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 enum event_type {
-  connect = 'connect',
-  delete = 'note.delete',
-  add = 'note.add',
-  move = 'note.move',
-  edit = 'note.edit'
+  CONNECT = 'connect',
+  DELETE = 'note.delete',
+  ADD = 'note.add',
+  MOVE = 'note.move',
+  EDIT = 'note.edit'
 }
 
 @Component({
@@ -33,16 +33,15 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
     this.notesService$.subscribe((event: websocketEvent) => {
       console.log('event', event)
       switch (event.type) {
-        case event_type.connect:
+        case event_type.CONNECT:
           this.notes = event.notes
           break;
-        case event_type.delete:
+        case event_type.DELETE:
           this.notes = this.notes.filter(note => note.id !== event.note.id)
           break;
-        case event_type.add:
+        case event_type.ADD:
           this.notes.push(event.note)
           break;
-        
         }
   
       this.cd.detectChanges()
@@ -53,22 +52,17 @@ export class BoardCanvasComponent implements OnInit, OnDestroy {
     this.notesService$.unsubscribe()
   }
 
-  createNote() {
-    this.notesService$.next({
-      'type': event_type.add,
-      'note': {
-        'x_position': 10,
-        'y_position': 10,
-        'body': ''
-      }
-    })
-  }
+
 
   deleteNote(note) {
     this.notesService$.next({
-      'type': event_type.delete,
+      'type': event_type.DELETE,
       'note': note
     })
+  }
+
+  dragEnd(note) {
+    console.log('drag end note: ', note)
   }
 
 

@@ -1,1 +1,1 @@
-  <app-new-note></app-new-note>
+  <app-new-note  *ngFor="let coords of noteCoordinates" [startCoordinates]="coords" ></app-new-note>

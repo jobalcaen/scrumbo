@@ -16,6 +16,6 @@ class Note(models.Model):
     """Model for a single note that goes in a board"""
     body = models.CharField(max_length=200)
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=None)
-    x_position = models.IntegerField()
-    y_position = models.IntegerField()
+    top = models.IntegerField()
+    left = models.IntegerField()
     tracker = FieldTracker()

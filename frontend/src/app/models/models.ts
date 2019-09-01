@@ -12,8 +12,8 @@ export interface Board {
 export interface Note {
     id?: number,
     body: string,
-    x_position: number,
-    y_position: number
+    top: number,
+    left: number
 }
 
 export interface websocketEvent {
@@ -21,4 +21,9 @@ export interface websocketEvent {
     notes?: Note[],
     note?: Note
     
+}
+
+export interface coordinates {
+    top: number,
+    left: number
 }

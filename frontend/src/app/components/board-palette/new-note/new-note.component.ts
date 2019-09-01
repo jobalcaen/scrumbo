@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { BoardService } from 'src/app/services/board.service';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnInit, Input } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
+import { coordinates } from 'src/app/models/models';
 
 
 @Component({
@@ -13,6 +10,10 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class NewNoteComponent implements OnInit {
 
+  @Input() startCoordinates: coordinates
+  notesService$
+  boardName = window.location.pathname
+
   constructor(
     private notesService: NotesService
     ) { 
@@ -20,11 +21,19 @@ export class NewNoteComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.notesService$ = this.notesService.connect(this.boardName)
+    this.notesService$.subscribe()
   }
 
   createNote() {
-
+    this.notesService$.next({
+      'type': 'note.add',
+      'note': {
+        'top': this.startPosition.top,
+        'left': this.startPosition.left,
+        'body': ''
+      }
+    })
   }
-
 
 }
