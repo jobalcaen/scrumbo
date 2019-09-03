@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
-import { ShowDataComponent } from './show-data/show-data.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { AppRoutingModule } from './app-routing.module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -14,10 +13,9 @@ import { BoardFormComponent } from './components/board-form/board-form.component
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardComponent } from './components/board/board.component';
-import { BoardCanvasComponent } from './components/board-canvas/board-canvas.component';
-import { NewNoteComponent } from './components/board-palette/new-note/new-note.component';
+import { NewNoteComponent } from './components/new-note/new-note.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NoteComponent } from './components/board-canvas/note/note.component';
+import { NoteComponent } from './components/note/note.component';
 
 
 @NgModule({
@@ -27,7 +25,6 @@ import { NoteComponent } from './components/board-canvas/note/note.component';
     PageNotFoundComponent,
     HomePageComponent,
     BoardComponent,
-    BoardCanvasComponent,
     NewNoteComponent,
     NoteComponent
   ],

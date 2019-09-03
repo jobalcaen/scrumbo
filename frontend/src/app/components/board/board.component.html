@@ -1,6 +1,10 @@
 
-  <div>
-    <app-new-note  *ngFor="let coords of noteCoordinates" [startCoordinates]="coords" ></app-new-note>
-  </div>
-  <app-board-canvas></app-board-canvas>
-
+<div>
+  <app-new-note  *ngFor="let coords of noteCoordinates" [startCoordinates]="coords" ></app-new-note>
+</div>
+<div class="canvas">
+  <app-note
+  cdkDrag
+  *ngFor="let note of notes" [note]="note" (deleteNote)="deleteNote($event)" (cdkDragEnded)="dragEnd(note)"></app-note>
+  
+</div>
