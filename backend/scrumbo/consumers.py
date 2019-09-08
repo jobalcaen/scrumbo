@@ -26,7 +26,9 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         await self.send(json.dumps({
             'type': 'connect',
-            'notes': notes
+            'payload': {
+                'notes': notes
+            }
         }))
 
     @database_sync_to_async
@@ -55,11 +57,20 @@ class BoardConsumer(AsyncWebsocketConsumer):
         return serializer.data
 
     @database_sync_to_async
-    def delete_note(self, note):
-        print('delete note triggered')
-        note = Note.objects.get(pk=note['id'])
-        return note.delete() 
+    def move_note(self, event):
+        print('edit note triggered', event)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer.data
 
+    @database_sync_to_async
+    def delete_note(self, note_id):
+        print('delete note triggered')
+        note = Note.objects.get(pk=note_id)
+        return note.delete()
+
+    
+    #receive messages from web socket
     async def receive(self, text_data):
         print('text: ', text_data)
         event = json.loads(text_data)
@@ -69,25 +80,33 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         # Send message to room group
         if event_type == 'note.add':
-            new_note = await self.create_note(event['note'])
+            new_note = await self.create_note(event['payload']['note'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
                     'type': 'note_add',
-                    'note': new_note
+                    'payload': {
+                        'note': new_note
+                    }
                 }                
             )
         
-        if event_type == 'note.delete':
+        elif event_type == 'note.delete':
             print('event', event)
-            await self.delete_note(event['note'])
+            await self.delete_note(event['payload']['note_id'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
                     'type': 'note_delete',
-                    'note': event['note']
+                    'payload': {
+                        'note_id': event['payload']['note_id']
+                    }
+                   
                 }                
             )
+
+        elif event_type == 'note.move':
+            await self.move_note(event['payload'])
 
         # if event_type == 'note.update':
         #     updated_note = await self.update_note()
@@ -118,20 +137,24 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
 
     async def note_add(self, event):
-        note = event['note']
+        note = event['payload']['note']
         print(note, 'added')
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'note.add',
-            'note': note
+            'payload': {
+                'note': note
+            }
         }))
 
     async def note_delete(self, event):
-        note = event['note']
+        note_id = event['payload']['note_id']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'note.delete',
-            'note': note
+            'payload': {
+                'note_id': note_id
+            }
         }))

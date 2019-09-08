@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, QueryList, ContentChildren, ViewChildren } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, QueryList, ContentChildren, ViewChildren, ElementRef } from '@angular/core';
 import { Board, coordinates, Note, websocketEvent } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
+import { MultiViewChild } from '../../helpers/multi-viewchild.decorator'
 
 const coordinates = [
   {
@@ -31,8 +32,7 @@ enum event_type {
 export class BoardComponent implements OnInit {
 
   @ViewChildren(NoteComponent) noteChildren: QueryList<NoteComponent>
-
-  notes?: Note[] = []
+  notes: Note[] = []
   boardName = window.location.pathname
   notesService$: WebSocketSubject<websocketEvent>
   noteCoordinates: coordinates[] = []
@@ -50,13 +50,13 @@ export class BoardComponent implements OnInit {
       console.log('event', event)
       switch (event.type) {
         case event_type.CONNECT:
-          this.notes = event.notes
+          this.notes = event.payload.notes
           break;
         case event_type.DELETE:
-          this.notes = this.notes.filter(note => note.id !== event.note.id)
+          this.notes = this.notes.filter(note => note.id !== event.payload.note_id)
           break;
         case event_type.ADD:
-          this.notes.push(event.note)
+          this.notes.push(event.payload.note)
           break;
         }
   
@@ -69,20 +69,32 @@ export class BoardComponent implements OnInit {
   }
 
 
-
-  deleteNote(note) {
+  deleteNote(note: Note) {
     this.notesService$.next({
-      'type': event_type.DELETE,
-      'note': note
+      type: event_type.DELETE,
+      payload: {
+        note_id: note.id
+      }
     })
   }
 
   dragEnd(note: Note) {
-    console.log('drag end note: ', note)
-    this.noteChildren.forEach(note => console.log(note))
-    const draggedNote = this.noteChildren.find((child) => child.note.id === note.id);
-    console.log('dragged note: ', draggedNote)
     
+    this.noteChildren.map((noteCmp: NoteComponent) => {
+      if (noteCmp.note.id === note.id) {
+
+        const coortdinates = noteCmp.getClientPosition()
+
+        this.notesService$.next({
+          type: event_type.MOVE,
+          payload: {
+            note_id: note.id,
+            top: coortdinates.top,
+            left: coortdinates.left
+          }
+        })
+      }
+    })
   }
 
 }

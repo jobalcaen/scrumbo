@@ -18,9 +18,13 @@ export interface Note {
 
 export interface websocketEvent {
     type: string,
-    notes?: Note[],
-    note?: Note
-    
+    payload: {
+        notes?: Note[],
+        note?: Note,
+        note_id?: number,
+        top?: number,
+        left?: number
+    }
 }
 
 export interface coordinates {
