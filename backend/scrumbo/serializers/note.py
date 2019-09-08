@@ -9,3 +9,10 @@ class NoteSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Note.objects.create(**validated_data, board=self.context['board'])
+
+    def update(self, instance, validated_data):
+        instance.body = validated_data.get('body', instance.body)
+        instance.top = validated_data.get('top', instance.top)
+        instance.left = validated_data.get('left', instance.left)
+        instance.save()
+        return instance

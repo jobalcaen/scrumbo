@@ -58,9 +58,17 @@ export class BoardComponent implements OnInit {
         case event_type.ADD:
           this.notes.push(event.payload.note)
           break;
+        case event_type.MOVE:
+          this.notes.map((note) => {
+            if(note.id === event.payload.note_id){
+              note.top = event.payload.top
+              note.left = event.payload.left
+            }
+          })
+          break;
         }
   
-      this.cd.detectChanges()
+      this.cd.markForCheck()
      })    
   }
 
@@ -80,7 +88,7 @@ export class BoardComponent implements OnInit {
 
   dragEnd(note: Note) {
     
-    this.noteChildren.map((noteCmp: NoteComponent) => {
+    this.noteChildren.forEach((noteCmp: NoteComponent) => {
       if (noteCmp.note.id === note.id) {
 
         const coortdinates = noteCmp.getClientPosition()
@@ -90,7 +98,7 @@ export class BoardComponent implements OnInit {
           payload: {
             note_id: note.id,
             top: coortdinates.top,
-            left: coortdinates.left
+            left: coortdinates.left,
           }
         })
       }
