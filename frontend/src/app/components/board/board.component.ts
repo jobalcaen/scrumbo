@@ -64,6 +64,8 @@ export class BoardComponent implements OnInit {
               note.top = event.payload.top
               note.left = event.payload.left
             }
+            console.log('update note: ')
+            return note
           })
           break;
         }

@@ -10,32 +10,27 @@ import { Note, coordinates } from 'src/app/models/models';
 })
 export class NoteComponent implements OnInit {
 
-  private _note: Note
-  @Input() set note(note: Note) {
-    this._note = note
-    this.top = this._note.top
-    this.left = this._note.left
-    this.cd.detectChanges()
-  }
-
-  get note(){
-    return this._note
-  }
-  @HostBinding('style.top.px') top: number
-  @HostBinding('style.left.px') left: number
+  @Input() note: Note
+  @HostBinding('style.top.px')
+  public get getTopPosition(): number { 
+    console.log('update top')
+    return this.note.top  } 
+    
+  @HostBinding('style.left.px')
+  public get getLeftPosition(): number { 
+    console.log('update left')
+    return this.note.left  } 
   @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
  
   constructor(
     private elRef: ElementRef,
-    private cd: ChangeDetectorRef
-
     ) {     
   }
 
   ngOnInit() {
   }
   deleteNoteEmit(){
-    this.deleteNote.emit(this._note)
+    this.deleteNote.emit(this.note)
   }
 
   getClientPosition(){
