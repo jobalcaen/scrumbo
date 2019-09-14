@@ -1,2 +1,5 @@
 <span (click)="deleteNoteEmit()">DELETE ME</span>
+<form [formGroup]="noteForm">
+    <input formControlName="name" matInput type="text" required maxlength="30" placeholder="Board name">
 {{ note.body }}
+</form>

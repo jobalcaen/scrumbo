@@ -20,7 +20,6 @@ export class BoardFormComponent implements OnInit, OnChanges {
       Validators.maxLength(10),
       Validators.pattern('[a-zA-Z0-9 ]+'),
     ],[(value) => this.checkBoardNameTaken(value)])
-
   })
   
   isValidBoardName = false

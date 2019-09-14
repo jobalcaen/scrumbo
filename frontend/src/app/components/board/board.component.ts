@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 const coordinates = [
   {
@@ -31,18 +32,20 @@ enum event_type {
 export class BoardComponent implements OnInit {
 
   @ViewChildren(NoteComponent) noteChildren: QueryList<NoteComponent>
-
   dragPosition = {x: 50, y: 50}
   notes: Note[] = []
   boardName = window.location.pathname
   notesService$: WebSocketSubject<websocketEvent>
   noteCoordinates: coordinates[] = []
+
+  controls: FormArray
   constructor(
     private notesService: NotesService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+
     this.noteCoordinates = coordinates
 
     this.notesService$ = this.notesService.connect(this.boardName)
@@ -72,13 +75,23 @@ export class BoardComponent implements OnInit {
         }
   
       this.cd.markForCheck()
-     })    
+     })
+
+     const toGroups = this.notes.map(note => {
+      return new FormGroup({
+        body: new FormControl(note.body, Validators.required)
+      })
+    })
+    this.controls = new FormArray(toGroups);
   }
 
   ngOnDestroy() {
     this.notesService$.unsubscribe()
   }
 
+  getControl(index: number) : FormControl {
+    return this.controls.get(index)
+  }
 
   deleteNote(note: Note) {
     this.notesService$.next({

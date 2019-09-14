@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, HostBinding, Output, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter, ElementRef, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { NotesService } from 'src/app/services/notes.service';
 import { Note, coordinates } from 'src/app/models/models';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-note',
@@ -14,9 +15,7 @@ export class NoteComponent implements OnInit {
   @Input() note: Note
   @HostBinding('style')
   public get getPosition(): SafeStyle { 
-    console.log('update top')
     const transformString = this.sanitizer.bypassSecurityTrustStyle(`transform: translate3d(${this.note.left}px, ${this.note.top}px, 0px);`);
-    console.log('transformString: ', transformString)
     return transformString } 
     
   // @HostBinding('style.left.px')
@@ -24,8 +23,7 @@ export class NoteComponent implements OnInit {
   //   console.log('update left')
   //   return this.note.left  } 
   @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
- 
-  constructor(
+    constructor(
     private elRef: ElementRef,
     private sanitizer: DomSanitizer
     ) {     

@@ -16,6 +16,8 @@ import { BoardComponent } from './components/board/board.component';
 import { NewNoteComponent } from './components/new-note/new-note.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoteComponent } from './components/note/note.component';
+import { ViewModeDirective } from './directives/view-mode.directive';
+import { EditModeDirective } from './directives/edit-mode.directive';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { NoteComponent } from './components/note/note.component';
     HomePageComponent,
     BoardComponent,
     NewNoteComponent,
-    NoteComponent
+    NoteComponent,
+    ViewModeDirective,
+    EditModeDirective
   ],
   imports: [
     AppRoutingModule,

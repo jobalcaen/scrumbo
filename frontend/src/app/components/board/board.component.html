@@ -4,7 +4,7 @@
 </div>
 <div class="canvas">
   <app-note
-  *ngFor="let note of notes"
+  *ngFor="let note of notes; index as index"
   cdkDrag
   [note]="note"
   (deleteNote)="deleteNote($event)"
