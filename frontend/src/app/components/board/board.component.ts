@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
-import { MultiViewChild } from '../../helpers/multi-viewchild.decorator'
 
 const coordinates = [
   {
@@ -32,6 +31,8 @@ enum event_type {
 export class BoardComponent implements OnInit {
 
   @ViewChildren(NoteComponent) noteChildren: QueryList<NoteComponent>
+
+  dragPosition = {x: 50, y: 50}
   notes: Note[] = []
   boardName = window.location.pathname
   notesService$: WebSocketSubject<websocketEvent>

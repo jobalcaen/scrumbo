@@ -4,10 +4,13 @@
 </div>
 <div class="canvas">
   <app-note
-  cdkDrag
   *ngFor="let note of notes"
+  cdkDrag
   [note]="note"
   (deleteNote)="deleteNote($event)"
-  (cdkDragEnded)="dragEnd(note)"></app-note>
+  (cdkDragEnded)="dragEnd(note)"
+  ></app-note>
+  
   
 </div>
+

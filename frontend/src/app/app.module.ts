@@ -33,7 +33,6 @@ import { NoteComponent } from './components/note/note.component';
     BrowserAnimationsModule,
     BrowserModule,
     CommonModule,
-    DragDropModule,
     FormsModule,
     HttpClientModule,
     MaterialModule,

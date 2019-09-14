@@ -2,6 +2,7 @@ import { Component, OnInit, Input, HostBinding, Output, EventEmitter, ElementRef
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { NotesService } from 'src/app/services/notes.service';
 import { Note, coordinates } from 'src/app/models/models';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-note',
@@ -11,19 +12,22 @@ import { Note, coordinates } from 'src/app/models/models';
 export class NoteComponent implements OnInit {
 
   @Input() note: Note
-  @HostBinding('style.top.px')
-  public get getTopPosition(): number { 
+  @HostBinding('style')
+  public get getPosition(): SafeStyle { 
     console.log('update top')
-    return this.note.top  } 
+    const transformString = this.sanitizer.bypassSecurityTrustStyle(`transform: translate3d(${this.note.left}px, ${this.note.top}px, 0px);`);
+    console.log('transformString: ', transformString)
+    return transformString } 
     
-  @HostBinding('style.left.px')
-  public get getLeftPosition(): number { 
-    console.log('update left')
-    return this.note.left  } 
+  // @HostBinding('style.left.px')
+  // public get getLeftPosition(): number { 
+  //   console.log('update left')
+  //   return this.note.left  } 
   @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
  
   constructor(
     private elRef: ElementRef,
+    private sanitizer: DomSanitizer
     ) {     
   }
 
