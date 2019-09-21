@@ -89,9 +89,9 @@ export class BoardComponent implements OnInit {
     this.notesService$.unsubscribe()
   }
 
-  getControl(index: number) : FormControl {
-    return this.controls.get(index)
-  }
+  // getControl(index: number) : FormControl {
+  //   return this.controls.get(index)
+  // }
 
   deleteNote(note: Note) {
     this.notesService$.next({
