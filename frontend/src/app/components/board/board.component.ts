@@ -55,25 +55,33 @@ export class BoardComponent implements OnInit {
       switch (event.type) {
         case event_type.CONNECT:
           this.notes = event.payload.notes
-          break;
+          break
         case event_type.DELETE:
-          this.notes = this.notes.filter(note => note.id !== event.payload.note_id)
-          break;
+          this.notes = this.notes.filter(note => note.id !== event.payload.id)
+          break
         case event_type.ADD:
           this.notes.push(event.payload.note)
-          break;
+          break
         case event_type.MOVE:
           this.notes.map((note) => {
-            if(note.id === event.payload.note_id){
+            if(note.id === event.payload.id){
               note.top = event.payload.top
               note.left = event.payload.left
             }
-            console.log('update note: ')
             return note
           })
-          break;
+          break
+        case event_type.EDIT:
+          console.log(event.payload.body)
+          this.notes.map((note) => {
+            if(note.id === event.payload.id){
+              note.body = event.payload.body
+            }
+            console.log('edit note: ', note)
+            return note      
+          })
+          break
         }
-  
       this.cd.markForCheck()
      })
 
@@ -97,7 +105,17 @@ export class BoardComponent implements OnInit {
     this.notesService$.next({
       type: event_type.DELETE,
       payload: {
-        note_id: note.id
+        id: note.id
+      }
+    })
+  }
+  updateNote(note: Note) {
+    console.log('updated body', note.body)
+    this.notesService$.next({
+      type: event_type.EDIT,
+      payload: {
+        id: note.id,
+        body: note.body
       }
     })
   }
@@ -112,13 +130,17 @@ export class BoardComponent implements OnInit {
         this.notesService$.next({
           type: event_type.MOVE,
           payload: {
-            note_id: note.id,
+            id: note.id,
             top: coortdinates.top,
             left: coortdinates.left,
           }
         })
       }
     })
+  }
+
+  trackByFn(note){
+    return note.id
   }
 
 }

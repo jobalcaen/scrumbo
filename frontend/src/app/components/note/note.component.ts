@@ -5,7 +5,7 @@ import { Note, coordinates } from 'src/app/models/models';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, fromEvent } from 'rxjs';
-import { filter, take, switchMap, tap, combineLatest } from 'rxjs/operators';
+import { filter, take, switchMap, tap, combineLatest, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-note',
@@ -22,9 +22,10 @@ export class NoteComponent implements OnInit {
     return transformString } 
     
     noteForm = new FormGroup({
-      name: new FormControl('', [
-        Validators.maxLength(500)
-      ])
+      body: new FormControl('', {
+        validators: Validators.maxLength(500),
+        updateOn: 'blur'
+      }), 
     })
 
     mode: 'view' | 'edit' = 'view';
@@ -48,18 +49,28 @@ export class NoteComponent implements OnInit {
    private editModeHandler() {
     const clickedOutside$ = fromEvent(document, 'click').pipe(
       filter(event => this.elRef.nativeElement.contains(event.target) === false),
-      take(1)
+      first()
     )
 
     this.editMode$.pipe(
       switchMap(() => clickedOutside$)
-    ).subscribe(event => {
-      console.log('view mode')
+    ).subscribe(() => {
       this.mode = 'view'
+      const updatedNote = {
+        ...this.note,
+        body: this.noteForm.value.body
+      }
+      if (this.note.body !== this.noteForm.value.body){
+        this.note.body = this.noteForm.value.body
+        console.log('note to send: ', )
+        this.updateNote.emit(updatedNote)
+      }
       this.cd.markForCheck()
+
     })
   }
   @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
+  @Output() updateNote: EventEmitter<Note> = new EventEmitter()
     constructor(
     private elRef: ElementRef,
     private sanitizer: DomSanitizer,
@@ -67,12 +78,15 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.noteForm.setValue({body: this.note.body})
     this.viewModeHandler()
     this.editModeHandler()
   }
   deleteNoteEmit(){
     this.deleteNote.emit(this.note)
   }
+
+
 
   getClientPosition(){
     return this.elRef.nativeElement.getBoundingClientRect()

@@ -5,7 +5,6 @@
 
 <ng-template #editMote>
     <form [formGroup]="noteForm">
-        <input formControlName="name" matInput type="text" required maxlength="30" placeholder="Board name">
-    {{ note.body }}
+        <input formControlName="body" matInput type="text">
     </form>
 </ng-template>

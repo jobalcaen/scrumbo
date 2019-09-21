@@ -4,16 +4,12 @@
 </div>
 <div class="canvas">
   <app-note
-    *ngFor="let note of notes; index as index"
+    *ngFor="let note of notes; trackBy: trackByFn"
     cdkDrag
     [note]="note"
     (deleteNote)="deleteNote($event)"
     (cdkDragEnded)="dragEnd(note)"
-    (update)="updateField(index)">
-      <!-- <ng-template viewMode>{{note.body}}</ng-template>
-      <ng-template editMode>
-        <input [formControl]="getControl(index)" focusable>
-      </ng-template> -->
+    (updateNote)="updateNote($event)">
   </app-note>
 </div>
 

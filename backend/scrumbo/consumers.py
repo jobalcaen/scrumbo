@@ -48,10 +48,10 @@ class BoardConsumer(AsyncWebsocketConsumer):
         return serializer.data
 
     @database_sync_to_async
-    def update_note(self):
+    def update_note(self, event):
         print('edit note triggered')
-        board = Board.objects.get(url_friendly_name=self.board_name)
-        serializer = NoteSerializer(data={'body': ''}, context={'board': board})
+        note = Note.objects.get(pk=event['id'])
+        serializer = NoteSerializer(note, data={'body': event['body']}, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
@@ -59,7 +59,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def move_note(self, event):
         print('edit note triggered', event)
-        note = Note.objects.get(pk=event['note_id'])
+        note = Note.objects.get(pk=event['id'])
         serializer = NoteSerializer(note, data={'top': event['top'], 'left': event['left']}, partial=True)
 
         serializer.is_valid(raise_exception=True)
@@ -69,9 +69,9 @@ class BoardConsumer(AsyncWebsocketConsumer):
         return serializer.data
 
     @database_sync_to_async
-    def delete_note(self, note_id):
+    def delete_note(self, id):
         print('delete note triggered')
-        note = Note.objects.get(pk=note_id)
+        note = Note.objects.get(pk=id)
         return note.delete()
 
     
@@ -98,13 +98,13 @@ class BoardConsumer(AsyncWebsocketConsumer):
         
         elif event_type == 'note.delete':
             print('event', event)
-            await self.delete_note(event['payload']['note_id'])
+            await self.delete_note(event['payload']['id'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
                     'type': 'note_delete',
                     'payload': {
-                        'note_id': event['payload']['note_id']
+                        'id': event['payload']['id']
                     }
                    
                 }                
@@ -117,10 +117,21 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 {
                     'type': 'note_move',
                     'payload': {
-                        'note_id': event['payload']['note_id'],
+                        'id': event['payload']['id'],
                         'top': event['payload']['top'],
                         'left': event['payload']['left']
                     }
+                }           
+            )
+
+        elif event_type == 'note.edit':
+            updated_note = await self.update_note(event['payload'])
+            print('updated note: ', updated_note)
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'note_edit',
+                    'payload': updated_note
                 }           
             )
 
@@ -146,5 +157,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def note_move(self, event):
         await self.send(text_data=json.dumps({
             'type': 'note.move',
+            'payload': event['payload']
+        }))
+        
+    async def note_edit(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'note.edit',
             'payload': event['payload']
         }))

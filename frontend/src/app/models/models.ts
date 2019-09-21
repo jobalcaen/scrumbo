@@ -21,9 +21,10 @@ export interface websocketEvent {
     payload: {
         notes?: Note[],
         note?: Note,
-        note_id?: number,
+        id?: number,
         top?: number,
-        left?: number
+        left?: number,
+        body?: string
     }
 }
 
