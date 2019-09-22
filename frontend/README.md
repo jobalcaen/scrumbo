@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-ng build  --output-path ../backend/scrumbo/static/scrumbo/ --watch --output-hashing none
+`ng build  --output-path ../backend/scrumbo/static/scrumbo/ --watch --output-hashing none`
 
 
 ## Running unit tests
