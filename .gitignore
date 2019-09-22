@@ -6,4 +6,3 @@ coverage/
 
 backend/.env
 backend/db.sqlite3
-backend/scrumbo/static/scrumbo/
