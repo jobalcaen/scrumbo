@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { AppRoutingModule } from './app-routing.module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import {MaterialModule} from './common/material.module';
+import {CustomMaterialModule} from './common/material.module';
 import { FormsModule } from '@angular/forms';
 
 import { BoardFormComponent } from './components/board-form/board-form.component';
@@ -39,7 +39,7 @@ import { EditModeDirective } from './directives/edit-mode.directive';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    MaterialModule,
+    CustomMaterialModule,
     ReactiveFormsModule
   ],
   providers: [],

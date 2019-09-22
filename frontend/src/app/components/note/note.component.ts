@@ -62,7 +62,6 @@ export class NoteComponent implements OnInit {
       }
       if (this.note.body !== this.noteForm.value.body){
         this.note.body = this.noteForm.value.body
-        console.log('note to send: ', )
         this.updateNote.emit(updatedNote)
       }
       this.cd.markForCheck()
@@ -86,12 +85,8 @@ export class NoteComponent implements OnInit {
     this.deleteNote.emit(this.note)
   }
 
-
-
   getClientPosition(){
     return this.elRef.nativeElement.getBoundingClientRect()
   }
-
-
 
 }

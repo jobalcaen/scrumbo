@@ -1,13 +1,7 @@
-import asyncio
 import json
-from channels.consumer import AsyncConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 from channels.db import database_sync_to_async
-from asgiref.sync import async_to_sync
 from scrumbo.serializers.note import NoteSerializer
-from rest_framework.renderers import JSONRenderer
-
 from .models import Board, Note
 
 class BoardConsumer(AsyncWebsocketConsumer):
@@ -49,7 +43,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def update_note(self, event):
-        print('edit note triggered')
         note = Note.objects.get(pk=event['id'])
         serializer = NoteSerializer(note, data={'body': event['body']}, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -58,32 +51,22 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def move_note(self, event):
-        print('edit note triggered', event)
         note = Note.objects.get(pk=event['id'])
         serializer = NoteSerializer(note, data={'top': event['top'], 'left': event['left']}, partial=True)
-
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print('serializer.data ', serializer.data)
-        print('serializer.data ', serializer.errors)
         return serializer.data
 
     @database_sync_to_async
-    def delete_note(self, id):
-        print('delete note triggered')
-        note = Note.objects.get(pk=id)
+    def delete_note(self, note_id):
+        note = Note.objects.get(pk=note_id)
         return note.delete()
 
-    
     #receive messages from web socket
     async def receive(self, text_data):
-        print('text: ', text_data)
         event = json.loads(text_data)
-        
         event_type = event['type']
-        print(event_type, 'event_type')
 
-        # Send message to room group
         if event_type == 'note.add':
             new_note = await self.create_note(event['payload']['note'])
             await self.channel_layer.group_send(
@@ -93,7 +76,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'payload': {
                         'note': new_note
                     }
-                }                
+                }
             )
         
         elif event_type == 'note.delete':
@@ -106,7 +89,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'payload': {
                         'id': event['payload']['id']
                     }
-                   
                 }                
             )
 
@@ -126,7 +108,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         elif event_type == 'note.edit':
             updated_note = await self.update_note(event['payload'])
-            print('updated note: ', updated_note)
             await self.channel_layer.group_send(
                 self.board_name,
                 {
@@ -136,7 +117,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
             )
 
 
-    async def disconnect(self, close_code):
+    async def disconnect(self):
         await self.channel_layer.group_discard(
             self.board_name,
             self.channel_name

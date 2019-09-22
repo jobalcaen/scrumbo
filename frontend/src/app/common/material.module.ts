@@ -26,4 +26,4 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatButtonModule
   ]
 })
-export class  MaterialModule {}
+export class  CustomMaterialModule {}

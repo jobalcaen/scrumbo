@@ -1,5 +1,7 @@
 <ng-container *ngIf="mode === 'view'; else editMote">
-    <span (click)="deleteNoteEmit()">DELETE ME</span>
+    <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()">close</mat-icon>
+
+
     {{ note.body }}
 </ng-container>
 

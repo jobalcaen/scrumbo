@@ -14,9 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path, re_path, include
+from django.urls import path
 from django.contrib import admin
-from django.views.generic.base import TemplateView
 from scrumbo import views
 
 
@@ -25,11 +24,5 @@ urlpatterns = [
     path('api/boards/', views.BoardListView.as_view()),
 
     path('api/boards/<int:board_id>/', views.BoardView.as_view()),
-    path('api/boards/<slug:board_url>/', views.BoardView.as_view()),
-
-    path('api/boards/<int:board_id>/notes/', views.NoteListView.as_view()),
-    path('api/boards/<slug:board_url>/notes/', views.NoteListView.as_view()),
-
-    path('api/boards/<int:board_id>/notes/<int:note_id>', views.NoteView.as_view()),
-    path('api/boards/<slug:board_url>/notes/<int:note_id>', views.NoteListView.as_view()),
+    path('api/boards/<slug:board_url>/', views.BoardView.as_view())
 ]

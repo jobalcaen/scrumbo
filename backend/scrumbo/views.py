@@ -20,34 +20,6 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
     def enforce_csrf(self, request):
         return  # To not perform the csrf check previously happening
 
-class NoteListView(generics.ListCreateAPIView):
-    serializer_class = NoteSerializer
-
-    def board_getter(self):
-        if 'board_url' in self.kwargs:
-            return Board.objects.get(url_friendly_name=self.kwargs['board_url'])
-
-        elif 'board_id' in self.kwargs:
-            return Board.objects.get(pk=self.kwargs['board_id'])
-
-    def get_queryset(self):
-        return Note.objects.filter(board=self.board_getter())
-
-    def create(self, request, *args, **kwargs):
-        serializer = NoteSerializer(data=request.data, context={'board': self.board_getter()})
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-class NoteView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_url_kwarg = 'note_id'
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
-
 class BoardView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
