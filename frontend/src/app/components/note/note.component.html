@@ -1,7 +1,5 @@
 <ng-container *ngIf="mode === 'view'; else editMote">
-    <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()">close</mat-icon>
-
-
+    <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon>
     {{ note.body }}
 </ng-container>
 

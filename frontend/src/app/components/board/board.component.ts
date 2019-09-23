@@ -12,8 +12,12 @@ const coordinates = [
     left: 50
   },
   {
-    top: 200,
-    left: 200
+    top: 150,
+    left: 50
+  },
+  {
+    top: 250,
+    left: 50
   }
 ]
 

@@ -18,7 +18,7 @@ export class NoteComponent implements OnInit {
   @Input() note: Note
   @HostBinding('style')
   public get getPosition(): SafeStyle { 
-    const transformString = this.sanitizer.bypassSecurityTrustStyle(`transform: translate3d(${this.note.left}px, ${this.note.top}px, 0px);`);
+    const transformString = this.sanitizer.bypassSecurityTrustStyle(`transform: translate3d(${this.note.left}px, ${this.note.top}px, 0px) rotate(${this.rotation}deg);`);
     return transformString } 
     
     noteForm = new FormGroup({
@@ -29,6 +29,7 @@ export class NoteComponent implements OnInit {
     })
 
     mode: 'view' | 'edit' = 'view';
+    rotation: number
 
     
     editMode = new Subject()
@@ -78,6 +79,7 @@ export class NoteComponent implements OnInit {
 
   ngOnInit() {
     this.noteForm.setValue({body: this.note.body})
+    this.rotation = this.setRotation()
     this.viewModeHandler()
     this.editModeHandler()
   }
@@ -89,4 +91,9 @@ export class NoteComponent implements OnInit {
     return this.elRef.nativeElement.getBoundingClientRect()
   }
 
+  setRotation(){
+    let degrees = Math.floor(Math.random()*7)
+    degrees *= Math.floor(Math.random()*2) == 1 ? 1 : -1
+    return degrees
+  }
 }

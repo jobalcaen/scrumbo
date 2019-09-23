@@ -2,8 +2,13 @@
     display: block;
     word-wrap: break-word;
     width: 100px;
-    overflow: scroll;
+    overflow: auto;
     height: 100px;
     background-color: bisque;
+    position: fixed;
+}
+
+.close-button {
+    display: inline-block;
     position: fixed;
 }

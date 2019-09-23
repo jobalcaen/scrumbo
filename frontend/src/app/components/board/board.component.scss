@@ -1,5 +1,11 @@
 :host {
     display: grid;
     grid-template-columns: 50px auto;
-    grid-template-rows: 500px;
+    grid-template-rows: minmax(500px, 100vh);
+}
+
+.palette {
+    flex-direction: column;
+    display: flex;
+    justify-content: space-evenly;
 }
