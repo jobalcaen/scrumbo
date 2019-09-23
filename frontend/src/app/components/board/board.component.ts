@@ -130,13 +130,13 @@ export class BoardComponent implements OnInit {
       if (noteCmp.note.id === note.id) {
 
         const coortdinates = noteCmp.getClientPosition()
-
+        console.log('coortdinates ', coortdinates)
         this.notesService$.next({
           type: event_type.MOVE,
           payload: {
             id: note.id,
-            top: coortdinates.top,
-            left: coortdinates.left,
+            top: Math.floor(coortdinates.top),
+            left: Math.floor(coortdinates.left),
           }
         })
       }
