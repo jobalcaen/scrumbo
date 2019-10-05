@@ -1,14 +1,34 @@
+$note-bg-color: bisque;
+
 :host {
     display: block;
     word-wrap: break-word;
-    width: 100px;
+    width: 150px;
     overflow: auto;
-    height: 100px;
-    background-color: bisque;
+    height: 175px;
+    background-color: $note-bg-color;
     position: fixed;
+    padding: 4px;
+
 }
 
 .close-button {
     display: inline-block;
     position: fixed;
+}
+
+form {
+    height: 100%;
+    width: 100%;
+}
+
+textarea {
+    outline: none;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: $note-bg-color;
+    padding: 0;
+    border: 0;
 }
