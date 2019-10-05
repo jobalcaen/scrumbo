@@ -16,11 +16,7 @@ import { filter, take, switchMap, tap, combineLatest, first } from 'rxjs/operato
 export class NoteComponent implements OnInit {
 
   @Input() note: Note
-  @HostBinding('style')
-  public get getPosition(): SafeStyle { 
-    const transformString = this.sanitizer.bypassSecurityTrustStyle(`transform: translate3d(${this.note.left}px, ${this.note.top}px, 0px) rotate(${this.rotation}deg);`);
-    return transformString } 
-    
+  
     noteForm = new FormGroup({
       body: new FormControl('', {
         validators: Validators.maxLength(500),
@@ -85,10 +81,6 @@ export class NoteComponent implements OnInit {
   }
   deleteNoteEmit(){
     this.deleteNote.emit(this.note)
-  }
-
-  getClientPosition(){
-    return this.elRef.nativeElement.getBoundingClientRect()
   }
 
   setRotation(){

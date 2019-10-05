@@ -5,6 +5,7 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 const coordinates = [
   {
@@ -36,7 +37,6 @@ enum event_type {
 export class BoardComponent implements OnInit {
 
   @ViewChildren(NoteComponent) noteChildren: QueryList<NoteComponent>
-  dragPosition = {x: 50, y: 50}
   notes: Note[] = []
   boardName = window.location.pathname
   notesService$: WebSocketSubject<websocketEvent>
@@ -101,10 +101,6 @@ export class BoardComponent implements OnInit {
     this.notesService$.unsubscribe()
   }
 
-  // getControl(index: number) : FormControl {
-  //   return this.controls.get(index)
-  // }
-
   deleteNote(note: Note) {
     this.notesService$.next({
       type: event_type.DELETE,
@@ -124,26 +120,20 @@ export class BoardComponent implements OnInit {
     })
   }
 
-  dragEnd(note: Note) {
-    
-    this.noteChildren.forEach((noteCmp: NoteComponent) => {
-      if (noteCmp.note.id === note.id) {
-
-        const coortdinates = noteCmp.getClientPosition()
-        console.log('coortdinates ', coortdinates)
-        this.notesService$.next({
-          type: event_type.MOVE,
-          payload: {
-            id: note.id,
-            top: Math.floor(coortdinates.top),
-            left: Math.floor(coortdinates.left),
-          }
-        })
+  dragEnd(evt: CdkDragEnd) {
+    this.notesService$.next({
+      type: event_type.MOVE,
+      payload: {
+        id: evt.source.data.id,
+        top: evt.source.data.top + evt.distance.y,
+        left: evt.source.data.left + evt.distance.x
       }
     })
   }
+ 
+  
 
-  trackByFn(note){
+  trackByFn(note: Note){
     return note.id
   }
 
