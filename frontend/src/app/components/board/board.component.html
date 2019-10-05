@@ -6,6 +6,7 @@
   <app-note
     *ngFor="let note of notes; trackBy: trackByFn"
     cdkDrag
+    [cdkDragFreeDragPosition]="dragPosition"
     [note]="note"
     (deleteNote)="deleteNote($event)"
     (cdkDragEnded)="dragEnd(note)"
