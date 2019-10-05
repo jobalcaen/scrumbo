@@ -1,10 +1,13 @@
-<ng-container *ngIf="mode === 'view'; else editMote">
+<ng-container *ngIf="mode === 'view'; else editMote" body-1>
     <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon>
     {{ note.body }}
 </ng-container>
 
 <ng-template #editMote>
     <form [formGroup]="noteForm">
-        <textarea formControlName="body" matInput type="text"></textarea>
+        <textarea formControlName="body" matInput type="text" class="body-1"></textarea>
     </form>
+    <h1 class="mat-display-1">Jackdaws love my big sphinx of quartz.</h1>
+
+    <div class="body-2"> hello</div>
 </ng-template>

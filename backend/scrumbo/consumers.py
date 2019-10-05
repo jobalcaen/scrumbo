@@ -117,7 +117,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
             )
 
 
-    async def disconnect(self):
+    async def disconnect(self, code):
         await self.channel_layer.group_discard(
             self.board_name,
             self.channel_name

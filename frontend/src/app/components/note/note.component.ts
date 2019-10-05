@@ -10,8 +10,7 @@ import { filter, take, switchMap, tap, combineLatest, first } from 'rxjs/operato
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./note.component.scss']
 })
 export class NoteComponent implements OnInit {
 
@@ -37,7 +36,6 @@ export class NoteComponent implements OnInit {
         if (this.mode !== 'edit') {
           this.mode = 'edit'
           this.editMode.next(true)
-          this.cd.markForCheck()
         }
         
      })
@@ -61,8 +59,6 @@ export class NoteComponent implements OnInit {
         this.note.body = this.noteForm.value.body
         this.updateNote.emit(updatedNote)
       }
-      this.cd.markForCheck()
-
     })
   }
   @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
