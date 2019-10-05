@@ -65,7 +65,6 @@ export class NoteComponent implements OnInit {
   @Output() updateNote: EventEmitter<Note> = new EventEmitter()
     constructor(
     private elRef: ElementRef,
-    private sanitizer: DomSanitizer,
     private cd: ChangeDetectorRef ) {     
   }
 

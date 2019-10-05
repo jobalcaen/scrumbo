@@ -133,7 +133,7 @@ export class BoardComponent implements OnInit {
  
   
 
-  trackByFn(note: Note){
+  trackByFn(note: Note) {
     return note.id
   }
 

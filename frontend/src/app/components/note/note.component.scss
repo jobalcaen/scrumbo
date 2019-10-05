@@ -6,6 +6,11 @@ $note-bg-color: bisque;
     background-color: $note-bg-color;
     position: fixed;
     padding: 4px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+
+    &:not(:hover) {
+         transition: 0.3s;
+    }
 }
 
 .close-button {

@@ -11,7 +11,8 @@
     (deleteNote)="deleteNote($event)"
     (cdkDragEnded)="dragEnd($event)"
     [cdkDragData]="note"
-    (updateNote)="updateNote($event)">
+    (updateNote)="updateNote($event)"
+    cdkDragBoundary=".canvas">
   </app-note>
 </div>
 
