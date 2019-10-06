@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {CustomMaterialModule} from './common/material.module';
 import { FormsModule } from '@angular/forms';
 
-import { BoardFormComponent } from './components/board-form/board-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardComponent } from './components/board/board.component';
@@ -23,7 +22,6 @@ import { EditModeDirective } from './directives/edit-mode.directive';
 @NgModule({
   declarations: [
     AppComponent,
-    BoardFormComponent,
     PageNotFoundComponent,
     HomePageComponent,
     BoardComponent,

@@ -1,5 +1,21 @@
 <h1>Scrumbo</h1>
 <p>A free and easy scrum board</p>
-<app-board-form></app-board-form>
+<mat-form-field>
+    <form [formGroup]="boardForm" (ngSubmit)="onSubmit()" id="boardForm">
+        <input formControlName="name" matInput type="text" required maxlength="30" placeholder="Board name">
+        
+        <mat-error *ngIf="boardForm.controls.name.errors?.pattern">
+            Alpha numberic values only
+        </mat-error>
+        
+        <mat-error *ngIf="boardForm.controls.name.errors?.boardNameTaken">
+            This board name has already been taken
+        </mat-error>
+
+    </form>
+
+</mat-form-field>
+
+<button type="submit" mat-raised-button color="primary" form="boardForm"  [disabled]="boardForm.invalid">Submit</button>
 
 

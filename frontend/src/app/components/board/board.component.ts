@@ -62,7 +62,6 @@ export class BoardComponent implements OnInit {
     private notesService: NotesService,
     private cd: ChangeDetectorRef,
 
-    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -73,16 +72,20 @@ export class BoardComponent implements OnInit {
 
     this.notesService$.subscribe((event: websocketEvent) => {
       console.log('event', event)
+      
       switch (event.type) {
         case event_type.CONNECT:
           this.notes = event.payload.notes
           break
+
         case event_type.DELETE:
           this.notes = this.notes.filter(note => note.id !== event.payload.id)
           break
+          
         case event_type.ADD:
           this.notes.push(event.payload.note)
           break
+
         case event_type.MOVE:
           this.notes.map((note) => {
             if(note.id === event.payload.id){
@@ -92,16 +95,16 @@ export class BoardComponent implements OnInit {
             return note
           })
           break
+
         case event_type.EDIT:
-          console.log(event.payload.body)
           this.notes.map((note) => {
             if(note.id === event.payload.id){
               note.body = event.payload.body
             }
-            console.log('edit note: ', note)
             return note      
           })
           break
+
         }
       this.cd.markForCheck()
      })
@@ -126,8 +129,8 @@ export class BoardComponent implements OnInit {
       }
     })
   }
+
   updateNote(note: Note) {
-    console.log('updated body', note.body)
     this.notesService$.next({
       type: event_type.EDIT,
       payload: {
@@ -148,24 +151,8 @@ export class BoardComponent implements OnInit {
     })
   }
  
-  
-
-  trackByFn(note: Note) {
-    return note.id
+  trackByFn(index) {
+    return index
   }
-
-  setRotation() {
-    let degrees = Math.floor(Math.random()*7)
-    degrees *= Math.floor(Math.random()*2) == 1 ? 1 : -1
-    console.log('degrees', degrees)
-    // const new
-   
-    return `rotate(${degrees}deg)`
-
-    // return this.sanitizer.bypassSecurityTrustStyle({`transform: rotate(${degrees}deg)`})
-
-  
-  }
-
 
 }

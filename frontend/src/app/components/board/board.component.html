@@ -4,7 +4,7 @@
 </div>
 <div class="canvas">
   <app-note
-    *ngFor="let note of notes; trackBy: trackByFn"
+    *ngFor="let note of notes;trackBy: trackByFn"
     cdkDrag
     [cdkDragFreeDragPosition]="{x: note.left, y: note.top}"
     [note]="note"
