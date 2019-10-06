@@ -15,7 +15,8 @@ import { filter, take, switchMap, tap, combineLatest, first } from 'rxjs/operato
 export class NoteComponent implements OnInit {
 
   @Input() note: Note
-  
+
+ 
     noteForm = new FormGroup({
       body: new FormControl('', {
         validators: Validators.maxLength(500),
@@ -24,7 +25,7 @@ export class NoteComponent implements OnInit {
     })
 
     mode: 'view' | 'edit' = 'view';
-    rotation: number
+    rotationString: any
 
     
     editMode = new Subject()
@@ -65,12 +66,13 @@ export class NoteComponent implements OnInit {
   @Output() updateNote: EventEmitter<Note> = new EventEmitter()
     constructor(
     private elRef: ElementRef,
-    private cd: ChangeDetectorRef ) {     
+    private cd: ChangeDetectorRef,
+    private sanitizer: DomSanitizer ) {     
   }
 
   ngOnInit() {
     this.noteForm.setValue({body: this.note.body})
-    this.rotation = this.setRotation()
+    this.rotationString = this.setRotation()
     this.viewModeHandler()
     this.editModeHandler()
   }
@@ -79,8 +81,8 @@ export class NoteComponent implements OnInit {
   }
 
   setRotation(){
-    let degrees = Math.floor(Math.random()*7)
+    let degrees = Math.floor(Math.random()*4)
     degrees *= Math.floor(Math.random()*2) == 1 ? 1 : -1
-    return degrees
+    return {'transform': `rotate(${degrees}deg)`}
   }
 }

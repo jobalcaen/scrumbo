@@ -6,20 +6,35 @@ import { NotesService } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 
 const coordinates = [
   {
     top: 50,
-    left: 50
+    left: 50,
+    color: '#ACC1FF'
   },
   {
     top: 150,
-    left: 50
+    left: 50,
+    color: '#C7EEFF'
   },
   {
-    top: 250,
-    left: 50
-  }
+    top: 150,
+    left: 50,
+    color: '#FFAEAE'
+  },
+  {
+    top: 150,
+    left: 50,
+    color: '#FFEC94'
+  },
+  {
+    top: 150,
+    left: 50,
+    color: '#B0E57C'
+  },
+
 ]
 
 enum event_type {
@@ -45,7 +60,9 @@ export class BoardComponent implements OnInit {
   controls: FormArray
   constructor(
     private notesService: NotesService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -136,5 +153,19 @@ export class BoardComponent implements OnInit {
   trackByFn(note: Note) {
     return note.id
   }
+
+  setRotation() {
+    let degrees = Math.floor(Math.random()*7)
+    degrees *= Math.floor(Math.random()*2) == 1 ? 1 : -1
+    console.log('degrees', degrees)
+    // const new
+   
+    return `rotate(${degrees}deg)`
+
+    // return this.sanitizer.bypassSecurityTrustStyle({`transform: rotate(${degrees}deg)`})
+
+  
+  }
+
 
 }

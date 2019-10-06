@@ -1,7 +1,9 @@
-<ng-container *ngIf="mode === 'view'; else editMote" body-1>
-    <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon>
-    {{ note.body }}
-</ng-container>
+<div class="note-background" [ngStyle]="rotationString">
+    <ng-container *ngIf="mode === 'view'; else editMote" body-1>
+        <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon>
+        {{ note.body }}
+    </ng-container>
+</div>
 
 <ng-template #editMote>
     <form [formGroup]="noteForm">
