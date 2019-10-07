@@ -13,27 +13,27 @@ const coordinates = [
     top: 50,
     left: 50,
     color: '#ACC1FF'
-  },
-  {
-    top: 150,
-    left: 50,
-    color: '#C7EEFF'
-  },
-  {
-    top: 150,
-    left: 50,
-    color: '#FFAEAE'
-  },
-  {
-    top: 150,
-    left: 50,
-    color: '#FFEC94'
-  },
-  {
-    top: 150,
-    left: 50,
-    color: '#B0E57C'
-  },
+  }
+  // {
+  //   top: 150,
+  //   left: 50,
+  //   color: '#C7EEFF'
+  // },
+  // {
+  //   top: 150,
+  //   left: 50,
+  //   color: '#FFAEAE'
+  // },
+  // {
+  //   top: 150,
+  //   left: 50,
+  //   color: '#FFEC94'
+  // },
+  // {
+  //   top: 150,
+  //   left: 50,
+  //   color: '#B0E57C'
+  // },
 
 ]
 

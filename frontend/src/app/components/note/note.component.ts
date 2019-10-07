@@ -1,11 +1,8 @@
-import { Component, OnInit, Input, HostBinding, Output, EventEmitter, ElementRef, ChangeDetectorRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
-import { CdkDrag } from '@angular/cdk/drag-drop';
-import { NotesService } from 'src/app/services/notes.service';
-import { Note, coordinates } from 'src/app/models/models';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Note } from 'src/app/models/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, fromEvent } from 'rxjs';
-import { filter, take, switchMap, tap, combineLatest, first } from 'rxjs/operators';
+import { filter, switchMap, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-note',
@@ -43,6 +40,7 @@ export class NoteComponent implements OnInit {
    }
 
    private editModeHandler() {
+
     const clickedOutside$ = fromEvent(document, 'click').pipe(
       filter(event => this.elRef.nativeElement.contains(event.target) === false),
       first()
@@ -75,6 +73,7 @@ export class NoteComponent implements OnInit {
     this.viewModeHandler()
     this.editModeHandler()
   }
+
   deleteNoteEmit(){
     this.deleteNote.emit(this.note)
   }
