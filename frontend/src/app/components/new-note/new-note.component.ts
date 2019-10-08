@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
-import { coordinates } from 'src/app/models/models';
+import { NewNoteButton, websocketEvent } from 'src/app/models/models';
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 
 @Component({
@@ -10,9 +11,11 @@ import { coordinates } from 'src/app/models/models';
 })
 export class NewNoteComponent implements OnInit {
 
-  @Input() startCoordinates: coordinates
-  notesService$
+  @Input() noteButtonInformation: NewNoteButton
+  notesService$: WebSocketSubject<websocketEvent>
   boardName = window.location.pathname
+
+  color: string
 
   constructor(
     private notesService: NotesService
@@ -21,8 +24,11 @@ export class NewNoteComponent implements OnInit {
     }
 
   ngOnInit() {
+    console.log(this.noteButtonInformation)
+    this.color = this.noteButtonInformation.color
     this.notesService$ = this.notesService.connect(this.boardName)
     this.notesService$.subscribe()
+
   }
 
   createNote() {
@@ -30,13 +36,17 @@ export class NewNoteComponent implements OnInit {
       type: 'note.add',
       payload: {
         note: {
-          top: this.startCoordinates.top,
-          left: this.startCoordinates.left,
+          top: this.noteButtonInformation.top,
+          left: this.noteButtonInformation.left,
           body: ''
         }
       }
 
     })
+  }
+
+  ngOnDestroy() {
+    this.notesService$.unsubscribe()
   }
 
 }

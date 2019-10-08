@@ -1,6 +1,6 @@
 
 <div class="palette">
-  <app-new-note  *ngFor="let coords of noteCoordinates" [startCoordinates]="coords" ></app-new-note>
+  <app-new-note  *ngFor="let noteButton of noteButtons" [noteButtonInformation]="noteButton" ></app-new-note>
 </div>
 <div class="canvas">
   <app-note

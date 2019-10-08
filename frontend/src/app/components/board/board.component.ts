@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, QueryList, ContentChildren, ViewChildren, ElementRef } from '@angular/core';
-import { Board, coordinates, Note, websocketEvent } from 'src/app/models/models';
+import { Board, Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService } from 'src/app/services/notes.service';
@@ -8,7 +8,7 @@ import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 
-const coordinates = [
+const noteButtons = [
   {
     top: 50,
     left: 50,
@@ -55,7 +55,7 @@ export class BoardComponent implements OnInit {
   notes: Note[] = []
   boardName = window.location.pathname
   notesService$: WebSocketSubject<websocketEvent>
-  noteCoordinates: coordinates[] = []
+  noteButtons: NewNoteButton[] = []
 
   controls: FormArray
   constructor(
@@ -66,7 +66,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.noteCoordinates = coordinates
+    this.noteButtons = noteButtons
 
     this.notesService$ = this.notesService.connect(this.boardName)
 

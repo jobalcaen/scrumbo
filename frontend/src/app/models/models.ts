@@ -28,7 +28,8 @@ export interface websocketEvent {
     }
 }
 
-export interface coordinates {
+export interface NewNoteButton {
     top: number,
-    left: number
+    left: number,
+    color: string,
 }
