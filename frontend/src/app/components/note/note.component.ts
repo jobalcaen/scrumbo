@@ -22,7 +22,7 @@ export class NoteComponent implements OnInit {
     })
 
     mode: 'view' | 'edit' = 'view';
-    rotationString: any
+    noteStyle: any
 
     
     editMode = new Subject()
@@ -69,7 +69,7 @@ export class NoteComponent implements OnInit {
 
   ngOnInit() {
     this.noteForm.setValue({body: this.note.body})
-    this.rotationString = this.setRotation()
+    this.noteStyle = this.setStyle()
     this.viewModeHandler()
     this.editModeHandler()
   }
@@ -78,9 +78,12 @@ export class NoteComponent implements OnInit {
     this.deleteNote.emit(this.note)
   }
 
-  setRotation(){
+  setStyle(){
     let degrees = Math.floor(Math.random()*4)
     degrees *= Math.floor(Math.random()*2) == 1 ? 1 : -1
-    return {'transform': `rotate(${degrees}deg)`}
+    return {
+      'transform': `rotate(${degrees}deg)`,
+      'background-color': `#${this.note.color}`
+    }
   }
 }

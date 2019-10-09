@@ -1,6 +1,6 @@
 :host {
     display: grid;
-    grid-template-columns: 50px auto;
+    grid-template-columns: min-content auto;
     grid-template-rows: minmax(500px, 100vh);
 }
 
@@ -8,4 +8,5 @@
     flex-direction: column;
     display: flex;
     justify-content: space-evenly;
+    padding: 0 15px 0 15px;
 }

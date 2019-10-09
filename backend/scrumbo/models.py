@@ -18,4 +18,5 @@ class Note(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=None)
     top = models.IntegerField()
     left = models.IntegerField()
+    color = models.CharField(max_length=6, default="FFFFFF")
     tracker = FieldTracker()

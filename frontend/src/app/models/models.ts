@@ -13,7 +13,8 @@ export interface Note {
     id?: number,
     body: string,
     top: number,
-    left: number
+    left: number,
+    color: string
 }
 
 export interface websocketEvent {

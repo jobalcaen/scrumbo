@@ -6,6 +6,7 @@ class NoteSerializer(serializers.Serializer):
     body = serializers.CharField(max_length=200, allow_blank=True)
     top = serializers.IntegerField()
     left = serializers.IntegerField()
+    color = serializers.CharField(max_length=6)
 
     def create(self, validated_data):
         return Note.objects.create(**validated_data, board=self.context['board'])
@@ -14,5 +15,6 @@ class NoteSerializer(serializers.Serializer):
         instance.body = validated_data.get('body', instance.body)
         instance.top = validated_data.get('top', instance.top)
         instance.left = validated_data.get('left', instance.left)
+        instance.color = validated_data.get('color', instance.color)
         instance.save()
         return instance

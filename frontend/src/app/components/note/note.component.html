@@ -1,4 +1,4 @@
-<div class="note-background" [ngStyle]="rotationString">
+<div class="note-background" [ngStyle]="noteStyle">
     <ng-container *ngIf="mode === 'view'; else editMote" body-1>
         <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon>
         {{ note.body }}

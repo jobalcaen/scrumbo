@@ -25,7 +25,7 @@ export class NewNoteComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.noteButtonInformation)
-    this.color = this.noteButtonInformation.color
+    this.color = `#${this.noteButtonInformation.color}`
     this.notesService$ = this.notesService.connect(this.boardName)
     this.notesService$.subscribe()
 
@@ -38,7 +38,8 @@ export class NewNoteComponent implements OnInit {
         note: {
           top: this.noteButtonInformation.top,
           left: this.noteButtonInformation.left,
-          body: ''
+          body: '',
+          color: this.noteButtonInformation.color
         }
       }
 
