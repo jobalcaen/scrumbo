@@ -28,7 +28,7 @@ ngOnInit() {
 onSubmit() {
 
   console.log(this.boardForm)
-  this.bs.addBoard({'name': this.boardForm.value.name}).subscribe(
+  this.bs.addBoard(this.boardForm.value.name).subscribe(
     board => {
       this.router.navigate([board.url_friendly_name])
     })

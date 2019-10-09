@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Board, BoardName, Note } from '../models/models';
+import { Board} from '../models/models';
 
 
 
@@ -36,8 +36,8 @@ export class BoardService {
       'Something bad happened; please try again later.');
   };
 
-  addBoard(board: BoardName): Observable<Board> {
-    const boardJson = JSON.stringify(board)
+  addBoard(boardName: string): Observable<Board> {
+    const boardJson = JSON.stringify({'name': boardName})
     return this.http.post<Board>(this.boardApiUrl, boardJson, {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',

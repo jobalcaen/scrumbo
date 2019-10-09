@@ -1,8 +1,3 @@
-export interface BoardName {
-
-    name: string
-}
-
 export interface Board {
     id: number,
     name: string,

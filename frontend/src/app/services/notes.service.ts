@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SocketService } from './socket.service';
-import { Subject } from 'rxjs';
-import { Note, websocketEvent } from '../models/models';
+import { websocketEvent } from '../models/models';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 
 const WS_URL = 'ws://127.0.0.1:8000'
