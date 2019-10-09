@@ -5,7 +5,7 @@
     
     position: fixed;
 
-    &:not(:hover) {
+    &:not(.cdk-drag-dragging) {
          transition: 0.3s;
     }
 }
