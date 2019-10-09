@@ -55,28 +55,9 @@ export class BoardService {
   }
 
   checkNameNotTaken(boardName: string) {
-    console.log('checkEmailNotTaken: ',boardName)
     return this.http
       .get<[]>(this.boardApiUrl+'?name='+boardName).pipe(
         map(boardAray => !!boardAray.length),
-        catchError(this.handleError)
-      )
-  }
-
-  getNotes(boardUrl: string): Observable<Note[]> {
-    return this.http.get<Note[]>(this.boardApiUrl+boardUrl+'/notes/').pipe(
-    catchError(this.handleError) 
-  
-    )
-  }
-  createNote(boardUrl: string, body: string): Observable<Note> {
-    const boardJson = JSON.stringify(body)
-    return this.http.post<Note>(this.boardApiUrl+boardUrl+'/notes/', {"body" : body}, {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-      })
-    })
-      .pipe(
         catchError(this.handleError)
       )
   }
