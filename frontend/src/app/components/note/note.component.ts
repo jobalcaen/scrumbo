@@ -68,6 +68,7 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('note', this.note)
     this.noteForm.setValue({body: this.note.body})
     this.noteStyle = this.setStyle()
     this.viewModeHandler()

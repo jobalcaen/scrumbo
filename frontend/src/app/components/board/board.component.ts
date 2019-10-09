@@ -151,8 +151,13 @@ export class BoardComponent implements OnInit {
     })
   }
  
-  trackByFn(index) {
-    return index
+  trackByFn(index, note) {
+    if (!note) {
+      return null
+    } else {
+      return note.id
+
+    }
   }
 
 }
