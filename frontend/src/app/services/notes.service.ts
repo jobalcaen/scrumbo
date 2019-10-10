@@ -24,7 +24,9 @@ export class NotesService {
   
   connect(boardName): WebSocketSubject<websocketEvent> {
    this.websocketSubject = webSocket(WS_URL+'/'+boardName)
+   this.websocketSubject.subscribe()
    return webSocket(WS_URL+'/'+boardName)
+   
   }
 
   addNote(top:number, left:number, color: string) {
