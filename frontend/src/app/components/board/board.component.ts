@@ -2,11 +2,13 @@ import { Component, OnInit, ChangeDetectorRef, QueryList, ContentChildren, ViewC
 import { Board, Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
-import { NotesService } from 'src/app/services/notes.service';
+import { NotesService, event_type } from 'src/app/services/notes.service';
 import { NoteComponent } from '../note/note.component';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -37,13 +39,7 @@ const noteButtons = [
 
 ]
 
-enum event_type {
-  CONNECT = 'connect',
-  DELETE = 'note.delete',
-  ADD = 'note.add',
-  MOVE = 'note.move',
-  EDIT = 'note.edit'
-}
+
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -57,10 +53,13 @@ export class BoardComponent implements OnInit {
   notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
 
+  private readonly subscriptions = new Subscription()
+
   controls: FormArray
   constructor(
     private notesService: NotesService,
     private cd: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute
 
   ) { }
 
@@ -68,87 +67,71 @@ export class BoardComponent implements OnInit {
 
     this.noteButtons = noteButtons
 
-    this.notesService$ = this.notesService.connect(this.boardName)
-
-    this.notesService$.subscribe((event: websocketEvent) => {
-      console.log('event', event)
-      
-      switch (event.type) {
-        case event_type.CONNECT:
-          this.notes = event.payload.notes
-          break
-
-        case event_type.DELETE:
-          this.notes = this.notes.filter(note => note.id !== event.payload.id)
-          break
-          
-        case event_type.ADD:
-          this.notes.push(event.payload.note)
-          break
-
-        case event_type.MOVE:
-          this.notes.map((note) => {
-            if(note.id === event.payload.id){
-              note.top = event.payload.top
-              note.left = event.payload.left
-            }
-            return note
-          })
-          break
-
-        case event_type.EDIT:
-          this.notes.map((note) => {
-            if(note.id === event.payload.id){
-              note.body = event.payload.body
-            }
-            return note      
-          })
-          break
-
-        }
-      this.cd.markForCheck()
-     })
-
-     const toGroups = this.notes.map(note => {
-      return new FormGroup({
-        body: new FormControl(note.body, Validators.required)
+    this.subscriptions.add(
+      this.activatedRoute.paramMap.subscribe((params) => {
+        this.notesService$ = this.notesService.connect(params.get('boardUrl'))
       })
-    })
-    this.controls = new FormArray(toGroups);
+    )
+
+    this.subscriptions.add(
+      this.notesService$.subscribe((event: websocketEvent) => {
+        console.log('event', event)
+        
+        switch (event.type) {
+          case event_type.CONNECT:
+            this.notes = event.payload.notes
+            break
+  
+          case event_type.DELETE:
+            this.notes = this.notes.filter(note => note.id !== event.payload.id)
+            break
+            
+          case event_type.ADD:
+            this.notes.push(event.payload.note)
+            break
+  
+          case event_type.MOVE:
+            this.notes.map((note) => {
+              if(note.id === event.payload.id){
+                note.top = event.payload.top
+                note.left = event.payload.left
+              }
+              return note
+            })
+            break
+  
+          case event_type.EDIT:
+            this.notes.map((note) => {
+              if(note.id === event.payload.id){
+                note.body = event.payload.body
+              }
+              return note      
+            })
+            break
+  
+          }
+        this.cd.markForCheck()
+       })
+    )    
   }
 
   ngOnDestroy() {
-    this.notesService$.unsubscribe()
+    this.subscriptions.unsubscribe()
   }
 
   deleteNote(note: Note) {
-    this.notesService$.next({
-      type: event_type.DELETE,
-      payload: {
-        id: note.id
-      }
-    })
+    this.notesService.deleteNote(note.id)
   }
 
   updateNote(note: Note) {
-    this.notesService$.next({
-      type: event_type.EDIT,
-      payload: {
-        id: note.id,
-        body: note.body
-      }
-    })
+    this.notesService.updateNote(note.id, note.body)
   }
 
   dragEnd(evt: CdkDragEnd) {
-    this.notesService$.next({
-      type: event_type.MOVE,
-      payload: {
-        id: evt.source.data.id,
-        top: evt.source.data.top + evt.distance.y,
-        left: evt.source.data.left + evt.distance.x
-      }
-    })
+    console.log('drag end')
+    const newTop = evt.source.data.top + evt.distance.y
+    const newLeft = evt.source.data.left + evt.distance.x
+    this.notesService.moveNote(evt.source.data.id, newTop, newLeft)
   }
  
   trackByFn(index, note) {
@@ -156,7 +139,6 @@ export class BoardComponent implements OnInit {
       return null
     } else {
       return note.id
-
     }
   }
 

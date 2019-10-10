@@ -12,9 +12,6 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 export class NewNoteComponent implements OnInit {
 
   @Input() noteButtonInformation: NewNoteButton
-  notesService$: WebSocketSubject<websocketEvent>
-  boardName = window.location.pathname
-
   color: string
 
   constructor(
@@ -26,28 +23,14 @@ export class NewNoteComponent implements OnInit {
   ngOnInit() {
     console.log(this.noteButtonInformation)
     this.color = `#${this.noteButtonInformation.color}`
-    this.notesService$ = this.notesService.connect(this.boardName)
-    this.notesService$.subscribe()
-
   }
 
   createNote() {
-    this.notesService$.next({
-      type: 'note.add',
-      payload: {
-        note: {
-          top: this.noteButtonInformation.top,
-          left: this.noteButtonInformation.left,
-          body: '',
-          color: this.noteButtonInformation.color
-        }
-      }
-
-    })
-  }
-
-  ngOnDestroy() {
-    this.notesService$.unsubscribe()
+    this.notesService.addNote(
+      this.noteButtonInformation.top,
+      this.noteButtonInformation.left,
+      this.noteButtonInformation.color
+      )
   }
 
 }
