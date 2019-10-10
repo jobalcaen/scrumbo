@@ -1,49 +1,54 @@
-import { TestBed } from '@angular/core/testing';
 import { BoardService } from './board.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { NewBoard } from '../models/models';
-const testUrl = '/api/boards';
+import { Board } from '../models/models';
+import { of } from 'rxjs';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-  })
-};
-
-describe('BoardService testing', () => {
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
+fdescribe('BoardService testing', () => {
+  let httpClientSpy: { 
+    get: jasmine.Spy,
+    post: jasmine.Spy,
+  
+  };
+  let boardService: BoardService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        HttpClientModule
-      ],
-      providers: [
-        BoardService,
-      ],
-    })
-    httpClient = TestBed.get(HttpClient);
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post', 'get']);
+    boardService = new BoardService(<any> httpClientSpy);
 
   });
 
-  it('should be created', () => {
-    const service: BoardService = TestBed.get(BoardService);
-    expect(service).toBeTruthy();
+  it('returns a board object when addBoard is called', () => {
+    const expectedBoard: Board = {
+      id: 121,
+      name: 'the best board eva',
+      url_friendly_name: 'the-best-board-eva'
+    }
+
+    httpClientSpy.post.and.returnValue(of(expectedBoard))
+
+    boardService.addBoard('the best board eva').subscribe(
+      (board) => expect(board).toEqual(expectedBoard)
+    )
   });
 
-  it('can POST a Board', () => {
-    const testData: NewBoard = {name: "testBoard"}
-    const boardJson = JSON.stringify(testData)
+  it('returns a board object when getBoard is called', () => {
+    const expectedBoard: Board = {
+      id: 121,
+      name: 'the best board eva',
+      url_friendly_name: 'the-best-board-eva'
+    }
 
-    httpClient.post<NewBoard>(testUrl, boardJson, httpOptions)
-      .subscribe(data =>
-        expect(data).toEqual(testData)  
-      )
+    httpClientSpy.get.and.returnValue(of(expectedBoard))
 
+    boardService.getBoard('the best board eva').subscribe(
+      (board) => expect(board).toEqual(expectedBoard)
+    )
   });
+
+  it('returns a boolean when checkNameNotTaken is called', () => {
+    httpClientSpy.get.and.returnValue(of(false))
+
+    boardService.checkNameNotTaken('the best board eva').subscribe(
+      (doesBoardExist) => expect(doesBoardExist).toBeFalsy()
+    )
+  })
 });

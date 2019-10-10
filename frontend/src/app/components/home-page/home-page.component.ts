@@ -30,6 +30,7 @@ onSubmit() {
   console.log(this.boardForm)
   this.bs.addBoard(this.boardForm.value.name).subscribe(
     board => {
+      console.log('board', board)
       this.router.navigate([board.url_friendly_name])
     })
 }

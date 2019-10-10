@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardResolverService } from './services/board-resolver.service';
 import { BoardComponent } from './components/board/board.component';
-import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 
 const appRoutes: Routes = [
     {
@@ -21,11 +20,7 @@ const appRoutes: Routes = [
     },
     { 
         path: '**',
-        component: PageNotFoundComponent
-    },
-    {
-        path:"board-not-found",
-        component: PageNotFoundComponent,
+        component: HomePageComponent
     }
 ]
 
