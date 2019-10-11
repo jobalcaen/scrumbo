@@ -10,7 +10,10 @@ import { take, mergeMap } from 'rxjs/operators';
 })
 export class BoardResolverService implements Resolve<Board> {
 
-  constructor(private bs: BoardService, private router: Router) { }
+  constructor(
+    private bs: BoardService,
+    private router: Router,
+    ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<Board> | Observable<never> {
     let boardUrl = route.paramMap.get('boardUrl')

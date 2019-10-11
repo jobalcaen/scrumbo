@@ -1,13 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { NoteComponent } from './note.component';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Note } from 'src/app/models/models';
 import { MatIconModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser'
 
-fdescribe('NoteComponent', () => {
+
+describe('NoteComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
   let debugElement: DebugElement
@@ -17,12 +18,18 @@ fdescribe('NoteComponent', () => {
       <app-note
         [note]="note"
         (deleteNote)="deleteNote($event)"
-        (cdkDragEnded)="dragEnd($event)"
         (updateNote)="updateNote($event)">
-      </app-note>`
+      </app-note>`,
+      changeDetection: ChangeDetectionStrategy.OnPush
+
   })
   class TestHostComponent {
     note: Note  = {id: 42, body: 'the bees!', top:22, left: 22, color: 'FFFFFF'};
+    constructor(
+      private readonly changeDetectorRef: ChangeDetectorRef,
+    ) {
+
+    }
 
     deleteNote(noteId: number){
       return
@@ -31,7 +38,9 @@ fdescribe('NoteComponent', () => {
       return
     }
     updateNote(note: Note){
-      return
+      this.note = note
+      this.changeDetectorRef.markForCheck()
+
     }
   }
 
@@ -56,13 +65,11 @@ fdescribe('NoteComponent', () => {
   });
 
   it('should display the note text and the close icon', () => {
-    const note = debugElement.query(By.css('.note-background'))
     const closButton = debugElement.query(By.css('mat-icon.close-button'))
 
-    expect(note).toBeTruthy()
     expect(closButton).toBeTruthy()
 
-    expect(note.nativeElement.textContent).toContain(component.note.body)
+    expect(debugElement.nativeElement.textContent).toContain(component.note.body)
 
     expect(closButton.nativeElement.textContent).toBeTruthy('close')
   })
@@ -72,9 +79,58 @@ fdescribe('NoteComponent', () => {
     const closButton = debugElement.query(By.css('mat-icon.close-button'))
     const deleteNoteSpy = spyOn(component, 'deleteNote')
     expect(deleteNoteSpy).toHaveBeenCalledTimes(0)
-console.log('this.component.note', component.note)
+
     closButton.nativeElement.dispatchEvent(new Event('click'))
+
     expect(deleteNoteSpy).toHaveBeenCalledTimes(1)
     expect(deleteNoteSpy).toHaveBeenCalledWith(component.note.id)
+  })
+
+  it('reveals a form when double clicked', async(() => {
+    const note = debugElement.query(By.css('app-note'))
+
+    expect(debugElement.queryAll(By.css('form textarea')).length).toEqual(0)
+    expect(debugElement.queryAll(By.css('mat-icon.close-button')).length).toEqual(1)
+
+    note.nativeElement.dispatchEvent(new Event('dblclick'))
+    fixture.detectChanges()
+
+    expect(debugElement.queryAll(By.css('form textarea')).length).toEqual(1)
+    expect(debugElement.queryAll(By.css('form textarea'))[0].nativeElement.value).toEqual(component.note.body)
+    expect(debugElement.queryAll(By.css('mat-icon.close-button')).length).toEqual(0)
+  }))
+
+  it('emits the updateNote event when clicking outside the note when the form is revealed, emits updateNote, hide the form', async() => {
+    await fixture.whenStable();
+
+    const note = debugElement.query(By.css('app-note'))
+    const updateNoteSpy = spyOn(component, 'updateNote')
+
+    note.nativeElement.dispatchEvent(new Event('dblclick'))
+    expect(updateNoteSpy).toHaveBeenCalledTimes(0)
+    fixture.detectChanges()
+
+    expect(debugElement.queryAll(By.css('form textarea')).length).toEqual(1)
+
+    // edit the note body
+    let textarea: HTMLTextAreaElement = debugElement.query(By.css('form textarea')).nativeElement
+    textarea.value = 'wow the now has been updated'   
+    textarea.dispatchEvent(new Event('input'))
+    fixture.detectChanges()
+
+    // click outside note
+    document.dispatchEvent(new Event('click'))
+    fixture.detectChanges()
+
+    // expect(updateNoteSpy).toHaveBeenCalledTimes(1)
+
+    // fixture.detectChanges()
+
+    // expect(debugElement.queryAll(By.css('form textarea')).length).toEqual(0)
+    // expect(updateNoteSpy).toHaveBeenCalledTimes(1)
+    // expect(updateNoteSpy).toHaveBeenCalledWith(component.note)
+    // expect(debugElement.query(By.css('app-note')).nativeElement.text).toContain(component.note.body)
+
+
   })
 });

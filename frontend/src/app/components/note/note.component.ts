@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ChangeDetec
 import { Note } from 'src/app/models/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, fromEvent } from 'rxjs';
-import { filter, switchMap, first } from 'rxjs/operators';
+import { filter, switchMap, first, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-note',
@@ -42,7 +42,9 @@ export class NoteComponent implements OnInit {
 
     const clickedOutside$ = fromEvent(document, 'click').pipe(
       filter(event => this.elRef.nativeElement.contains(event.target) === false),
-      first()
+      first(),
+      tap(() => console.log('clicked outside'))
+
     )
 
     this.editMode$.pipe(
@@ -55,6 +57,7 @@ export class NoteComponent implements OnInit {
       }
       if (this.note.body !== this.noteForm.value.body){
         this.note.body = this.noteForm.value.body
+        console.log('emitting')
         this.updateNote.emit(updatedNote)
       }
     })
