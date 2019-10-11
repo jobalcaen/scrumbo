@@ -1,20 +1,18 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { BoardResolverService } from './board-resolver.service';
-import { ActivatedRouteSnapshot, convertToParamMap, ParamMap, Params, Router } from '@angular/router';
-import { ReplaySubject, of, EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
+import { of, EMPTY } from 'rxjs';
 import { BoardService } from './board.service';
 import { Board } from '../models/models';
 
-fdescribe('BoardResolverService', () => {
-  let boardResolverService: BoardResolverService;
-  let boardHttpServiceSpy: jasmine.SpyObj<BoardService>;
-  let routerSpy: jasmine.SpyObj<Router>;
+describe('BoardResolverService', () => {
+  let boardResolverService: BoardResolverService
+  let boardHttpServiceSpy: jasmine.SpyObj<BoardService>
+  let routerSpy: jasmine.SpyObj<Router>
   let activatedRouteSnapshotStub
   let sampleBoard: Board
 
-
-  
   beforeEach(() => {
     boardHttpServiceSpy = jasmine.createSpyObj('BoardService', ['getBoard']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
@@ -27,12 +25,11 @@ fdescribe('BoardResolverService', () => {
       ]
     }).compileComponents();
 
-
     boardResolverService = TestBed.get(BoardResolverService);
     sampleBoard = {
       id: 222,
-      name: 'the great one',
-      url_friendly_name: 'the_great_one'
+      name: 'bruce lee',
+      url_friendly_name: 'bruce-lee'
     }
 
     activatedRouteSnapshotStub = {
@@ -42,7 +39,6 @@ fdescribe('BoardResolverService', () => {
           }
         }
       };
-
   });
 
 
@@ -60,7 +56,7 @@ fdescribe('BoardResolverService', () => {
     ).unsubscribe()
   })
 
-  it('should return an empty observable and the router should navigate', () => {
+  it('should return an empty observable and the router should navigate if BoardService returns falsy', () => {
     boardHttpServiceSpy.getBoard.and.returnValue(of(false))
 
     boardResolverService.resolve(activatedRouteSnapshotStub).subscribe(
@@ -68,6 +64,6 @@ fdescribe('BoardResolverService', () => {
         expect(routerSpy).toHaveBeenCalledWith(['board-not-found'])
         expect(board).toEqual(EMPTY)
       }
-    ).unsubscribe()
+    )
   })
 })
