@@ -30,7 +30,6 @@ export class NoteComponent implements OnInit {
 
     private viewModeHandler() { 
       fromEvent(this.elRef.nativeElement, 'dblclick').subscribe(() => {
-        console.log('edit mode')
         if (this.mode !== 'edit') {
           this.mode = 'edit'
           this.editMode.next(true)
@@ -60,15 +59,13 @@ export class NoteComponent implements OnInit {
       }
     })
   }
-  @Output() deleteNote: EventEmitter<Note> = new EventEmitter()
+  @Output() deleteNote: EventEmitter<number> = new EventEmitter()
   @Output() updateNote: EventEmitter<Note> = new EventEmitter()
     constructor(
-    private elRef: ElementRef,
-    private cd: ChangeDetectorRef) {     
+    private elRef: ElementRef) {     
   }
 
   ngOnInit() {
-    console.log('note', this.note)
     this.noteForm.setValue({body: this.note.body})
     this.noteStyle = this.setStyle()
     this.viewModeHandler()
@@ -76,7 +73,7 @@ export class NoteComponent implements OnInit {
   }
 
   deleteNoteEmit(){
-    this.deleteNote.emit(this.note)
+    this.deleteNote.emit(this.note.id)
   }
 
   setStyle(){

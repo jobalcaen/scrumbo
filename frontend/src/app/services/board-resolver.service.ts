@@ -12,7 +12,7 @@ export class BoardResolverService implements Resolve<Board> {
 
   constructor(private bs: BoardService, private router: Router) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Board> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Board> | Observable<never> {
     let boardUrl = route.paramMap.get('boardUrl')
 
     return this.bs.getBoard(boardUrl).pipe(
@@ -26,8 +26,5 @@ export class BoardResolverService implements Resolve<Board> {
         }
       })
     )
-
-  }
-
-  
+  } 
 }

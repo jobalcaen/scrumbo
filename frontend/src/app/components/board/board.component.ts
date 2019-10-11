@@ -119,8 +119,8 @@ export class BoardComponent implements OnInit {
     this.subscriptions.unsubscribe()
   }
 
-  deleteNote(note: Note) {
-    this.notesService.deleteNote(note.id)
+  deleteNote(noteId: number) {
+    this.notesService.deleteNote(noteId)
   }
 
   updateNote(note: Note) {

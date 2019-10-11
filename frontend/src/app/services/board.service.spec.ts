@@ -2,7 +2,7 @@ import { BoardService } from './board.service';
 import { Board } from '../models/models';
 import { of } from 'rxjs';
 
-fdescribe('BoardService testing', () => {
+describe('BoardService testing', () => {
   let httpClientSpy: { 
     get: jasmine.Spy,
     post: jasmine.Spy,
