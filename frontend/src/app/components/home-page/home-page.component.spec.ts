@@ -8,6 +8,7 @@ import { By } from '@angular/platform-browser';
 import { MatIconModule, MatError, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 
 fdescribe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -17,7 +18,7 @@ fdescribe('HomePageComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>
 
   beforeEach(async(() => {
-    boardHttpServiceSpy = jasmine.createSpyObj('BoardService', ['getBoard']);
+    boardHttpServiceSpy = jasmine.createSpyObj('BoardService', ['checkNameNotTaken']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
@@ -27,8 +28,8 @@ fdescribe('HomePageComponent', () => {
         { provide: Router, useValue: routerSpy }
       ],
       imports: [
-        // BrowserAnimationsModule,
-        NoopAnimationsModule,
+        BrowserAnimationsModule,
+        // NoopAnimationsModule,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule      ]
@@ -49,9 +50,54 @@ fdescribe('HomePageComponent', () => {
     expect(debugElement.queryAll(By.css('h1')).length).toEqual(1)
     expect(debugElement.queryAll(By.css('h2')).length).toEqual(1)
     expect(debugElement.queryAll(By.css('form')).length).toEqual(1)
-    expect(debugElement.queryAll(By.css('button')).length).toEqual(1)
-
-
-    
+    expect(debugElement.queryAll(By.css('button')).length).toEqual(1)  
   });
+
+  it('should start with a disabled button', () => {
+    const button = debugElement.query(By.css('button'))
+    expect(button.nativeElement.disabled).toBeTruthy()
+  })
+
+  it('checks each input value against the board service', () => {
+    const button = debugElement.query(By.css('button'))
+    boardHttpServiceSpy.checkNameNotTaken.and.returnValue(of(false))
+
+    expect(button.nativeElement.disabled).toBeTruthy()
+    expect(component.boardForm.valid).toBeFalsy();
+
+    component.boardForm.controls['name'].setValue('a')
+    fixture.detectChanges()
+
+    expect(boardHttpServiceSpy.checkNameNotTaken).toHaveBeenCalledWith('a')
+
+    expect(button.nativeElement.disabled).toBeFalsy()
+    expect(component.boardForm.valid).toBeTruthy()
+
+    component.boardForm.controls['name'].setValue('aA')
+    expect(boardHttpServiceSpy.checkNameNotTaken).toHaveBeenCalledWith('aA')
+    expect(boardHttpServiceSpy.checkNameNotTaken).toHaveBeenCalledTimes(2)
+  })
+
+  fit('displays an error if a board name is taken',() => {
+    const nameInput = component.boardForm.controls['name']
+
+    boardHttpServiceSpy.checkNameNotTaken.and.returnValue(of(true))
+
+    expect(nameInput.errors['boardNameTaken']).toBeFalsy()
+
+    nameInput.setValue('a')
+    expect(nameInput.valid).toBeFalsy()
+
+    expect(nameInput.errors['boardNameTaken']).toBeTruthy()
+
+    fixture.detectChanges()
+    expect(debugElement.query(By.css('button')).nativeElement.disabled).toBeTruthy()
+    expect(debugElement.query(By.css('mat-error')).nativeElement.text).toEqual('This board name has already been taken')
+
+    // // alpha numeric characters only
+    // component.boardForm.controls['name'].setValue('%')
+    // expect(component.boardForm.valid).toBeFalsy()
+
+
+  })
 });
