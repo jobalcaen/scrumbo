@@ -5,13 +5,17 @@
         <input formControlName="name" matInput type="text" required maxlength="30" placeholder="Enter your board name to begin." autocomplete="off">
     </form>
 
-    <mat-error *ngIf="boardForm.controls.name.errors?.pattern">
-        Alpha numberic values only
-    </mat-error>
+    <ng-container *ngIf="boardForm.controls.name.errors?.pattern">
+        <mat-error>
+            Alpha numberic values only
+        </mat-error>
+    </ng-container>
     
-    <mat-error *ngIf="boardForm.controls.name.errors?.boardNameTaken">
-        This board name has already been taken
-    </mat-error>
+    <ng-container *ngIf="boardForm.controls.name.errors?.boardNameTaken">
+        <mat-error>
+            This board name has already been taken
+        </mat-error>
+    </ng-container>
 </mat-form-field>
 
 <button type="submit" mat-raised-button color="primary" form="boardForm"  [disabled]="boardForm.invalid">Submit</button>
