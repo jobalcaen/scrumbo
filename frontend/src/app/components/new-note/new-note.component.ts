@@ -21,7 +21,6 @@ export class NewNoteComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log(this.noteButtonInformation)
     this.color = `#${this.noteButtonInformation.color}`
   }
 
