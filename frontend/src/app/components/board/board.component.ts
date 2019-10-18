@@ -69,15 +69,13 @@ export class BoardComponent implements OnInit {
 
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe((params) => {
-        this.notesService$ = this.notesService.connect(params.get('boardUrl'))
+        this.notesService.connect(params.get('boardUrl'))
       })
     )
 
     this.subscriptions.add(
-      this.notesService$.subscribe((event: websocketEvent) => {
-        console.log('event', event)
-        
-        switch (event.type) {
+      this.notesService.subscribe((event: websocketEvent) => {
+                switch (event.type) {
           case event_type.CONNECT:
             this.notes = event.payload.notes
             break
@@ -128,7 +126,6 @@ export class BoardComponent implements OnInit {
   }
 
   dragEnd(evt: CdkDragEnd) {
-    console.log('drag end')
     const newTop = evt.source.data.top + evt.distance.y
     const newLeft = evt.source.data.left + evt.distance.x
     this.notesService.moveNote(evt.source.data.id, newTop, newLeft)

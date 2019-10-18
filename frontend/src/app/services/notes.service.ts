@@ -17,16 +17,23 @@ export enum event_type {
 })
 export class NotesService {
   
-  websocketSubject: WebSocketSubject<websocketEvent>
-  constructor() {
-    
-  }
+  private websocketSubject: WebSocketSubject<websocketEvent>
+  constructor() {}
   
-  connect(boardName): WebSocketSubject<websocketEvent> {
-   this.websocketSubject = webSocket(WS_URL+'/'+boardName)
-   this.websocketSubject.subscribe()
-   return webSocket(WS_URL+'/'+boardName)
-   
+  connect(boardName) {
+    this.disconnect()
+    this.websocketSubject = webSocket(WS_URL+'/'+boardName)   
+  }
+
+  subscribe(callback) {
+    return this.websocketSubject.subscribe(callback)
+  }
+
+  disconnect() {
+    if(this.websocketSubject) {
+      this.websocketSubject.unsubscribe()
+    }
+    this.websocketSubject = undefined
   }
 
   addNote(top:number, left:number, color: string) {

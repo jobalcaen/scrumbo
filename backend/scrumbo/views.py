@@ -16,9 +16,9 @@ from scrumbo.serializers.note import NoteSerializer
 
 from django.views.decorators.csrf import csrf_exempt
 
-class CsrfExemptSessionAuthentication(SessionAuthentication):
-    def enforce_csrf(self, request):
-        return  # To not perform the csrf check previously happening
+# class CsrfExemptSessionAuthentication(SessionAuthentication):
+#     def enforce_csrf(self, request):
+#         return  # To not perform the csrf check previously happening
 
 class BoardView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Board.objects.all()
@@ -35,7 +35,7 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
             obj = get_object_or_404(queryset, pk=self.kwargs['board_id'])
             return obj    
 
-    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+    # authentication_classes = (BasicAuthentication)
        
 class BoardListView(generics.ListCreateAPIView):
     queryset = Board.objects.all()
