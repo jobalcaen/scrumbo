@@ -1,14 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, QueryList, ContentChildren, ViewChildren, ElementRef } from '@angular/core';
-import { Board, Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService, event_type } from 'src/app/services/notes.service';
-import { NoteComponent } from '../note/note.component';
-import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -36,7 +32,6 @@ const noteButtons = [
     left: 50,
     color: 'B0E57C'
   },
-
 ]
 
 
@@ -46,36 +41,24 @@ const noteButtons = [
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-
-  @ViewChildren(NoteComponent) noteChildren: QueryList<NoteComponent>
   notes: Note[] = []
-  boardName = window.location.pathname
-  notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
-
   private readonly subscriptions = new Subscription()
 
-  controls: FormArray
   constructor(
     private notesService: NotesService,
     private cd: ChangeDetectorRef,
-    private activatedRoute: ActivatedRoute
-
+    private activatedRouteSnapShot: ActivatedRouteSnapshot 
   ) { }
 
   ngOnInit() {
-
     this.noteButtons = noteButtons
-
-    this.subscriptions.add(
-      this.activatedRoute.paramMap.subscribe((params) => {
-        this.notesService.connect(params.get('boardUrl'))
-      })
-    )
+    
+    this.notesService.connect(this.activatedRouteSnapShot.paramMap.get('boardUrl'))
 
     this.subscriptions.add(
       this.notesService.subscribe((event: websocketEvent) => {
-                switch (event.type) {
+        switch (event.type) {
           case event_type.CONNECT:
             this.notes = event.payload.notes
             break
