@@ -1,12 +1,7 @@
 from django.test import TestCase
 from scrumbo.models import Board
-from django.test import Client
-from rest_framework.reverse import reverse
 from scrumbo.constants import TEST_BOARD_NAME_1, TEST_BOARD_NAME_2, BOARDS_LIST_URL, NOTES_LIST_URL, NOTE_BODY_1, NOTE_BODY_2
-import io
-from rest_framework.parsers import JSONParser
 from scrumbo.serializers import BoardSerializer
-from scrumbo.views import BoardView
 from rest_framework.test import APIRequestFactory
 from rest_framework.request import Request
 from rest_framework import status

@@ -1,13 +1,9 @@
 from django.db import models
-# Using FieldTracker from django-model-utils helps you only send
-# updates when something actually changes.
-from model_utils import FieldTracker
 
 class Board(models.Model):
     """Model for a board"""
     name = models.CharField(max_length=30)
     url_friendly_name = models.CharField(max_length=30, default=None)
-    notes_tracker = FieldTracker()
 
     def __str__(self):
         return self.name
@@ -19,4 +15,3 @@ class Note(models.Model):
     top = models.IntegerField()
     left = models.IntegerField()
     color = models.CharField(max_length=6, default="FFFFFF")
-    tracker = FieldTracker()

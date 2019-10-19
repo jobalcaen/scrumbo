@@ -1,12 +1,7 @@
 from rest_framework import serializers
 from scrumbo.models import Board
-from django.db import models
 from scrumbo.utils.exceptions import UniqueBoardException, InvalidBoardNameException
-from rest_framework.validators import UniqueValidator
 from django.db.models import CharField
-from django.shortcuts import get_object_or_404
-
-
 import re
 
 def queryset_count_is_zero(queryset):
