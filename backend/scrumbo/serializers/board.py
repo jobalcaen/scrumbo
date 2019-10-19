@@ -11,6 +11,7 @@ def queryset_count_is_zero(queryset):
     if queryset.count() == 0:
         raise UniqueBoardException
 
+
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
@@ -23,7 +24,7 @@ class BoardSerializer(serializers.ModelSerializer):
 
         if Board.objects.filter(name=value).exists():
             raise UniqueBoardException
-        
+
         return value
 
     def make_url_friendly_name(self, name):

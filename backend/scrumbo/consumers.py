@@ -65,7 +65,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
         note = Note.objects.get(pk=note_id)
         return note.delete()
 
-    #receive messages from web socket
+    # receive messages from web socket
     async def receive(self, text_data):
         event = json.loads(text_data)
         event_type = event['type']
@@ -81,7 +81,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     }
                 }
             )
-        
+
         elif event_type == 'note.delete':
             print('event', event)
             await self.delete_note(event['payload']['id'])
@@ -92,7 +92,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'payload': {
                         'id': event['payload']['id']
                     }
-                }                
+                }
             )
 
         elif event_type == 'note.move':
@@ -106,7 +106,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                         'top': event['payload']['top'],
                         'left': event['payload']['left']
                     }
-                }           
+                }
             )
 
         elif event_type == 'note.edit':
@@ -116,9 +116,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 {
                     'type': 'note_edit',
                     'payload': updated_note
-                }           
+                }
             )
-
 
     async def disconnect(self, code):
         await self.channel_layer.group_discard(
@@ -143,7 +142,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
             'type': 'note.move',
             'payload': event['payload']
         }))
-        
+
     async def note_edit(self, event):
         await self.send(text_data=json.dumps({
             'type': 'note.edit',

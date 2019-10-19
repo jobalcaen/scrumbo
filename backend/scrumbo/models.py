@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Board(models.Model):
     """Model for a board"""
     name = models.CharField(max_length=30)
@@ -7,6 +8,7 @@ class Board(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Note(models.Model):
     """Model for a single note that goes in a board"""

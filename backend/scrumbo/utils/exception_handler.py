@@ -16,5 +16,4 @@ def custom_exception_handler(exc, context):
         data = {'detail': exc.detail}
         return Response(data, status=UniqueBoardException.status_code)
 
-
     return response

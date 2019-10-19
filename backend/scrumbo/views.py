@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import generics
 
-
 from scrumbo.models import Board, Note
 from scrumbo.serializers.board import BoardSerializer
 
@@ -26,10 +25,11 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
 
         elif 'board_id' in self.kwargs:
             obj = get_object_or_404(queryset, pk=self.kwargs['board_id'])
-            return obj    
+            return obj
 
-    # authentication_classes = (BasicAuthentication)
-       
+            # authentication_classes = (BasicAuthentication)
+
+
 class BoardListView(generics.ListCreateAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
@@ -48,7 +48,6 @@ class BoardListView(generics.ListCreateAPIView):
         elif board_url_friendly_name is not None:
             queryset = queryset.filter(name=board_name)
 
-
         return queryset
 
     def create(self, request, *args, **kwargs):
@@ -57,7 +56,6 @@ class BoardListView(generics.ListCreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-            
-  
+
     def perform_create(self, serializer):
         serializer.save()
