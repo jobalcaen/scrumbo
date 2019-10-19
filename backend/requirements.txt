@@ -1,4 +1,5 @@
 dj-config-url
 djangorestframework
 channels
+channels_redis
 django
