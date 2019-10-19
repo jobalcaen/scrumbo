@@ -14,11 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path, re_path
 from django.contrib import admin
+from django.urls import path, re_path
 from django.views.generic.base import TemplateView
-from scrumbo import views
 
+from scrumbo import views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='scrumbo/index.html')),
