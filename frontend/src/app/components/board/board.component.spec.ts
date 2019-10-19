@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing'
 
 import { BoardComponent } from './board.component'
 import { DebugElement, Component, Input } from '@angular/core';
@@ -6,13 +6,14 @@ import { By } from '@angular/platform-browser';
 import { NewNoteButton, websocketEvent, Note } from 'src/app/models/models';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { NotesService, event_type } from 'src/app/services/notes.service';
+import { of } from 'rxjs';
 
 fdescribe('BoardComponent', () => {
   let component: BoardComponent
   let fixture: ComponentFixture<BoardComponent>
   let debugElement: DebugElement
   let activatedRouteSnapshotStub
-  let notesServiceSubscribeSpy: jasmine.SpyObj<websocketEvent>
+  let notesServiceSubscribeSpy: jasmine.SpyObj<any>
   let notesService: NotesService
   @Component({selector: 'app-new-note', template: ''})
   class NewNoteStubComponent {
@@ -55,7 +56,7 @@ fdescribe('BoardComponent', () => {
     component = fixture.componentInstance
     debugElement = fixture.debugElement
     notesService = debugElement.injector.get(NotesService);
-    notesServiceSubscribeSpy = spyOn(notesService, 'subscribe').and.callThrough();
+    notesServiceSubscribeSpy = spyOn(notesService, 'subscribe')
     fixture.detectChanges();
   });
 
@@ -64,8 +65,8 @@ fdescribe('BoardComponent', () => {
   });
 
 
-  it('should create a list of note buttons and notes', () => {
-    const notesArray: websocketEvent = {
+  it('should create a list of note buttons and notes', fakeAsync(() => {
+    const connectEvent: websocketEvent = {
       type: event_type.CONNECT,
       payload: {
         notes: [
@@ -84,10 +85,16 @@ fdescribe('BoardComponent', () => {
         ] as Note[]
       }
     }
-    notesServiceSubscribeSpy = spyOn(notesService, 'subscribe').and.returnValue(notesArray);
+    notesServiceSubscribeSpy.and.returnValue(of(connectEvent))
+    tick()
+
+    fixture.detectChanges()
+
 
     const noteButtons = debugElement.queryAll(By.css('app-new-note'))
+    const notes = debugElement.queryAll(By.css('app-note'))
     expect(noteButtons.length).toBe(5)
+    expect(notes.length).toBe(2)
 
-  })
+  }))
 });

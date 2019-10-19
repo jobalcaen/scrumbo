@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { websocketEvent, Note } from '../models/models';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
+import { Subscription } from 'rxjs';
 
 const WS_URL = 'ws://127.0.0.1:8000'
 
@@ -25,7 +26,7 @@ export class NotesService {
     this.websocketSubject = webSocket(WS_URL+'/'+boardName)   
   }
 
-  subscribe(callback) {
+  subscribe(callback): Subscription {
     return this.websocketSubject.subscribe(callback)
   }
 
@@ -52,14 +53,12 @@ export class NotesService {
 
 
   deleteNote(noteId: number) {
-    this.websocketSubject.next(
-      {
-        type: event_type.DELETE,
-        payload: {
-          id: noteId
-        }
+    this.websocketSubject.next({
+      type: event_type.DELETE,
+      payload: {
+        id: noteId
       }
-    )
+    })
   }
 
   updateNote(noteId: number, newBody: string) {

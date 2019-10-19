@@ -58,6 +58,7 @@ export class BoardComponent implements OnInit {
 
     this.subscriptions.add(
       this.notesService.subscribe((event: websocketEvent) => {
+        console.log('evnt: ', event)
         switch (event.type) {
           case event_type.CONNECT:
             this.notes = event.payload.notes
