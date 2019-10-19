@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService, event_type } from 'src/app/services/notes.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
@@ -32,6 +32,7 @@ const noteButtons = [
     left: 50,
     color: 'B0E57C'
   },
+
 ]
 
 
@@ -42,23 +43,27 @@ const noteButtons = [
 })
 export class BoardComponent implements OnInit {
   notes: Note[] = []
+  notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
   private readonly subscriptions = new Subscription()
-
   constructor(
     private notesService: NotesService,
     private cd: ChangeDetectorRef,
-    private activatedRouteSnapShot: ActivatedRouteSnapshot 
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+
     this.noteButtons = noteButtons
-    
-    this.notesService.connect(this.activatedRouteSnapShot.paramMap.get('boardUrl'))
+
+    this.subscriptions.add(
+      this.activatedRoute.paramMap.subscribe((params) => {
+        this.notesService.connect(params.get('boardUrl'))
+      })
+    )
 
     this.subscriptions.add(
       this.notesService.subscribe((event: websocketEvent) => {
-        console.log('evnt: ', event)
         switch (event.type) {
           case event_type.CONNECT:
             this.notes = event.payload.notes
