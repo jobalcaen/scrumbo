@@ -1,8 +1,11 @@
+import re
+
+from django.db.models import CharField
 from rest_framework import serializers
+
 from scrumbo.models import Board
 from scrumbo.utils.exceptions import UniqueBoardException, InvalidBoardNameException
-from django.db.models import CharField
-import re
+
 
 def queryset_count_is_zero(queryset):
     if queryset.count() == 0:

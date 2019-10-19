@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from scrumbo.models import Note
+
 
 class NoteSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
