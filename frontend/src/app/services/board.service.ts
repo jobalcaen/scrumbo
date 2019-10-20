@@ -4,17 +4,13 @@ import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Board} from '../models/models';
-
-
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-
-  private boardApiUrl = 'http://127.0.0.1:8000/api/boards/'
-
   constructor(
     private http: HttpClient
     ) { }
@@ -38,7 +34,7 @@ export class BoardService {
 
   addBoard(boardName: string): Observable<Board> {
     const boardJson = JSON.stringify({'name': boardName})
-    return this.http.post<Board>(this.boardApiUrl, boardJson, {
+    return this.http.post<Board>(environment.httpApiUrl+'/', boardJson, {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
       })
@@ -49,14 +45,14 @@ export class BoardService {
   }
 
   getBoard(boardUrl: string): Observable<Board> {
-      return this.http.get<Board>(this.boardApiUrl+boardUrl+'/').pipe(
+      return this.http.get<Board>(environment.httpApiUrl+'/'+boardUrl+'/').pipe(
       catchError(this.handleError)
     )
   }
 
   checkNameNotTaken(boardName: string) {
     return this.http
-      .get<[]>(this.boardApiUrl+'?name='+boardName).pipe(
+      .get<[]>(environment.httpApiUrl+'/'+'?name='+boardName).pipe(
         map(boardAray => !!boardAray.length),
         catchError(this.handleError)
       )

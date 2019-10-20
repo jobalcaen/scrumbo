@@ -32,11 +32,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -122,8 +121,11 @@ ALLOWED_HOSTS = [
     '0.0.0.0'
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 CORS_ORIGIN_WHITELIST = [
-    "http://0.0.0.0:8000"
+    'http://0.0.0.0:8000',
+    'http://localhost'
 ]
 
 
@@ -142,14 +144,15 @@ STATICFILES_DIRS = [
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-CORS_ORIGIN_ALLOW_ALL = DEBUG
+
 
 # Securit check fixes
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
 
 # SECURE_SSL_REDIRECT = True
 # SECURE_HSTS_SECONDS = 3600

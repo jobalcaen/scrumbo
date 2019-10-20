@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module'
@@ -30,6 +30,10 @@ import { NoteComponent } from './components/note/note.component';
     BrowserModule,
     CommonModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
+    }),
     CustomMaterialModule,
     ReactiveFormsModule
   ],

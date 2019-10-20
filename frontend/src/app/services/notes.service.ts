@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { websocketEvent, Note } from '../models/models';
+import { websocketEvent } from '../models/models';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 import { Subscription } from 'rxjs';
 
