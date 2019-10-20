@@ -11,7 +11,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "{{ 7zag19-jbila#bzu1$1=&zro=y81jcyz9spc4rm45_pbehaap+ }}"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -125,7 +125,9 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = DEBUG
 CORS_ORIGIN_WHITELIST = [
     'http://0.0.0.0:8000',
+    'http://localhost:4200',
     'http://localhost'
+
 ]
 
 

@@ -5,8 +5,16 @@ services:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     container_name: scrumbo
+    links:
+      - redis:redis
+
     volumes:
       - .:/code
     ports:
       - "8000:8000"
 
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
