@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build --output-path ../backend/scrumbo/static/scrumbo/ --output-hashing none --prod",
+    "build": "ng build --output-path ../backend/scrumbo/static/scrumbo/ --output-hashing none",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
