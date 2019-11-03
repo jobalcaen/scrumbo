@@ -1,9 +1,0 @@
-channels==2.3.0
-channels-redis==2.4.0
-Django==2.2.6
-djangorestframework==3.10.3
-gunicorn==19.9.0
-psycopg2-binary==2.8.4
-django-cors-headers==3.1.1
-
-

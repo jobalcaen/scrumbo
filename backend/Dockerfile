@@ -2,7 +2,9 @@
 
 # Base Image
 # FROM python:3.6.6-alpine3.6
-FROM python:3.8.0-alpine
+# FROM python:3.6.9-alpine
+FROM python:3.6.9-alpine
+# FROM python:3.7-slim-buster
 
 
 # set working directory
@@ -28,7 +30,7 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app
 
 # Install project dependencies
-RUN pip3 install -r requirements2.txt
+RUN pip3 install -r requirements.txt
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

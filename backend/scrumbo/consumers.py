@@ -28,6 +28,14 @@ class BoardConsumer(AsyncWebsocketConsumer):
             }
         }))
 
+    async def disconnect(self, close_code):
+        print('DISCONNECTING!')
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.board_name,
+            self.channel_name
+        )
+
     @database_sync_to_async
     def get_notes(self):
         board = Board.objects.get(url_friendly_name=self.board_name)
@@ -119,11 +127,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-    async def disconnect(self, code):
-        await self.channel_layer.group_discard(
-            self.board_name,
-            self.channel_name
-        )
+
 
     async def note_add(self, event):
         await self.send(text_data=json.dumps({
