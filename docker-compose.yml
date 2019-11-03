@@ -24,9 +24,9 @@ services:
     volumes:
       - ./backend/postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=hello_django
-      - POSTGRES_PASSWORD=hello_django
-      - POSTGRES_DB=hello_django_dev
+      - POSTGRES_USER=scrumbo_user
+      - POSTGRES_PASSWORD=scrumbo_password
+      - POSTGRES_DB=scrumbo
 
   redis:
     image: redis:alpine
@@ -34,3 +34,5 @@ services:
       - 6379:6379
 
 
+volumes:
+  postgres_data:

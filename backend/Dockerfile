@@ -1,7 +1,9 @@
 # https://www.codingforentrepreneurs.com/blog/django-docker-production-heroku
 
 # Base Image
-FROM python:3.6.6-alpine3.6
+# FROM python:3.6.6-alpine3.6
+FROM python:3.8.0-alpine
+
 
 # set working directory
 WORKDIR /usr/src/app
@@ -26,7 +28,7 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app
 
 # Install project dependencies
-RUN pip install -r requirements2.txt
+RUN pip3 install -r requirements2.txt
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
