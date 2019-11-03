@@ -138,10 +138,8 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    'http://0.0.0.0:8000',
+    # angular development server
     'http://localhost:4200',
-    'http://localhost'
-
 ]
 
 
