@@ -1,5 +1,10 @@
+# https://www.codingforentrepreneurs.com/blog/django-docker-production-heroku
+
 # Base Image
+# FROM python:3.6.6-alpine3.6
+# FROM python:3.6.9-alpine
 FROM python:3.6.9-alpine
+
 
 # set working directory
 WORKDIR /usr/src/app
@@ -15,7 +20,7 @@ RUN apk update \
 
 # install environment dependencies
 RUN pip3 install --upgrade pip
-RUN pip3 install psycopg2 pipenv
+RUN pip3 install psycopg2
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh

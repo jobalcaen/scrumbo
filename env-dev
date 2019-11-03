@@ -9,3 +9,7 @@ SQL_PASSWORD=scrumbo_password
 SQL_HOST=db
 SQL_PORT=5432
 DATABASE=postgres
+
+POSTGRES_USER=scrumbo_user
+POSTGRES_PASSWORD=scrumbo_password
+POSTGRES_DB=scrumbo
