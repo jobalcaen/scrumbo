@@ -1,11 +1,5 @@
-# https://www.codingforentrepreneurs.com/blog/django-docker-production-heroku
-
 # Base Image
-# FROM python:3.6.6-alpine3.6
-# FROM python:3.6.9-alpine
 FROM python:3.6.9-alpine
-# FROM python:3.7-slim-buster
-
 
 # set working directory
 WORKDIR /usr/src/app
