@@ -17,7 +17,7 @@ DEBUG = int(os.environ.get('DEBUG', default=0))
 # Application definition
 
 INSTALLED_APPS = [
-    # 'corsheaders',
+    'corsheaders', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,7 +33,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,7 +52,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('redis', 6379)],
         },
     },
 }
@@ -136,7 +136,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = DEBUG
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://0.0.0.0:8000',
     'http://localhost:4200',

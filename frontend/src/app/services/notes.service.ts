@@ -3,6 +3,8 @@ import { websocketEvent } from '../models/models';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 import { Subscription } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
+
 const WS_URL = 'ws://127.0.0.1:8000'
 
 export enum event_type {
@@ -23,7 +25,7 @@ export class NotesService {
   
   connect(boardName) {
     this.disconnect()
-    this.websocketSubject = webSocket(WS_URL+'/'+boardName)   
+    this.websocketSubject = webSocket(environment.wsUrl+'/'+boardName)   
   }
 
   subscribe(callback): Subscription {

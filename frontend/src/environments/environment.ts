@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   httpApiUrl: 'http://127.0.0.1:8000/api/boards',
-  wsUrl: 'ws:///127.0.0.1:8000'
+  wsUrl: 'ws://127.0.0.1:8000'
 }
 
 /*
