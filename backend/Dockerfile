@@ -1,8 +1,7 @@
 # https://www.codingforentrepreneurs.com/blog/django-docker-production-heroku
 
 # Base Image
-FROM python:3.8.0-alpine
-
+FROM python:3.6.6-alpine3.6
 
 # set working directory
 WORKDIR /usr/src/app
@@ -10,10 +9,11 @@ WORKDIR /usr/src/app
 # set default environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev
 
 # install environment dependencies
 RUN pip3 install --upgrade pip
@@ -26,7 +26,7 @@ COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY . /usr/src/app
 
 # Install project dependencies
-RUN pipenv install --skip-lock --system --dev
+RUN pip install -r requirements2.txt
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
