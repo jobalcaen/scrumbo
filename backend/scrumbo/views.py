@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework import generics
+from django.http import JsonResponse
 
 from scrumbo.models import Board, Note
 from scrumbo.serializers.board import BoardSerializer
@@ -59,3 +60,7 @@ class BoardListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+def ping(request):
+    data = {'ping': 'pong!'}
+    return JsonResponse(data)
