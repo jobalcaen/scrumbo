@@ -31,5 +31,8 @@ COPY . /usr/src/app
 # Install project dependencies
 RUN pip3 install -r requirements.txt
 
+# collect static files
+RUN python manage.py collectstatic --noinput
+
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

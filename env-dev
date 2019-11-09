@@ -13,3 +13,6 @@ DATABASE=postgres
 POSTGRES_USER=scrumbo_user
 POSTGRES_PASSWORD=scrumbo_password
 POSTGRES_DB=scrumbo
+
+
+DATABASE_URL=DATABASE_URL=postgres://scrumbo_user:scrumbo_password@db:5432/scrumbo
