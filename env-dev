@@ -2,10 +2,6 @@ DEBUG=1
 SECRET_KEY=wqZN47C!QbpR2e&^gx*ct@5Sxs*Hm
 DJANGO_ALLOWED_HOSTS=127.0.0.1 http://localhost:4200 0.0.0.0 localhost
 
-SQL_ENGINE=django.db.backends.postgresql
-SQL_DATABASE=scrumbo
-SQL_USER=scrumbo_user
-SQL_PASSWORD=scrumbo_password
 SQL_HOST=db
 SQL_PORT=5432
 DATABASE=postgres
@@ -15,4 +11,3 @@ POSTGRES_PASSWORD=scrumbo_password
 POSTGRES_DB=scrumbo
 
 
-DATABASE_URL=DATABASE_URL=postgres://scrumbo_user:scrumbo_password@db:5432/scrumbo

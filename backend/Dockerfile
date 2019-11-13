@@ -13,6 +13,8 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
+# DATABASE_URL is set here instead of in the env file as it needs to be set before collect static runs
+ENV DATABASE_URL=postgres://scrumbo_user:scrumbo_password@db:5432/scrumbo
 
 # install psycopg2 dependencies
 RUN apk update \
