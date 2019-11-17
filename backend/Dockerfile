@@ -37,4 +37,4 @@ RUN pip3 install -r requirements.txt
 RUN python manage.py collectstatic --noinput
 
 # run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+# ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
