@@ -1,10 +1,8 @@
 build:
   docker:
-    web: backend/Dockerfile.prod
-
+    web: Dockerfile
 run:
-  web: gunicorn my_app.wsgi:application --bind 0.0.0.0:$PORT
-
+  web: gunicorn hello_django.wsgi:application --bind 0.0.0.0:$PORT
 release:
   image: web
   command:
