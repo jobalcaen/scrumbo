@@ -17,7 +17,7 @@ RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev bash
 
 # install dependencies
-COPY ./requirements.prod.txt .
+COPY ./requirements.txt .
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
