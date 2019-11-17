@@ -24,8 +24,8 @@ RUN apk update \
 RUN pip3 install --upgrade pip
 RUN pip3 install psycopg2
 
-# copy entrypoint.sh
-COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
+# # copy entrypoint.sh
+# COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 
 # copy project to working dir
 COPY . /usr/src/app
