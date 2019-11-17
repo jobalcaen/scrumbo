@@ -14,7 +14,7 @@ ENV DEBUG 0
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev bash
 
 # install dependencies
 COPY ./requirements.prod.txt .

@@ -18,7 +18,7 @@ ENV DATABASE_URL=postgres://scrumbo_user:scrumbo_password@db:5432/scrumbo
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev bash
 
 # install environment dependencies
 RUN pip3 install --upgrade pip
