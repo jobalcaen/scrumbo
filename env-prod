@@ -1,5 +1,5 @@
 DEBUG=0
-DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1] blooming-ocean-27445.herokuapp.com
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1] scrumbo.herokuapp.com
 
 SQL_HOST=db
 SQL_PORT=5432

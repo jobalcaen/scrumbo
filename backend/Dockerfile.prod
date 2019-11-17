@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
+# ENV PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 ENV DEBUG 0
 
 # install psycopg2 dependencies
@@ -25,7 +25,7 @@ RUN pip3 install -r requirements.prod.txt
 COPY . .
 
 # collect static files
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
 
 # add and run as non-root user
 RUN adduser -D myuser
