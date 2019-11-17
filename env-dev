@@ -9,5 +9,3 @@ DATABASE=postgres
 POSTGRES_USER=scrumbo_user
 POSTGRES_PASSWORD=scrumbo_password
 POSTGRES_DB=scrumbo
-
-
