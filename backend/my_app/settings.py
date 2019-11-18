@@ -129,12 +129,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'scrumbo.herokuapp.com']
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = [
-    # angular development server
-    'http://localhost:4200',
-    '0.0.0.0'
-]
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     # angular development server
+#     'http://localhost:4200',
+#     'http://0.0.0.0'
+# ]
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
