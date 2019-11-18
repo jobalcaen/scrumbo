@@ -133,6 +133,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     # angular development server
     'http://localhost:4200',
+    '0.0.0.0'
 ]
 
 
