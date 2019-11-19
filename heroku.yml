@@ -6,7 +6,7 @@ run:
   web: daphne my_app.wsgi:application
   worker:
     command:
-      - python myworker.py
+      - python manage.py runworker
     image: web
 
 release:
