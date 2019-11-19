@@ -3,7 +3,10 @@ build:
     web: backend/Dockerfile.prod
 
 run:
-  web: gunicorn my_app.wsgi:application
+  web: daphne my_app.wsgi:application
+  worker:
+    command: python myworker.py
+    image: web
 
 release:
   image: web
