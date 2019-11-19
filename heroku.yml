@@ -5,7 +5,8 @@ build:
 run:
   web: daphne my_app.wsgi:application
   worker:
-    command: python myworker.py
+    command:
+      - python myworker.py
     image: web
 
 release:
