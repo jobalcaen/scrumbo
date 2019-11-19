@@ -53,12 +53,14 @@ ROOT_URLCONF = 'my_app.urls'
 ASGI_APPLICATION = 'my_app.routing.application'
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'BACKEND': os.environ.get('REDIS_BACKEND', 'channels_redis.core.RedisChannelLayer'),
         'CONFIG': {
-            "hosts": [('redis', 6379)],
+            "hosts": [os.environ.get('REDIS_URL', ('redis', 6379))],
         },
     },
 }
+
+os.environ.get('REDIS_URL', ('redis', 6379))
 
 TEMPLATES = [
     {
