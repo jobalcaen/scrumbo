@@ -1,6 +1,9 @@
 build:
   docker:
     web: backend/Dockerfile.prod
+   config:
+    REDIS_BACKEND: channels_redis.core.RedisChannelLayer
+    REDIS_URL: channels_redis.core.RedisChannelLayer
 
 run:
   web: daphne -b 0.0.0.0 -p $PORT my_app.asgi:application
