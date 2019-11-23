@@ -24,9 +24,6 @@ RUN apk update \
 RUN pip3 install --upgrade pip
 RUN pip3 install psycopg2
 
-# # copy entrypoint.sh
-# COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
-
 # copy project to working dir
 COPY . /usr/src/app
 
@@ -36,8 +33,6 @@ RUN pip3 install -r requirements.txt
 # collect static files
 RUN python manage.py collectstatic --noinput
 
-# RUN python manage.py makemigrations
-# RUN python manage.py migrate
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

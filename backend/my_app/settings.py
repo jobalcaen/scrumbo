@@ -16,8 +16,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='foo')
 # DEBUG can be True/False or 1/0
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
-# Application definition
-
 INSTALLED_APPS = [
     'corsheaders', 
     'django.contrib.admin',
@@ -61,8 +59,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-os.environ.get('REDIS_URL', ('redis', 6379))
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -88,11 +84,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-# DATABASE_URL = os.environ.get('DATABASE_URL')
-# db_from_env = dj_database_url.config(env=DATABASE_URL, conn_max_age=500, ssl_require=True)
-
-# DATABASES['default'].update(db_from_env)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 print('DB URL: ', DATABASE_URL)
@@ -122,8 +113,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Change 'default' database configuration with $DATABASE_URL.
-# DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -143,10 +132,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

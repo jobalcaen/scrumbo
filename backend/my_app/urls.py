@@ -21,8 +21,6 @@ from django.views.generic.base import TemplateView
 from scrumbo import views
 
 urlpatterns = [
-    # path('ping/', views.ping, name="ping"),
-
     path('', TemplateView.as_view(template_name='scrumbo/index.html')),
      
     path('admin/', admin.site.urls),
@@ -31,5 +29,4 @@ urlpatterns = [
     path('api/boards/<int:board_id>/', views.BoardView.as_view()),
     path('api/boards/<slug:board_url>/', views.BoardView.as_view()),
     re_path(r'^.*', TemplateView.as_view(template_name='scrumbo/index.html')),
-
 ]
