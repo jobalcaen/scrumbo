@@ -3,13 +3,15 @@ build:
     web: backend/Dockerfile.prod
 
 run:
-  web: daphne my_app.wsgi:application
+  web: daphne my_app.wsgi:application --port $PORT --bind 0.0.0.0 -v2
   worker:
     command:
-      - python manage.py runworker
+      - python manage.py runworker -v2
     image: web
 
 release:
   image: web
   command:
     - python manage.py collectstatic --noinput
+
+
