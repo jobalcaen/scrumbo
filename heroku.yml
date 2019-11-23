@@ -1,7 +1,7 @@
 build:
   docker:
     web: backend/Dockerfile.prod
-   config:
+  config:
     REDIS_BACKEND: channels_redis.core.RedisChannelLayer
     REDIS_URL: channels_redis.core.RedisChannelLayer
 
