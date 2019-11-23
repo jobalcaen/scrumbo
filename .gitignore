@@ -8,3 +8,6 @@ backend/.env
 backend/db.sqlite3
 backend/postgres_data/
 # backend/scrumbo/migrations/
+
+.idea/
+.vscode/
