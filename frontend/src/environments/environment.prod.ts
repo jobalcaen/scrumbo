@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   httpApiUrl: '/api/boards',
-  wsUrl: 'ws://scrumbo.herokuapp.com/'
+  wsUrl: 'wss://scrumbo.herokuapp.com'
 }
