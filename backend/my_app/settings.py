@@ -96,7 +96,7 @@ DATABASES = {
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 print('DB URL: ', DATABASE_URL)
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES['default'] = dj_database_url.config()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
