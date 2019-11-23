@@ -3,7 +3,7 @@ build:
     web: backend/Dockerfile.prod
 
 run:
-  web: daphne my_app.wsgi:application --port $PORT --bind 0.0.0.0 -v2
+  web: daphne -b 0.0.0.0 -p $PORT my_app.wsgi:application
   worker:
     command:
       - python manage.py runworker -v2

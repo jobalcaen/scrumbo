@@ -4,8 +4,8 @@ services:
   web:
     # build image from the directory that contains the dockerfile
     build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
-    #command: gunicorn my_app.wsgi:application --bind 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "daphne -b 0.0.0.0 -p 8000 my_app.asgi:application && python manage.py runworker"
     env_file: ./env-dev
     # forward port 8000 from localhost to 8000 of the docker container
     ports:
