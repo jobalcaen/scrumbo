@@ -12,6 +12,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { BoardComponent } from './components/board/board.component';
 import { NewNoteComponent } from './components/new-note/new-note.component';
 import { NoteComponent } from './components/note/note.component';
+import { NewColumnComponent } from './components/new-column/new-column.component';
+import { RemoveColumnComponent } from './components/remove-column/remove-column.component';
 
 
 
@@ -21,8 +23,9 @@ import { NoteComponent } from './components/note/note.component';
     HomePageComponent,
     BoardComponent,
     NewNoteComponent,
-    NoteComponent
-
+    NoteComponent,
+    NewColumnComponent,
+    RemoveColumnComponent
   ],
   imports: [
     AppRoutingModule,

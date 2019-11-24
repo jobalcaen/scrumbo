@@ -1,6 +1,8 @@
 
 <div class="palette">
   <app-new-note  *ngFor="let noteButton of noteButtons" [noteButtonInformation]="noteButton" ></app-new-note>
+  <app-new-column></app-new-column>
+  <app-remove-column></app-remove-column>
 </div>
 <div class="canvas">
   <app-note
