@@ -9,7 +9,6 @@ class Board(models.Model):
     def __str__(self):
         return self.name
 
-
 class Note(models.Model):
     """Model for a single note that goes in a board"""
     body = models.CharField(max_length=200)
@@ -17,3 +16,12 @@ class Note(models.Model):
     top = models.IntegerField()
     left = models.IntegerField()
     color = models.CharField(max_length=6, default="FFFFFF")
+
+class Column(models.Model):
+    """Model for a column that goes in a board"""
+    title = models.CharField(max_length=50)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=None)
+
+        def __str__(self):
+            return self.title
+   
