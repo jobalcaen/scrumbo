@@ -5,14 +5,18 @@ import { Subscription } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
-const WS_URL = 'ws://127.0.0.1:8000'
-
-export enum event_type {
+export enum note_event_type {
   CONNECT = 'connect',
   DELETE = 'note.delete',
   ADD = 'note.add',
   MOVE = 'note.move',
   EDIT = 'note.edit'
+}
+
+export enum column_event_type {
+  ADD = 'column.add',
+  REMOVE = 'column.remove',
+  EDIT_TITLE = 'column.edit',
 }
 
 @Injectable({
@@ -41,7 +45,7 @@ export class NotesService {
 
   addNote(top:number, left:number, color: string) {
     this.websocketSubject.next({
-      type: 'note.add',
+      type: note_event_type.ADD,
       payload: {
         note: {
           top: top,
@@ -56,7 +60,7 @@ export class NotesService {
 
   deleteNote(noteId: number) {
     this.websocketSubject.next({
-      type: event_type.DELETE,
+      type: note_event_type.DELETE,
       payload: {
         id: noteId
       }
@@ -65,7 +69,7 @@ export class NotesService {
 
   updateNote(noteId: number, newBody: string) {
     this.websocketSubject.next({
-      type: event_type.EDIT,
+      type: note_event_type.EDIT,
       payload: {
         id: noteId,
         body: newBody
@@ -75,13 +79,31 @@ export class NotesService {
 
   moveNote(noteId: number, top: number, left: number) {
     this.websocketSubject.next({
-      type: event_type.MOVE,
+      type: note_event_type.MOVE,
       payload: {
         id: noteId,
         top: top,
         left: left
       }
     })
+  }
+
+  addColumn() {
+    this.websocketSubject.next({
+      type: column_event_type.ADD,
+      payload: null
+    })
+  }
+
+  removeColumn() {
+    this.websocketSubject.next({
+      type: column_event_type.REMOVE,
+      payload: null
+    })
+  }
+
+  editColumnTitle() {
+
   }
 
 

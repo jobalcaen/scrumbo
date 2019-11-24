@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
   selector: 'app-remove-column',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RemoveColumnComponent implements OnInit {
 
-  constructor() { }
+  constructor(private notesService: NotesService) { }
 
   ngOnInit() {
   }
 
+  removeColumn() {
+    this.notesService.removeColumn()
+  }
 }

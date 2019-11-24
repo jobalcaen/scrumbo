@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Note, websocketEvent, NewNoteButton } from 'src/app/models/models';
+import { Note, websocketEvent, NewNoteButton, Column } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
-import { NotesService, event_type } from 'src/app/services/notes.service';
+import { NotesService, note_event_type, column_event_type } from 'src/app/services/notes.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 
@@ -43,6 +43,7 @@ const noteButtons = [
 })
 export class BoardComponent implements OnInit {
   notes: Note[] = []
+  columns: Column[] = []
   notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
   private readonly subscriptions = new Subscription()
@@ -65,19 +66,20 @@ export class BoardComponent implements OnInit {
     this.subscriptions.add(
       this.notesService.subscribe((event: websocketEvent) => {
         switch (event.type) {
-          case event_type.CONNECT:
+          case note_event_type.CONNECT:
             this.notes = event.payload.notes
+            this.columns = event.payload.columns
             break
   
-          case event_type.DELETE:
+          case note_event_type.DELETE:
             this.notes = this.notes.filter(note => note.id !== event.payload.id)
             break
             
-          case event_type.ADD:
+          case note_event_type.ADD:
             this.notes.push(event.payload.note)
             break
   
-          case event_type.MOVE:
+          case note_event_type.MOVE:
             this.notes.map((note) => {
               if(note.id === event.payload.id){
                 note.top = event.payload.top
@@ -87,7 +89,7 @@ export class BoardComponent implements OnInit {
             })
             break
   
-          case event_type.EDIT:
+          case note_event_type.EDIT:
             this.notes.map((note) => {
               if(note.id === event.payload.id){
                 note.body = event.payload.body
@@ -96,6 +98,15 @@ export class BoardComponent implements OnInit {
             })
             break
   
+          case column_event_type.ADD:
+            console.log('column added', event.payload)
+            this.columns.push(event.payload.column)
+            break
+
+          case column_event_type.REMOVE:
+            console.log('column removed', event.payload)
+            this.columns = this.columns.filter(column => column.id !== event.payload.id)
+            break
           }
         this.cd.markForCheck()
        })

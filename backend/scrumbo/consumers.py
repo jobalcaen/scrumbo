@@ -4,7 +4,8 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from scrumbo.serializers.note import NoteSerializer
-from .models import Board, Note
+from scrumbo.serializers.column import ColumnSerializer
+from .models import Board, Note, Column
 
 
 class BoardConsumer(AsyncWebsocketConsumer):
@@ -20,11 +21,13 @@ class BoardConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         notes = await self.get_notes()
+        columns = await self.get_columns()
 
         await self.send(json.dumps({
             'type': 'connect',
             'payload': {
-                'notes': notes
+                'notes': notes,
+                'columns': columns
             }
         }))
 
@@ -73,11 +76,34 @@ class BoardConsumer(AsyncWebsocketConsumer):
         note = Note.objects.get(pk=note_id)
         return note.delete()
 
+    @database_sync_to_async
+    def get_columns(self):
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        columns = Column.objects.filter(board=board)
+        serializer = ColumnSerializer(columns, many=True)
+        return serializer.data
+
+    @database_sync_to_async
+    def create_column(self):
+        title=" "
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        serializer = ColumnSerializer(context={'board': board}, data={'title':title })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer.data
+
+    @database_sync_to_async
+    def delete_column(self, column_id):
+        column = Column.objects.get(pk=column_id)
+        return column.delete()
+
+
     # receive messages from web socket
     async def receive(self, text_data):
         event = json.loads(text_data)
         event_type = event['type']
 
+        print('EVENT type: ', event_type)
         if event_type == 'note.add':
             new_note = await self.create_note(event['payload']['note'])
             await self.channel_layer.group_send(
@@ -126,7 +152,26 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'payload': updated_note
                 }
             )
+        
+        elif event_type == 'column.add':
+            column =  await self.create_column()
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'column_add',
+                    'payload': column
+                }
+            )
 
+        elif event_type == 'column.remove':
+            column =  await self.create_column()
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'column_add',
+                    'payload': column
+                }
+            )
 
 
     async def note_add(self, event):
@@ -150,5 +195,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def note_edit(self, event):
         await self.send(text_data=json.dumps({
             'type': 'note.edit',
+            'payload': event['payload']
+        }))
+
+    async def column_add(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'column.add',
             'payload': event['payload']
         }))

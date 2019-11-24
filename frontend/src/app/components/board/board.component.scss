@@ -10,3 +10,11 @@
     justify-content: center;
     padding: 0 15px 0 15px;
 }
+
+.columns {
+    width: 1080px;
+    height: 100%;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+}

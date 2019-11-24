@@ -1,7 +1,5 @@
 from rest_framework import serializers
-
 from scrumbo.models import Column
-
 
 class ColumnSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)

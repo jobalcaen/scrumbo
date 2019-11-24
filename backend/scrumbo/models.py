@@ -19,9 +19,9 @@ class Note(models.Model):
 
 class Column(models.Model):
     """Model for a column that goes in a board"""
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, default=" ")
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=None)
 
-        def __str__(self):
-            return self.title
+    def __str__(self):
+        return self.title
    

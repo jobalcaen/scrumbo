@@ -12,6 +12,11 @@ export interface Note {
     color: string
 }
 
+export interface Column {
+    id: number,
+    title: string,
+}
+
 export interface websocketEvent {
     type: string,
     payload: {
@@ -20,7 +25,9 @@ export interface websocketEvent {
         id?: number,
         top?: number,
         left?: number,
-        body?: string
+        body?: string,
+        column?: Column,
+        columns?: Column[]
     }
 }
 
