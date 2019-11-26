@@ -93,9 +93,12 @@ class BoardConsumer(AsyncWebsocketConsumer):
         return serializer.data
 
     @database_sync_to_async
-    def delete_column(self, column_id):
-        column = Column.objects.get(pk=column_id)
-        return column.delete()
+    def delete_column(self):
+
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        columns = Column.objects.filter(board=board)
+        if columns:
+            return columns.last().delete()
 
 
     # receive messages from web socket
@@ -164,11 +167,12 @@ class BoardConsumer(AsyncWebsocketConsumer):
             )
 
         elif event_type == 'column.remove':
-            column =  await self.create_column()
+            print('column remove')
+            column = await self.delete_column()
             await self.channel_layer.group_send(
                 self.board_name,
                 {
-                    'type': 'column_add',
+                    'type': 'column_remove',
                     'payload': column
                 }
             )
@@ -201,5 +205,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def column_add(self, event):
         await self.send(text_data=json.dumps({
             'type': 'column.add',
+            'payload': event['payload']
+        }))
+
+    async def column_remove(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'column.remove',
             'payload': event['payload']
         }))

@@ -105,7 +105,7 @@ export class BoardComponent implements OnInit {
 
           case column_event_type.REMOVE:
             console.log('column removed', event.payload)
-            this.columns = this.columns.filter(column => column.id !== event.payload.id)
+            this.columns.splice(-1,1)
             break
           }
         this.cd.markForCheck()
