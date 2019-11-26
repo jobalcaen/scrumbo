@@ -14,6 +14,7 @@ import { NewNoteComponent } from './components/new-note/new-note.component';
 import { NoteComponent } from './components/note/note.component';
 import { NewColumnComponent } from './components/new-column/new-column.component';
 import { RemoveColumnComponent } from './components/remove-column/remove-column.component';
+import { ColumnComponent } from './components/column/column.component';
 
 
 
@@ -25,7 +26,8 @@ import { RemoveColumnComponent } from './components/remove-column/remove-column.
     NewNoteComponent,
     NoteComponent,
     NewColumnComponent,
-    RemoveColumnComponent
+    RemoveColumnComponent,
+    ColumnComponent
   ],
   imports: [
     AppRoutingModule,

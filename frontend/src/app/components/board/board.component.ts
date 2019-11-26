@@ -100,7 +100,7 @@ export class BoardComponent implements OnInit {
   
           case column_event_type.ADD:
             console.log('column added', event.payload)
-            this.columns.push(event.payload.column)
+            this.columns.push(event.payload as Column)
             break
 
           case column_event_type.REMOVE:
@@ -108,6 +108,7 @@ export class BoardComponent implements OnInit {
             this.columns.splice(-1,1)
             break
           }
+        console.log('columns ', this.columns)
         this.cd.markForCheck()
        })
     )    
@@ -123,6 +124,11 @@ export class BoardComponent implements OnInit {
 
   updateNote(note: Note) {
     this.notesService.updateNote(note.id, note.body)
+  }
+
+  updateColumn(column: Column) {
+    console.log('update column', column)
+    this.notesService.editColumnTitle(column)
   }
 
   dragEnd(evt: CdkDragEnd) {

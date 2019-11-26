@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { websocketEvent } from '../models/models';
+import { websocketEvent, Column } from '../models/models';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 import { Subscription } from 'rxjs';
 
@@ -102,8 +102,13 @@ export class NotesService {
     })
   }
 
-  editColumnTitle() {
-
+  editColumnTitle(column: Column) {
+    this.websocketSubject.next({
+      type: column_event_type.EDIT_TITLE,
+      payload: {
+        column
+      }
+    })
   }
 
 

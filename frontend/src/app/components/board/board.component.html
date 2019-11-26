@@ -16,7 +16,11 @@
     (updateNote)="updateNote($event)">
   </app-note>
   <div class="columns">
-    <div *ngFor="let col of columns">columan</div>
+    <app-column
+      *ngFor="let column of columns"
+      [column]="column"
+      (updateColumn)="updateColumn($event)">
+    </app-column>
   </div>
 </div>
 

@@ -177,6 +177,17 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+        elif event_type == 'column.edit':
+            print('column remove: ', event)
+            # column = await self.delete_column()
+            # await self.channel_layer.group_send(
+            #     self.board_name,
+            #     {
+            #         'type': 'column_remove',
+            #         'payload': column
+            #     }
+            # )
+
 
     async def note_add(self, event):
         await self.send(text_data=json.dumps({
