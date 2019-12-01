@@ -1,0 +1,13 @@
+<div class="title-container" #titleForm>
+    <ng-container *ngIf="mode === 'view'; else editMote">
+        <!-- <mat-icon aria-hidden="false" aria-label="close icon" (click)="deleteNoteEmit()" class="close-button">close</mat-icon> -->
+        <span class="title" [class.empty-title]="!column.title">{{ column.title }}</span>
+    </ng-container>
+</div>
+
+<ng-template #editMote>
+    <form [formGroup]="columnForm">
+        <input formControlName="title" matInput type="text">
+    </form>
+
+</ng-template>

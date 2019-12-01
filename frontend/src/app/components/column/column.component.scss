@@ -1,0 +1,21 @@
+:host {
+    border-right: 1px dashed blueviolet;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.title-container {
+    height: min-content;
+}
+
+.title {
+    margin-top: 70px;
+    display: inline-block;
+    border-bottom: 1px dashed grey;
+
+    &.empty-title {
+        width: 100px;
+    }
+}
+
