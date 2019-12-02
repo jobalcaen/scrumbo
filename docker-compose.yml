@@ -19,12 +19,15 @@ services:
     depends_on:
       - db
 
+
+
   db:
     image: postgres:12.0-alpine
     volumes:
       # named volume
       - postgres_data:/var/lib/postgresql/data/
     env_file: ./env-dev
+
 
   redis:
     image: redis:alpine
@@ -34,4 +37,5 @@ services:
 # persist the named volume which happens to be the postgres db
 volumes:
   postgres_data:
+
 

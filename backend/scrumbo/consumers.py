@@ -80,6 +80,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
     def get_columns(self):
         board = Board.objects.get(url_friendly_name=self.board_name)
         columns = Column.objects.filter(board=board)
+        # StoreEvent.objects.all().order_by('-date')
         serializer = ColumnSerializer(columns, many=True)
         return serializer.data
 
@@ -94,12 +95,25 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def delete_column(self):
-
         board = Board.objects.get(url_friendly_name=self.board_name)
         columns = Column.objects.filter(board=board)
         if columns:
             return columns.last().delete()
 
+    @database_sync_to_async
+    def edit_column_title(self, newColumn):
+        print('column: ', newColumn)
+        column = Column.objects.get(pk=newColumn['id'])
+        serializer = ColumnSerializer(column, data={'title': newColumn['title']}, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return serializer.data
+
+
+        serializer = NoteSerializer(note, data={'body': event['body']}, partial=True)
+
+        return serializer.data
 
     # receive messages from web socket
     async def receive(self, text_data):
@@ -178,8 +192,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
             )
 
         elif event_type == 'column.edit':
-            print('column remove: ', event)
-            # column = await self.delete_column()
+            print('column edit: ', event)
+            column = await self.edit_column_title(event['payload']['column'])
             # await self.channel_layer.group_send(
             #     self.board_name,
             #     {

@@ -14,3 +14,8 @@ To use this project, follow these steps:
      http://127.0.0.1:8000/
 
 
+Start a bash shell in the django container:
+
+docker ps and get the docker container
+
+docker exec -t -i 458fa618bc21 bash

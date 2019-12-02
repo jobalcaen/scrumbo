@@ -21,6 +21,7 @@ class Column(models.Model):
     """Model for a column that goes in a board"""
     title = models.CharField(max_length=50, default=" ")
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
