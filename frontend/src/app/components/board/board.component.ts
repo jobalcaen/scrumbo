@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Note, websocketEvent, NewNoteButton, Column } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService, note_event_type, column_event_type } from 'src/app/services/notes.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
+import { tap, mergeMap, takeUntil, switchMap } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -42,8 +43,12 @@ const noteButtons = [
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+
+  @ViewChild('column_container',{static: true}) columnContainer: ElementRef
+  @ViewChild('dragger',{static: true}) dragger: ElementRef
   notes: Note[] = []
   columns: Column[] = []
+  columnContainerWidth: number = 1080
   notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
   private readonly subscriptions = new Subscription()
@@ -113,7 +118,12 @@ export class BoardComponent implements OnInit {
        })
     )    
   }
-
+  
+  ngAfterViewInit() {
+    console.log('columnContainer: ',this.columnContainer)
+    this.columnContainerDragHandler(this.columnContainer)
+    
+  }  
   ngOnDestroy() {
     this.subscriptions.unsubscribe()
   }
@@ -143,6 +153,33 @@ export class BoardComponent implements OnInit {
     } else {
       return note.id
     }
+  }
+
+  columnContainerDragHandler(e: ElementRef) {
+    const mouseMove$ = fromEvent(e.nativeElement, 'mousemove')
+    const mouseDown$ = fromEvent(e.nativeElement, 'mousedown')
+    const mouseUp$ = fromEvent(e.nativeElement, 'mouseup')
+
+    mouseDown$.pipe(
+      switchMap(() => mouseMove$.pipe(
+        takeUntil(
+          mouseUp$.pipe(
+            tap(() => {
+              console.log('api call')
+              console.log('this.columnContainerWidth: ', this.columnContainerWidth)
+
+            })
+          )
+        )
+      ))
+    ).subscribe((event) => {
+
+      console.log('mouse evemt: ', event.movementX)
+
+      this.columnContainerWidth = this.columnContainerWidth += event.movementX
+
+      console.log('this.columnContainerWidth: ', this.columnContainerWidth)
+    })
   }
 
 }
