@@ -9,6 +9,13 @@
     display: flex;
     justify-content: center;
     padding: 0 15px 0 15px;
+    width: 80px;
+}
+
+.columns-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .columns {
@@ -21,4 +28,9 @@
 
 app-column:first-child {
     border-left: 1px dashed blueviolet;
+}
+
+.dragger {
+    transform: rotate(90deg);
+    user-select: none;
 }

@@ -104,23 +104,19 @@ export class BoardComponent implements OnInit {
             break
   
           case column_event_type.ADD:
-            console.log('column added', event.payload)
             this.columns.push(event.payload as Column)
             break
 
           case column_event_type.REMOVE:
-            console.log('column removed', event.payload)
             this.columns.splice(-1,1)
             break
           }
-        console.log('columns ', this.columns)
         this.cd.markForCheck()
        })
     )    
   }
   
   ngAfterViewInit() {
-    console.log('columnContainer: ',this.columnContainer)
     this.columnContainerDragHandler(this.columnContainer)
     
   }  
@@ -137,7 +133,6 @@ export class BoardComponent implements OnInit {
   }
 
   updateColumn(column: Column) {
-    console.log('update column', column)
     this.notesService.editColumnTitle(column)
   }
 
@@ -166,19 +161,12 @@ export class BoardComponent implements OnInit {
           mouseUp$.pipe(
             tap(() => {
               console.log('api call')
-              console.log('this.columnContainerWidth: ', this.columnContainerWidth)
-
             })
           )
         )
       ))
     ).subscribe((event) => {
-
-      console.log('mouse evemt: ', event.movementX)
-
-      this.columnContainerWidth = this.columnContainerWidth += event.movementX
-
-      console.log('this.columnContainerWidth: ', this.columnContainerWidth)
+      this.columnContainerWidth = event.clientX - 80
     })
   }
 

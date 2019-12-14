@@ -15,15 +15,17 @@
     [cdkDragData]="note"
     (updateNote)="updateNote($event)">
   </app-note>
-  <div class="columns" [style.width.px]="columnContainerWidth" #column_container>
-    <app-column
-      *ngFor="let column of columns"
-      [column]="column"
-      (updateColumn)="updateColumn($event)">
-    </app-column>
-    <div class="drag-handle">
-      <mat-icon class="close-button" #dragger >drag_handle</mat-icon>
+  <div class="columns-container" [style.width.px]="columnContainerWidth" #column_container>
+    <div class="columns">
+      <app-column
+        *ngFor="let column of columns"
+        [column]="column"
+        (updateColumn)="updateColumn($event)">
+      </app-column>
     </div>
+    <button class="dragger" #dragger>
+      <mat-icon>drag_handle</mat-icon>
+    </button>
   </div>
 </div>
 
