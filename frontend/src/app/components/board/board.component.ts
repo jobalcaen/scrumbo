@@ -1,11 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Note, websocketEvent, NewNoteButton, Column } from 'src/app/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService, note_event_type, column_event_type } from 'src/app/services/notes.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Subscription, fromEvent } from 'rxjs';
-import { tap, mergeMap, takeUntil, switchMap } from 'rxjs/operators';
+import { Subscription, fromEvent, EMPTY } from 'rxjs';
+import { tap, mergeMap, takeUntil, switchMap, map, filter } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -45,7 +45,9 @@ const noteButtons = [
 export class BoardComponent implements OnInit {
 
   @ViewChild('column_container',{static: true}) columnContainer: ElementRef
-  @ViewChild('dragger',{static: true}) dragger: ElementRef
+  // !: QueryList<ChildDirective>;
+  @ViewChildren('dragger') dragger!: QueryList<ElementRef>
+  
   notes: Note[] = []
   columns: Column[] = []
   columnContainerWidth: number = 1080
@@ -117,7 +119,34 @@ export class BoardComponent implements OnInit {
   }
   
   ngAfterViewInit() {
-    this.columnContainerDragHandler(this.dragger)
+    this.subscriptions.add(
+      this.dragger.changes.pipe(
+        filter((queryList) => queryList.length !== 0),
+        switchMap((queryList) => {
+
+          const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove')
+          const mouseDown$ = fromEvent<MouseEvent>(queryList.first.nativeElement, 'mousedown')
+          const mouseUp$ = fromEvent<MouseEvent>(document, 'mouseup')
+      
+          return mouseDown$.pipe(
+            switchMap(() => mouseMove$.pipe(
+              takeUntil(
+                mouseUp$.pipe(
+                  tap(() => {
+                    console.log('api call')
+                  })
+                )
+              ),
+              map(event => event.clientX)
+            )),
+          )
+        }),
+
+      ).subscribe((draggerXCoordinate) => {
+        this.columnContainerWidth = draggerXCoordinate - 80
+      })
+
+    )
     
   }  
   ngOnDestroy() {
@@ -151,11 +180,13 @@ export class BoardComponent implements OnInit {
   }
 
   columnContainerDragHandler(e: ElementRef) {
-    const mouseMove$ = fromEvent(e.nativeElement, 'mousemove')
+    console.log('e: ', e)
+    const mouseMove$ = fromEvent(document, 'mousemove')
     const mouseDown$ = fromEvent(e.nativeElement, 'mousedown')
-    const mouseUp$ = fromEvent(e.nativeElement, 'mouseup')
+    const mouseUp$ = fromEvent(document, 'mouseup')
 
     mouseDown$.pipe(
+      tap(() => console.log('mouse down')),
       switchMap(() => mouseMove$.pipe(
         takeUntil(
           mouseUp$.pipe(
@@ -165,9 +196,10 @@ export class BoardComponent implements OnInit {
           )
         )
       ))
-    ).subscribe((event) => {
-      this.columnContainerWidth = (event as MouseEvent).clientX - 80
-    })
+    )
+    // ).subscribe((event) => {
+    //  this.columnContainerWidth = (event as MouseEvent).clientX - 80
+    // })
   }
 
 }
