@@ -117,7 +117,7 @@ export class BoardComponent implements OnInit {
   }
   
   ngAfterViewInit() {
-    this.columnContainerDragHandler(this.columnContainer)
+    this.columnContainerDragHandler(this.dragger)
     
   }  
   ngOnDestroy() {
