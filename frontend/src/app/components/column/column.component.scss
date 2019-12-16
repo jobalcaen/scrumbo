@@ -7,10 +7,11 @@
 
 .title-container {
     height: min-content;
+    margin-top: 70px;
 }
 
 .title {
-    margin-top: 70px;
+    // margin-top: 70px;
     display: inline-block;
     border-bottom: 1px dashed grey;
 
@@ -19,3 +20,9 @@
     }
 }
 
+input {
+    background-color: unset;
+    border: unset;
+    border-bottom: 1px dashed grey;
+    width: 100px;
+}

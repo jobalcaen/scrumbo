@@ -20,6 +20,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        print('board: ', board.column_container_width)
         notes = await self.get_notes()
         columns = await self.get_columns()
 
@@ -27,7 +29,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
             'type': 'connect',
             'payload': {
                 'notes': notes,
-                'columns': columns
+                'columns': columns,
+                'columns_container_width': board.column_container_width
             }
         }))
 
@@ -110,10 +113,12 @@ class BoardConsumer(AsyncWebsocketConsumer):
         serializer.save()
         return serializer.data
 
-
-        serializer = NoteSerializer(note, data={'body': event['body']}, partial=True)
-
-        return serializer.data
+    @database_sync_to_async
+    def set_column_width(self):
+        board = Board.objects.get(url_friendly_name=self.board_name)
+        column = Column.objects.filter(board=board)
+        if columns:
+            return columns.last().delete()
 
     # receive messages from web socket
     async def receive(self, text_data):
@@ -194,14 +199,13 @@ class BoardConsumer(AsyncWebsocketConsumer):
         elif event_type == 'column.edit':
             print('column edit: ', event)
             column = await self.edit_column_title(event['payload']['column'])
-            # await self.channel_layer.group_send(
-            #     self.board_name,
-            #     {
-            #         'type': 'column_remove',
-            #         'payload': column
-            #     }
-            # )
-
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'column_edit',
+                    'payload': column
+                }
+            )
 
     async def note_add(self, event):
         await self.send(text_data=json.dumps({
@@ -236,5 +240,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def column_remove(self, event):
         await self.send(text_data=json.dumps({
             'type': 'column.remove',
+            'payload': event['payload']
+        }))
+    
+    async def column_edit(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'column.edit',
             'payload': event['payload']
         }))

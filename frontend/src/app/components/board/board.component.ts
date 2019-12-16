@@ -166,7 +166,7 @@ export class BoardComponent implements OnInit {
         )
       ))
     ).subscribe((event) => {
-      this.columnContainerWidth = event.clientX - 80
+      this.columnContainerWidth = (event as MouseEvent).clientX - 80
     })
   }
 

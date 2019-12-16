@@ -16,7 +16,7 @@ class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         name = CharField(max_length=30, validators=[queryset_count_is_zero])
-        fields = ('id', 'name', 'url_friendly_name')
+        fields = ('id', 'name', 'url_friendly_name', 'column_container_width')
 
     def validate_name(self, value):
         if re.search(r"[^\w\s]", value):
@@ -38,3 +38,9 @@ class BoardSerializer(serializers.ModelSerializer):
         )
         board.save()
         return board
+
+    # column_container_width = models.IntegerField(default=0)
+    def update(self, instance, validated_data):
+        instance.column_container_width = validated_data.get('column_container_width', instance.column_container_width)
+        instance.save()
+        return instance

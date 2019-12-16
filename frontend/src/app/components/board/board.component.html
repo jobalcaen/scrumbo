@@ -23,7 +23,7 @@
         (updateColumn)="updateColumn($event)">
       </app-column>
     </div>
-    <button class="dragger" #dragger>
+    <button class="dragger" *ngIf="columns.length !== 0" #dragger>
       <mat-icon>drag_handle</mat-icon>
     </button>
   </div>
