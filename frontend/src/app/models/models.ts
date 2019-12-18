@@ -27,7 +27,8 @@ export interface websocketEvent {
         left?: number,
         body?: string,
         column?: Column,
-        columns?: Column[]
+        columns?: Column[],
+        title?: string
     }
 }
 

@@ -72,6 +72,7 @@ export class BoardComponent implements OnInit {
 
     this.subscriptions.add(
       this.notesService.subscribe((event: websocketEvent) => {
+        console.log('event', event)
         switch (event.type) {
           case note_event_type.CONNECT:
             this.notes = event.payload.notes
@@ -111,6 +112,15 @@ export class BoardComponent implements OnInit {
 
           case column_event_type.REMOVE:
             this.columns.splice(-1,1)
+            break
+
+          case column_event_type.EDIT_TITLE:
+            this.columns.map((column) => {
+              if(column.id === event.payload.id) {
+                column.title = event.payload.title
+              }
+              return column
+            })
             break
           }
         this.cd.markForCheck()
