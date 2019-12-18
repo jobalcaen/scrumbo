@@ -103,6 +103,7 @@ export class BoardComponent implements OnInit {
             break
   
           case column_event_type.ADD:
+            console.log('event.payload.column: ', event.payload.column)
             this.columns.push(event.payload.column)
             break
 

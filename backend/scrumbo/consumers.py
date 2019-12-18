@@ -10,18 +10,13 @@ from .models import Board, Note, Column
 class BoardConsumer(AsyncWebsocketConsumer):
     board_name = None
 
-    # def __init__(self):
-    #     self.board = None
-
     async def connect(self):
-
         self.board_name = self.scope['url_route']['kwargs']['board_url']
-
         await self.channel_layer.group_add(
             self.board_name,
             self.channel_name
         )
-
+        
         await self.accept()
 
         board = Board.objects.get(url_friendly_name=self.board_name)
@@ -124,11 +119,10 @@ class BoardConsumer(AsyncWebsocketConsumer):
     # receive messages from web socket
     async def receive(self, text_data):
         event = json.loads(text_data)
-        event_type = event['type']
 
-        print('EVENT type: ', event_type)
-        if event_type == 'note.add':
-            print('BOARd', self.board_name)
+        print('EVENT type: ', event['type'])
+
+        if event['type'] == 'note.add':
             new_note = await self.create_note(event['payload']['note'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -140,8 +134,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'note.delete':
-            print('event', event)
+        elif event['type'] == 'note.delete':
             await self.delete_note(event['payload']['id'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -153,7 +146,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'note.move':
+        elif event['type'] == 'note.move':
             await self.move_note(event['payload'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -167,7 +160,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'note.edit':
+        elif event['type'] == 'note.edit':
             updated_note = await self.update_note(event['payload'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -177,7 +170,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
         
-        elif event_type == 'column.add':
+        elif event['type'] == 'column.add':
             column =  await self.create_column()
             await self.channel_layer.group_send(
                 self.board_name,
@@ -187,8 +180,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'column.remove':
-            print('column remove')
+        elif event['type'] == 'column.remove':
             column = await self.delete_column()
             await self.channel_layer.group_send(
                 self.board_name,
@@ -198,8 +190,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'column.edit':
-            print('column edit: ', event)
+        elif event['type'] == 'column.edit':
             column = await self.edit_column_title(event['payload']['column'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -209,8 +200,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-        elif event_type == 'columns.resize':
-            print('columns resize: ', event)
+        elif event['type'] == 'columns.resize':
             width = await self.resize_columns(event['payload']['width'])
             await self.channel_layer.group_send(
                 self.board_name,
