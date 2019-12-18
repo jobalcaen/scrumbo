@@ -5,7 +5,7 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 import { NotesService, note_event_type, column_event_type } from 'src/app/services/notes.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Subscription, fromEvent, EMPTY } from 'rxjs';
-import { tap, mergeMap, takeUntil, switchMap, map, filter } from 'rxjs/operators';
+import { tap, mergeMap, takeUntil, switchMap, map, filter, finalize } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -47,10 +47,10 @@ export class BoardComponent implements OnInit {
   @ViewChild('column_container',{static: true}) columnContainer: ElementRef
   // !: QueryList<ChildDirective>;
   @ViewChildren('dragger') dragger!: QueryList<ElementRef>
-  
+  isInteracting = false
   notes: Note[] = []
   columns: Column[] = []
-  columnContainerWidth: number = 1080
+  columnContainerWidth: number
   notesService$: WebSocketSubject<websocketEvent>
   noteButtons: NewNoteButton[] = []
   private readonly subscriptions = new Subscription()
@@ -77,6 +77,7 @@ export class BoardComponent implements OnInit {
           case note_event_type.CONNECT:
             this.notes = event.payload.notes
             this.columns = event.payload.columns
+            this.columnContainerWidth = event.payload.columns_container_width - 80
             break
   
           case note_event_type.DELETE:
@@ -122,6 +123,10 @@ export class BoardComponent implements OnInit {
               return column
             })
             break
+
+          case column_event_type.RESIZE:
+            this.columnContainerWidth = event.payload.columns_container_width - 80
+            break
           }
         this.cd.markForCheck()
        })
@@ -139,21 +144,32 @@ export class BoardComponent implements OnInit {
           const mouseUp$ = fromEvent<MouseEvent>(document, 'mouseup')
       
           return mouseDown$.pipe(
+            map(() => this.isInteracting = true),
             switchMap(() => mouseMove$.pipe(
+              // map(event => event.clientX),
               takeUntil(
-                mouseUp$.pipe(
-                  tap(() => {
-                    console.log('api call')
-                  })
-                )
-              ),
-              map(event => event.clientX)
+                mouseUp$
+                ),
+              map(event => event.pageX),
+              finalize(() => {
+                this.notesService.changeColumnContainerWidth(event.pageX)
+                console.log('hello', event)
+                this.isInteracting = false
+              })      
             )),
           )
         }),
 
-      ).subscribe((draggerXCoordinate) => {
-        this.columnContainerWidth = draggerXCoordinate - 80
+      ).subscribe(
+        
+        (width) => {
+          console.log('width', width)
+          this.columnContainerWidth = width - 80
+
+     
+        // this.columnContainerWidth = draggerXCoordinate - 80
+        // this.notesService.changeColumnContainerWidth(width)
+
       })
 
     )

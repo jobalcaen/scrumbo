@@ -5,12 +5,19 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 from scrumbo.serializers.note import NoteSerializer
 from scrumbo.serializers.column import ColumnSerializer
+from scrumbo.serializers.board import BoardSerializer
 from .models import Board, Note, Column
 
 
 class BoardConsumer(AsyncWebsocketConsumer):
+    board_name = None
+
+    # def __init__(self):
+    #     self.board = None
+
     async def connect(self):
 
+        # self.board = self.scope['url_route']['kwargs']['board_url']
         self.board_name = self.scope['url_route']['kwargs']['board_url']
 
         await self.channel_layer.group_add(
@@ -21,7 +28,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         board = Board.objects.get(url_friendly_name=self.board_name)
-        print('board: ', board.column_container_width)
+        # print('board: ', board.column_container_width)
         notes = await self.get_notes()
         columns = await self.get_columns()
 
@@ -114,11 +121,18 @@ class BoardConsumer(AsyncWebsocketConsumer):
         return serializer.data
 
     @database_sync_to_async
-    def set_column_width(self):
+    def resize_columns(self, newWidth):
         board = Board.objects.get(url_friendly_name=self.board_name)
-        column = Column.objects.filter(board=board)
-        if columns:
-            return columns.last().delete()
+
+        print('board,', board)
+        serializer = BoardSerializer(board, data={'column_container_width': newWidth}, partial=True)
+        print('serializer: ', serializer)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return newWidth
+
+
 
     # receive messages from web socket
     async def receive(self, text_data):
@@ -127,6 +141,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         print('EVENT type: ', event_type)
         if event_type == 'note.add':
+            print('BOARd', self.board_name)
             new_note = await self.create_note(event['payload']['note'])
             await self.channel_layer.group_send(
                 self.board_name,
@@ -207,6 +222,19 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+        elif event_type == 'columns.resize':
+            print('columns resize: ', event)
+            width = await self.resize_columns(event['payload']['width'])
+            await self.channel_layer.group_send(
+                self.board_name,
+                {
+                    'type': 'columns_resize',
+                    'payload': {
+                        'columns_container_width': width
+                    }
+                }
+            )
+
     async def note_add(self, event):
         await self.send(text_data=json.dumps({
             'type': 'note.add',
@@ -246,5 +274,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
     async def column_edit(self, event):
         await self.send(text_data=json.dumps({
             'type': 'column.edit',
+            'payload': event['payload']
+        }))
+
+    async def columns_resize(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'columns.resize',
             'payload': event['payload']
         }))

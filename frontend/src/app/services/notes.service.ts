@@ -17,6 +17,7 @@ export enum column_event_type {
   ADD = 'column.add',
   REMOVE = 'column.remove',
   EDIT_TITLE = 'column.edit',
+  RESIZE = 'columns.resize'
 }
 
 @Injectable({
@@ -107,6 +108,15 @@ export class NotesService {
       type: column_event_type.EDIT_TITLE,
       payload: {
         column
+      }
+    })
+  }
+
+  changeColumnContainerWidth(width: number) {
+    this.websocketSubject.next({
+      type: column_event_type.RESIZE,
+      payload: {
+        width
       }
     })
   }

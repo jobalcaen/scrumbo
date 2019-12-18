@@ -5,7 +5,7 @@ class Board(models.Model):
     """Model for a board"""
     name = models.CharField(max_length=30)
     url_friendly_name = models.CharField(max_length=30, default=None)
-    column_container_width = models.IntegerField(default=0)
+    column_container_width = models.IntegerField(default=700)
 
     def __str__(self):
         return self.name

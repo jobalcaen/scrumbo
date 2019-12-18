@@ -28,7 +28,8 @@ export interface websocketEvent {
         body?: string,
         column?: Column,
         columns?: Column[],
-        title?: string
+        title?: string,
+        columns_container_width?: number
     }
 }
 

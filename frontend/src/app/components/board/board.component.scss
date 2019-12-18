@@ -16,6 +16,10 @@
     display: flex;
     align-items: center;
     height: 100%;
+
+    &.interacting {
+        transition: 0.3s;
+    }
 }
 
 .columns {
@@ -34,3 +38,5 @@ app-column:first-child {
     transform: rotate(90deg);
     user-select: none;
 }
+
+
