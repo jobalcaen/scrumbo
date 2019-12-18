@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { BoardService } from 'src/app/services/board.service';
+import { BoardService } from 'src/app/services/board-creation.service';
 import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 

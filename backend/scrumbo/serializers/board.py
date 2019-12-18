@@ -31,7 +31,6 @@ class BoardSerializer(serializers.ModelSerializer):
         return re.sub(r'\s', '-', name.lower())
 
     def create(self, validated_data):
-        print(validated_data)
         board = Board(
             name=validated_data['name'],
             url_friendly_name=self.make_url_friendly_name(validated_data['name'])

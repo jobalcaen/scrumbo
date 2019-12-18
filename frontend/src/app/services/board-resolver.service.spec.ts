@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { BoardResolverService } from './board-resolver.service';
 import { Router } from '@angular/router';
 import { of, EMPTY } from 'rxjs';
-import { BoardService } from './board.service';
+import { BoardService } from './board-creation.service';
 import { Board } from '../models/models';
 
 describe('BoardResolverService', () => {

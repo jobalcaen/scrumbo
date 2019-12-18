@@ -1,8 +1,6 @@
 import json
-
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 from scrumbo.serializers.note import NoteSerializer
 from scrumbo.serializers.column import ColumnSerializer
 from scrumbo.serializers.board import BoardSerializer
@@ -17,7 +15,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
 
-        # self.board = self.scope['url_route']['kwargs']['board_url']
         self.board_name = self.scope['url_route']['kwargs']['board_url']
 
         await self.channel_layer.group_add(
@@ -28,7 +25,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         board = Board.objects.get(url_friendly_name=self.board_name)
-        # print('board: ', board.column_container_width)
         notes = await self.get_notes()
         columns = await self.get_columns()
 
@@ -90,7 +86,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
     def get_columns(self):
         board = Board.objects.get(url_friendly_name=self.board_name)
         columns = Column.objects.filter(board=board)
-        # StoreEvent.objects.all().order_by('-date')
         serializer = ColumnSerializer(columns, many=True)
         return serializer.data
 
@@ -112,10 +107,8 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def edit_column_title(self, newColumn):
-        print('column: ', newColumn)
         column = Column.objects.get(pk=newColumn['id'])
         serializer = ColumnSerializer(column, data={'title': newColumn['title']}, partial=True)
-
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer.data
@@ -123,16 +116,10 @@ class BoardConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def resize_columns(self, newWidth):
         board = Board.objects.get(url_friendly_name=self.board_name)
-
-        print('board,', board)
         serializer = BoardSerializer(board, data={'column_container_width': newWidth}, partial=True)
-        print('serializer: ', serializer)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return newWidth
-
-
 
     # receive messages from web socket
     async def receive(self, text_data):

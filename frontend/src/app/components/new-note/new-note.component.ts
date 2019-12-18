@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NotesService } from 'src/app/services/notes.service';
+import { BoardActionsService } from 'src/app/services/board-actions.service';
 import { NewNoteButton, websocketEvent } from 'src/app/models/models';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
@@ -15,7 +15,7 @@ export class NewNoteComponent implements OnInit {
   color: string
 
   constructor(
-    private notesService: NotesService
+    private boardActionsService: BoardActionsService
     ) { 
       
     }
@@ -25,7 +25,7 @@ export class NewNoteComponent implements OnInit {
   }
 
   createNote() {
-    this.notesService.addNote(
+    this.boardActionsService.addNote(
       this.noteButtonInformation.top,
       this.noteButtonInformation.left,
       this.noteButtonInformation.color

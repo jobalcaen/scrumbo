@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Board } from '../models/models';
-import { BoardService } from './board.service';
+import { BoardService } from './board-creation.service';
 import { Observable, of, EMPTY } from 'rxjs';
 import { take, mergeMap } from 'rxjs/operators';
 

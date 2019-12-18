@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotesService } from 'src/app/services/notes.service';
+import { BoardActionsService } from 'src/app/services/board-actions.service';
 
 @Component({
   selector: 'app-new-column',
@@ -8,12 +8,12 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class NewColumnComponent implements OnInit {
 
-  constructor(private notesService: NotesService) { }
+  constructor(private boardActionsService: BoardActionsService) { }
 
   ngOnInit() {
   }
 
   addColumn() {
-    this.notesService.addColumn()
+    this.boardActionsService.addColumn()
   }
 }

@@ -59,7 +59,6 @@ export class ColumnComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('column? ', this.column)
     this.columnForm.setValue({title: this.column.title ? this.column.title : ""})
     this.viewModeHandler()
     this.editModeHandler()

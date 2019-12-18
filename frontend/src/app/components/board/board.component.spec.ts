@@ -5,7 +5,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NewNoteButton, websocketEvent, Note } from 'src/app/models/models';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { NotesService, event_type } from 'src/app/services/notes.service';
+import { NotesService, event_type } from 'src/app/services/board-actions.service';
 import { of } from 'rxjs';
 
 fdescribe('BoardComponent', () => {

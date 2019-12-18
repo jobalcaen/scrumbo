@@ -15,7 +15,12 @@
     [cdkDragData]="note"
     (updateNote)="updateNote($event)">
   </app-note>
-  <div class="columns-container" [style.width.px]="columnContainerWidth" *ngIf="columns.length"  #column_container [class.interacting]="!isInteracting">
+  <div
+    class="columns-container"
+    [style.width.px]="columnContainerWidth"
+    *ngIf="columns.length"
+    [class.interacting]="!isInteracting"
+    #column_container>
     <div class="columns">
       <app-column
         *ngFor="let column of columns"

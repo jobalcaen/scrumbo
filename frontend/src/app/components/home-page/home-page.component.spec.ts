@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomePageComponent } from './home-page.component';
-import { BoardService } from 'src/app/services/board.service';
+import { BoardService } from 'src/app/services/board-creation.service';
 import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';

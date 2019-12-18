@@ -42,9 +42,7 @@ export class NoteComponent implements OnInit {
 
     const clickedOutside$ = fromEvent(document, 'click').pipe(
       filter(event => this.elRef.nativeElement.contains(event.target) === false),
-      first(),
-      tap(() => console.log('clicked outside'))
-
+      first()
     )
 
     this.editMode$.pipe(
@@ -57,7 +55,6 @@ export class NoteComponent implements OnInit {
       }
       if (this.note.body !== this.noteForm.value.body){
         this.note.body = this.noteForm.value.body
-        console.log('emitting')
         this.updateNote.emit(updatedNote)
       }
     })
