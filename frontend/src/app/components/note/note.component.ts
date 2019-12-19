@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Note } from 'src/app/models/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject, fromEvent, Subscription } from 'rxjs';
 import { filter, switchMap, first, tap } from 'rxjs/operators';
 
 @Component({
@@ -10,55 +10,18 @@ import { filter, switchMap, first, tap } from 'rxjs/operators';
   styleUrls: ['./note.component.scss']
 })
 export class NoteComponent implements OnInit {
-
   @Input() note: Note
-
- 
-    noteForm = new FormGroup({
-      body: new FormControl('', {
-        validators: Validators.maxLength(500),
-        updateOn: 'blur'
-      }), 
-    })
-
-    mode: 'view' | 'edit' = 'view';
-    noteStyle: any
-
-    
-    editMode = new Subject()
-    editMode$ = this.editMode.asObservable();
-
-    private viewModeHandler() { 
-      fromEvent(this.elRef.nativeElement, 'dblclick').subscribe(() => {
-        if (this.mode !== 'edit') {
-          this.mode = 'edit'
-          this.editMode.next(true)
-        }
-        
-     })
-   }
-
-   private editModeHandler() {
-
-    const clickedOutside$ = fromEvent(document, 'click').pipe(
-      filter(event => this.elRef.nativeElement.contains(event.target) === false),
-      first()
-    )
-
-    this.editMode$.pipe(
-      switchMap(() => clickedOutside$)
-    ).subscribe(() => {
-      this.mode = 'view'
-      const updatedNote = {
-        ...this.note,
-        body: this.noteForm.value.body
-      }
-      if (this.note.body !== this.noteForm.value.body){
-        this.note.body = this.noteForm.value.body
-        this.updateNote.emit(updatedNote)
-      }
-    })
-  }
+  noteForm = new FormGroup({
+    body: new FormControl('', {
+      validators: Validators.maxLength(500),
+      updateOn: 'blur'
+    }), 
+  })
+  mode: 'view' | 'edit' = 'view';
+  noteStyle: any
+  editMode = new Subject()
+  editMode$ = this.editMode.asObservable();
+  private readonly subscriptions = new Subscription()
   @Output() deleteNote: EventEmitter<number> = new EventEmitter()
   @Output() updateNote: EventEmitter<Note> = new EventEmitter()
     constructor(
@@ -68,8 +31,38 @@ export class NoteComponent implements OnInit {
   ngOnInit() {
     this.noteForm.setValue({body: this.note.body})
     this.noteStyle = this.setStyle()
-    this.viewModeHandler()
-    this.editModeHandler()
+
+    this.subscriptions.add(
+      fromEvent(this.elRef.nativeElement, 'dblclick').subscribe(() => {
+        if (this.mode !== 'edit') {
+          this.mode = 'edit'
+          this.editMode.next(true)
+        }
+      })
+    )
+
+    this.subscriptions.add(
+      this.editMode$.pipe(
+        switchMap(() => fromEvent(document, 'click').pipe(
+          filter(event => this.elRef.nativeElement.contains(event.target) === false),
+          first()
+        ))
+      ).subscribe(() => {
+        this.mode = 'view'
+        const updatedNote = {
+          ...this.note,
+          body: this.noteForm.value.body
+        }
+        if (this.note.body !== this.noteForm.value.body){
+          this.note.body = this.noteForm.value.body
+          this.updateNote.emit(updatedNote)
+        }
+      })
+    )
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.unsubscribe()
   }
 
   deleteNoteEmit(){

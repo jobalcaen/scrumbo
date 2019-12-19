@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { BoardActionsService, note_event_type, column_event_type } from 'src/app/services/board-actions.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Subscription, fromEvent, EMPTY } from 'rxjs';
-import { tap, mergeMap, takeUntil, switchMap, map, filter, finalize } from 'rxjs/operators';
+import { Subscription, fromEvent } from 'rxjs';
+import { takeUntil, switchMap, map, filter, finalize } from 'rxjs/operators';
 
 const noteButtons = [
   {
@@ -103,7 +103,6 @@ export class BoardComponent implements OnInit {
             break
   
           case column_event_type.ADD:
-            console.log('event.payload.column: ', event.payload.column)
             this.columns.push(event.payload.column)
             break
 
@@ -113,8 +112,8 @@ export class BoardComponent implements OnInit {
 
           case column_event_type.EDIT_TITLE:
             this.columns.map((column) => {
-              if(column.id === event.payload.id) {
-                column.title = event.payload.title
+              if(column.id === event.payload.column.id) {
+                column.title = event.payload.column.title
               }
               return column
             })

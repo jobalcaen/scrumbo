@@ -16,7 +16,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
             self.board_name,
             self.channel_name
         )
-        
+
         await self.accept()
 
         board = Board.objects.get(url_friendly_name=self.board_name)
@@ -86,11 +86,11 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def create_column(self):
-        title=" "
         board = Board.objects.get(url_friendly_name=self.board_name)
-        serializer = ColumnSerializer(context={'board': board}, data={'title':title })
+        serializer = ColumnSerializer(context={'board': board}, data={'title': " "}, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        print("serializer.data ", serializer.data)
         return serializer.data
 
     @database_sync_to_async
@@ -176,7 +176,9 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 self.board_name,
                 {
                     'type': 'column_add',
-                    'payload': column
+                    'payload': {
+                        'column': column
+                    }
                 }
             )
 
@@ -186,7 +188,9 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 self.board_name,
                 {
                     'type': 'column_remove',
-                    'payload': column
+                    'payload': {
+                        'column': column
+                    }
                 }
             )
 
@@ -196,12 +200,15 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 self.board_name,
                 {
                     'type': 'column_edit',
-                    'payload': column
+                    'payload': {
+                        'column': column
+                    }
                 }
             )
 
         elif event['type'] == 'columns.resize':
-            width = await self.resize_columns(event['payload']['width'])
+            print(event['payload'])
+            width = await self.resize_columns(event['payload']['columns_container_width'])
             await self.channel_layer.group_send(
                 self.board_name,
                 {
