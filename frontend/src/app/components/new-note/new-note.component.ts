@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BoardActionsService } from 'src/app/services/board-actions.service';
-import { NewNoteButton, websocketEvent } from 'src/app/models/models';
-import { WebSocketSubject } from 'rxjs/webSocket';
+import { NewNoteButton } from 'src/app/models/models';
 
 
 @Component({

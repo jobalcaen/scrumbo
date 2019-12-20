@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Note } from 'src/app/models/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, fromEvent, Subscription } from 'rxjs';
-import { filter, switchMap, first, tap } from 'rxjs/operators';
+import { filter, switchMap, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-note',

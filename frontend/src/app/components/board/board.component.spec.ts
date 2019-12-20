@@ -4,9 +4,10 @@ import { BoardComponent } from './board.component'
 import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NewNoteButton, websocketEvent, Note } from 'src/app/models/models';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { NotesService, event_type } from 'src/app/services/board-actions.service';
+import { ActivatedRouteSnapshot, RouterModule } from '@angular/router';
+import { BoardActionsService, note_event_type } from 'src/app/services/board-actions.service';
 import { of } from 'rxjs';
+import { CustomMaterialModule } from 'src/app/common/material.module';
 
 fdescribe('BoardComponent', () => {
   let component: BoardComponent
@@ -14,7 +15,7 @@ fdescribe('BoardComponent', () => {
   let debugElement: DebugElement
   let activatedRouteSnapshotStub
   let notesServiceSubscribeSpy: jasmine.SpyObj<any>
-  let notesService: NotesService
+  let boardActionsService: BoardActionsService
   @Component({selector: 'app-new-note', template: ''})
   class NewNoteStubComponent {
     @Input() noteButtonInformation: NewNoteButton
@@ -27,6 +28,18 @@ fdescribe('BoardComponent', () => {
     @Input() cdkDragData: any
     
   }
+
+  @Component({selector: 'app-new-column', template: ''})
+  class NewColumnComponent {}
+
+  @Component({selector: 'app-column', template: ''})
+  class ColumnComponent {
+    @Input() column: any
+
+  }
+
+  @Component({selector: 'app-remove-column', template: ''})
+  class RemoveColumnComponent {}
 
   beforeEach(async(() => {
 
@@ -42,7 +55,15 @@ fdescribe('BoardComponent', () => {
       declarations: [ 
         BoardComponent,
         NewNoteStubComponent,
-        NoteStubComponent
+        NoteStubComponent,
+        NewColumnComponent,
+        RemoveColumnComponent,
+        ColumnComponent,
+      ],
+      imports: [
+        CustomMaterialModule,
+        RouterModule.forRoot([]),
+
        ],
        providers: [
         { provide: ActivatedRouteSnapshot, useValue: activatedRouteSnapshotStub }
@@ -55,8 +76,8 @@ fdescribe('BoardComponent', () => {
     fixture = TestBed.createComponent(BoardComponent)
     component = fixture.componentInstance
     debugElement = fixture.debugElement
-    notesService = debugElement.injector.get(NotesService);
-    notesServiceSubscribeSpy = spyOn(notesService, 'subscribe')
+    boardActionsService = debugElement.injector.get(BoardActionsService);
+    notesServiceSubscribeSpy = spyOn(boardActionsService, 'subscribe')
     fixture.detectChanges();
   });
 
@@ -67,7 +88,7 @@ fdescribe('BoardComponent', () => {
 
   it('should create a list of note buttons and notes', fakeAsync(() => {
     const connectEvent: websocketEvent = {
-      type: event_type.CONNECT,
+      type: note_event_type.CONNECT,
       payload: {
         notes: [
           { id: 1,
