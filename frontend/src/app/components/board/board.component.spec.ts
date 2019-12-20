@@ -81,12 +81,12 @@ fdescribe('BoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('creates the component', () => {
     expect(component).toBeTruthy();
   });
 
 
-  it('should create a list of note buttons and notes', fakeAsync(() => {
+  it('creates a list of note buttons and notes', fakeAsync(() => {
     const connectEvent: websocketEvent = {
       type: note_event_type.CONNECT,
       payload: {
