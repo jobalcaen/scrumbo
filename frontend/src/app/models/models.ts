@@ -14,7 +14,8 @@ export interface Note {
 
 export interface Column {
     id: number,
-    title: string
+    title: string,
+    created_at: string,
 }
 
 export interface websocketEvent {

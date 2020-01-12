@@ -71,7 +71,9 @@ export class BoardComponent implements OnInit {
         switch (event.type) {
           case note_event_type.CONNECT:
             this.notes = event.payload.notes
-            this.columns = event.payload.columns
+            this.columns = event.payload.columns.sort((a: Column, b: Column) => {
+              return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            })
             this.columnContainerWidth = event.payload.columns_container_width - 80
             break
   
@@ -103,7 +105,9 @@ export class BoardComponent implements OnInit {
             break
   
           case column_event_type.ADD:
-            this.columns.push(event.payload.column)
+            this.columns = [...this.columns, event.payload.column].sort((a: Column, b: Column) => {
+              return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            })
             break
 
           case column_event_type.REMOVE:
