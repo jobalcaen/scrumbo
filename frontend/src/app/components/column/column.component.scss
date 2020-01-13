@@ -6,22 +6,24 @@
 }
 
 .title-container {
-    height: min-content;
-    margin-top: 70px;
+    height: 80px;
+    border-bottom: 1px dashed grey;
+    display: flex;
+    align-items: flex-end;
 }
 
 .title {
     display: inline-block;
-    border-bottom: 1px dashed grey;
-
+    
     &.empty-title {
         width: 100px;
+        margin-top: 70px;
     }
 }
 
 input {
     background-color: unset;
     border: unset;
-    border-bottom: 1px dashed grey;
-    width: 100px;
+    font: 400 14px/20px Roboto,"Helvetica Neue",sans-serif;
+    width: 100%;
 }

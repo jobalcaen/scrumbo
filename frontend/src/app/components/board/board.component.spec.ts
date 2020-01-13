@@ -4,9 +4,9 @@ import { BoardComponent } from './board.component'
 import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NewNoteButton, websocketEvent, Note } from 'src/app/models/models';
-import { ActivatedRouteSnapshot, RouterModule } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, ActivatedRoute, convertToParamMap } from '@angular/router';
 import { BoardActionsService, note_event_type } from 'src/app/services/board-actions.service';
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import { CustomMaterialModule } from 'src/app/common/material.module';
 
 fdescribe('BoardComponent', () => {
@@ -15,7 +15,8 @@ fdescribe('BoardComponent', () => {
   let debugElement: DebugElement
   let activatedRouteSnapshotStub
   let notesServiceSubscribeSpy: jasmine.SpyObj<any>
-  let boardActionsService: BoardActionsService
+  let boardActionsService: jasmine.SpyObj<any>
+  const mockBoardName = 'yoyo'
   @Component({selector: 'app-new-note', template: ''})
   class NewNoteStubComponent {
     @Input() noteButtonInformation: NewNoteButton
@@ -42,15 +43,6 @@ fdescribe('BoardComponent', () => {
   class RemoveColumnComponent {}
 
   beforeEach(async(() => {
-
-    activatedRouteSnapshotStub = {
-      paramMap: {
-        get: function() {
-          return 'yoyo'
-          }
-        }
-      }
-
     TestBed.configureTestingModule({
       declarations: [ 
         BoardComponent,
@@ -63,10 +55,11 @@ fdescribe('BoardComponent', () => {
       imports: [
         CustomMaterialModule,
         RouterModule.forRoot([]),
-
        ],
        providers: [
-        { provide: ActivatedRouteSnapshot, useValue: activatedRouteSnapshotStub }
+        { provide: BoardActionsService, useValue: jasmine.createSpyObj('BoardActionsService', ['connect', 'subscribe']) },
+        { provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({boardUrl: mockBoardName})) } }
+
       ]
     })
     .compileComponents()
@@ -76,17 +69,19 @@ fdescribe('BoardComponent', () => {
     fixture = TestBed.createComponent(BoardComponent)
     component = fixture.componentInstance
     debugElement = fixture.debugElement
-    boardActionsService = debugElement.injector.get(BoardActionsService);
-    notesServiceSubscribeSpy = spyOn(boardActionsService, 'subscribe')
+    boardActionsService = TestBed.get(BoardActionsService);
+
     fixture.detectChanges();
   });
 
-  it('creates the component', () => {
-    expect(component).toBeTruthy();
+  it('creates the component and calls connect on the board action service when the cmp mounts', () => {
+    expect(component).toBeTruthy()
+    expect(boardActionsService.connect).toHaveBeenCalledTimes(1)
+    expect(boardActionsService.connect).toHaveBeenCalledWith(mockBoardName)
   });
 
 
-  it('creates a list of note buttons and notes', fakeAsync(() => {
+  fit('creates a list of note buttons and notes', fakeAsync(() => {
     const connectEvent: websocketEvent = {
       type: note_event_type.CONNECT,
       payload: {
@@ -103,10 +98,21 @@ fdescribe('BoardComponent', () => {
             left: 4,
             color: 'FFFFFF'
           },
-        ] as Note[]
+        ],
+        columns: [],
+        columns_container_width: 1000,
       }
     }
-    notesServiceSubscribeSpy.and.returnValue(of(connectEvent))
+    expect(boardActionsService.subscribe).toHaveBeenCalledTimes(1)
+    // spyOn(TestBed.get(boardActionsService), 'subscribe').and.callFake((parm1: string, param2: string, param3: any, param4: any, callback: (data) => {}) => {
+    //   callback('DATA_RESULT');
+    // })
+
+
+    boardActionsService.subscribe.and.returnValue(connectEvent)
+    fixture.detectChanges()
+
+    // notesServiceSubscribeSpy.and.returnValue(connectEvent)
     tick()
 
     fixture.detectChanges()
