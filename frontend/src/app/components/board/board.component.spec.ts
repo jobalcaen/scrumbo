@@ -9,14 +9,13 @@ import { BoardActionsService, note_event_type } from 'src/app/services/board-act
 import { of, from } from 'rxjs';
 import { CustomMaterialModule } from 'src/app/common/material.module';
 
-fdescribe('BoardComponent', () => {
+describe('BoardComponent', () => {
   let component: BoardComponent
   let fixture: ComponentFixture<BoardComponent>
   let debugElement: DebugElement
-  let activatedRouteSnapshotStub
-  let notesServiceSubscribeSpy: jasmine.SpyObj<any>
   let boardActionsService: jasmine.SpyObj<any>
   const mockBoardName = 'yoyo'
+
   @Component({selector: 'app-new-note', template: ''})
   class NewNoteStubComponent {
     @Input() noteButtonInformation: NewNoteButton
@@ -27,7 +26,6 @@ fdescribe('BoardComponent', () => {
     @Input() cdkDragFreeDragPosition: any
     @Input() note: any
     @Input() cdkDragData: any
-    
   }
 
   @Component({selector: 'app-new-column', template: ''})
@@ -36,7 +34,6 @@ fdescribe('BoardComponent', () => {
   @Component({selector: 'app-column', template: ''})
   class ColumnComponent {
     @Input() column: any
-
   }
 
   @Component({selector: 'app-remove-column', template: ''})
@@ -81,7 +78,7 @@ fdescribe('BoardComponent', () => {
   });
 
 
-  fit('creates a list of note buttons and notes', fakeAsync(() => {
+  it('creates a list of note buttons and notes', fakeAsync(() => {
     const connectEvent: websocketEvent = {
       type: note_event_type.CONNECT,
       payload: {
@@ -109,7 +106,7 @@ fdescribe('BoardComponent', () => {
     // })
 
 
-    boardActionsService.subscribe.and.returnValue(connectEvent)
+    boardActionsService.subscribe.callback()
     fixture.detectChanges()
 
     // notesServiceSubscribeSpy.and.returnValue(connectEvent)
