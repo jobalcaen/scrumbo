@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, ElementRef, EventEmitter, ViewChild }
 import { Column } from 'src/app/models/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, fromEvent, Subscription } from 'rxjs';
-import { filter, first, switchMap } from 'rxjs/operators';
+import { filter, first, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-column',
@@ -17,7 +17,7 @@ export class ColumnComponent implements OnInit {
   columnForm = new FormGroup({
     title: new FormControl('', {
       validators: Validators.maxLength(30),
-      updateOn: 'blur'
+      updateOn: 'change'
     }), 
   })
   mode: 'view' | 'edit' = 'view';
@@ -30,7 +30,9 @@ export class ColumnComponent implements OnInit {
     constructor() {     
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.columnForm.setValue({title: this.column.title ? this.column.title : ""})
+
     this.subscriptions.add(
       fromEvent(this.titleformRef.nativeElement, 'dblclick').subscribe(() => {
         if (this.mode !== 'edit') {
@@ -43,22 +45,22 @@ export class ColumnComponent implements OnInit {
     this.subscriptions.add(
       this.editMode$.pipe(
         switchMap(() => fromEvent(document, 'click').pipe(
-          filter(event => this.titleformRef.nativeElement.contains(event.target) === false),
+          filter(event => {
+            return this.titleformRef.nativeElement.contains(event.target) === false}),
           first()
         ))
       ).subscribe(() => {
         this.mode = 'view'
-        const updatedNote = {
-          ...this.column,
-          title: this.columnForm.value.title
-        }
-        if (this.column.title !== this.columnForm.value.title){
+        
+        if (this.column.title !== this.columnForm.value.title){ 
           this.column.title = this.columnForm.value.title
-          this.updateColumn.emit(updatedNote)
+          this.updateColumn.emit({
+            ...this.column,
+            title: this.columnForm.value.title
+          })
         }
       })
     )
-    this.columnForm.setValue({title: this.column.title ? this.column.title : ""})
   }
 
   ngOnDestroy(){

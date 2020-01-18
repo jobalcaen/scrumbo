@@ -109,6 +109,7 @@ describe('NoteComponent', () => {
     note.nativeElement.dispatchEvent(new Event('dblclick'))
     expect(updateNoteSpy).toHaveBeenCalledTimes(0)
     fixture.detectChanges()
+    await fixture.whenStable();
 
     expect(debugElement.queryAll(By.css('form textarea')).length).toEqual(1)
 
@@ -117,10 +118,12 @@ describe('NoteComponent', () => {
     textarea.value = 'wow the now has been updated'   
     textarea.dispatchEvent(new Event('input'))
     fixture.detectChanges()
+    await fixture.whenStable();
 
     // click outside note
     document.dispatchEvent(new Event('click'))
     fixture.detectChanges()
+    await fixture.whenStable();
 
     // expect(updateNoteSpy).toHaveBeenCalledTimes(1)
 

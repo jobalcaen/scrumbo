@@ -1,6 +1,5 @@
 <div class="title-container .mat-display-1" #titleForm>
     <ng-container *ngIf="mode === 'view'; else editMote">
-        <!-- <h1 class="title" [class.empty-title]="!column.title">{{ column.title }}</h1> -->
         <span class="title" [class.empty-title]="!column.title">{{ column.title }}</span>
     </ng-container>
 </div>
@@ -8,6 +7,6 @@
 
 <ng-template #editMote>
     <form [formGroup]="columnForm">
-        <input formControlName="title" type="text">
+        <input formControlName="title" type="text"/>
     </form>
 </ng-template>
